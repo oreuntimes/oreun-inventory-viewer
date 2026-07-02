@@ -1,0 +1,966 @@
+{
+  "S0": {
+    "section": "에이전트 브리핑 레이어",
+    "protocol": "DEEP-MANUAL 초도 생성. 공개 웹·공시·IR·시세 스냅샷 기반. 자동 O2/Kiwoom 수급 원장은 아직 미연결.",
+    "as_of": "2026-07-03",
+    "session_trigger": "DEEP-MANUAL — 금호타이어 풀버전 생성 요청",
+    "agent_count": {
+      "llm": 24,
+      "deterministic": 8,
+      "total": 32
+    },
+    "briefs": [
+      {
+        "agent": "O1",
+        "role": "런 컨덕터",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "수동 DEEP 생성. 기존 레거시 파일은 건드리지 않고 073240_금호타이어.json 신규 생성 및 _index 등록 대상으로 라우팅."
+      },
+      {
+        "agent": "O2",
+        "role": "일별 크롤 봇",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "자동 TICK 미가동. S3는 2026-07-02 공개 시세 스냅샷 1행만 기록. 외인·기관 net은 종목 귀속 데이터 미확보로 null."
+      },
+      {
+        "agent": "O3",
+        "role": "계산층 봇",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "S3 시계열 부족으로 MA·z-score·RS·패턴 통계는 산출하지 않음. 52주 위치는 공개 52주 고저와 최신 종가로 단순 산출."
+      },
+      {
+        "agent": "A1",
+        "role": "수급 파서",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "외인·기관 순매수 원천 미수집. 테마 급등 구간의 거래대금 증가는 확인했으나 주체별 매수/매도 해석은 금지."
+      },
+      {
+        "agent": "A2",
+        "role": "공시 파서",
+        "class": "LLM",
+        "tier": "Haiku",
+        "brief": "DART/KRX 검색에서 2025 사업보고서와 2026 사업연도 분기보고서 존재 확인. 공시 기반 사업구조와 생산기지, 주요 고객 정보를 S1에 반영."
+      },
+      {
+        "agent": "A3",
+        "role": "시세 파서",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "2026-07-02 종가 4,705원, 거래량 2,769,839주, 거래대금 13,226백만원, 52주 범위 4,220~7,650원 확인."
+      },
+      {
+        "agent": "A4",
+        "role": "테마·뉴스 파서",
+        "class": "LLM",
+        "tier": "Haiku",
+        "brief": "정본 테마는 타이어·전기차OE·고인치 프리미엄. 2026-06-29 호남 반도체 정책 연상 테마는 직접 수혜가 아니라 지역/부지/이름 기반 단기 수급 테마로 분리."
+      },
+      {
+        "agent": "A5",
+        "role": "웹 정보 수집가",
+        "class": "LLM",
+        "tier": "Sonnet",
+        "brief": "공식 IR 목록, 회사 보도자료, DART/KRX, WiseReport, Investing, AlphaSquare, 언론 기사 교차 확인. 핵심 수치와 리스크는 S15 source_notes에 출처별 기록."
+      },
+      {
+        "agent": "A6",
+        "role": "데이터 통합관",
+        "class": "결정론+Sonnet",
+        "tier": "core",
+        "brief": "2025 연간 실적·2026 1Q 실적·주가 스냅샷을 spine으로 통합. 시가총액은 출처별 1.35조~1.45조 범위 차이가 있어 range로 표기."
+      },
+      {
+        "agent": "A7",
+        "role": "기업 스파이",
+        "class": "LLM",
+        "tier": "Sonnet",
+        "brief": "히든 인텔 후보는 광주공장 부지 매각, 함평 신공장·유럽공장 투자 재원, 안전인증 추진, EV OE 공급 확대. 전부 공개출처 기반 관찰로만 기록."
+      },
+      {
+        "agent": "M1",
+        "role": "매크로 분석가",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "타이어 업황은 원재료·해상운임·환율·미국 관세·자동차 OE 생산량에 민감. 2026년 회사 가이던스는 매출 5.1조원, 고인치 47%, EV OE 30%."
+      },
+      {
+        "agent": "M2",
+        "role": "시장 지위 분석가",
+        "class": "LLM",
+        "tier": "Sonnet",
+        "brief": "국내 타이어 빅3 중 하나. 현재 주식시장에서는 자동차/타이어 저평가 실적주와 호남 정책 연상주라는 두 신호가 겹친 상태."
+      },
+      {
+        "agent": "B1",
+        "role": "기업조사관",
+        "class": "LLM",
+        "tier": "Sonnet",
+        "brief": "금호타이어는 신차용(OE)·교체용(RE) 타이어 제조·판매 기업. 국내·해외 생산망과 고인치·EV 타이어 믹스 개선이 핵심."
+      },
+      {
+        "agent": "B2",
+        "role": "수급원장 키퍼",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "S3 canonical shape 준수. row_status=정상, capture=RANK, 외인·기관 net null. 새 필드명은 schemas/s3_row_fieldmap.json 기준."
+      },
+      {
+        "agent": "B3",
+        "role": "차트 분석가",
+        "class": "LLM",
+        "tier": "Haiku",
+        "brief": "최신 종가는 52주 저점권 14.1% 위치. 단기 테마 급등 후 7월 2일 -7.02% 하락. MA 미산출로 지지·저항은 52주 고저와 최근 테마 고점 중심 관찰."
+      },
+      {
+        "agent": "B4",
+        "role": "가치평가 애널리스트",
+        "class": "LLM",
+        "tier": "Sonnet",
+        "brief": "TTM EPS 1,204원 기준 PER 약 3.9배, BPS 7,065원 기준 PBR 약 0.67배. 낮은 멀티플은 재평가 요인이지만 투자·차입·화재 복구 리스크가 할인 요인."
+      },
+      {
+        "agent": "B5",
+        "role": "이벤트 기록관",
+        "class": "LLM",
+        "tier": "Haiku",
+        "brief": "주요 사건: 2025 광주공장 화재, 2025 최대 매출, 2026 1Q 고마진 유지, 2026 호남 반도체 정책 테마 급등, 2026-07-02 급락."
+      },
+      {
+        "agent": "C1",
+        "role": "테마 흐름 추적자",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "정본 테마는 EV·고인치 타이어 믹스 개선. 호남 반도체 테마는 직접 사업 연결이 약해 수급성 이벤트로 별도 취급."
+      },
+      {
+        "agent": "C2",
+        "role": "유동성 퀀트",
+        "class": "LLM",
+        "tier": "Haiku",
+        "brief": "6월 말 거래대금이 평시 대비 급증. 단, 주체별 수급이 없어 회전율 과열 여부만 관찰 가능."
+      },
+      {
+        "agent": "C3",
+        "role": "수급 탐정",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "세력·작전 단정 금지. 공개 데이터로는 '정책 테마 유동성 쏠림 후 차익실현'까지만 말할 수 있음."
+      },
+      {
+        "agent": "C4",
+        "role": "내러티브 분석가",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "내러티브는 ①화재 복구, ②고마진 실적, ③EV·고인치 믹스, ④호남 정책 테마가 겹친 상태. 현재는 정책 테마 과열 후 실적 재평가 검증 구간."
+      },
+      {
+        "agent": "C5",
+        "role": "패턴 발굴가",
+        "class": "LLM",
+        "tier": "Sonnet",
+        "brief": "정량 엣지는 아직 표본 부족. 이벤트 기반 가설만 S11에 기록하고 T+ 추적은 향후 S3 축적 후 계산."
+      },
+      {
+        "agent": "C6",
+        "role": "섹터 전문가",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "타이어 섹터의 핵심은 고인치·EV OE 비중 확대, 원재료 가격, 관세 전가력, 글로벌 생산 포트폴리오."
+      },
+      {
+        "agent": "D1",
+        "role": "강세론자",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "저PER·저PBR, 10분기 연속 매출 1조원대, EV OE 비중 확대, 광주공장 복구와 신공장 모멘텀을 강세 근거로 제출."
+      },
+      {
+        "agent": "D2",
+        "role": "약세론자",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "화재 복구·관세·차입·대규모 투자·정책 테마 과열을 약세 근거로 제출. 호남 반도체는 직접 사업수혜가 약함."
+      },
+      {
+        "agent": "D3",
+        "role": "컨빅션 심판",
+        "class": "LLM",
+        "tier": "Sonnet",
+        "brief": "정성 CS +0.6. 펀더멘털은 저평가 쪽이나 단기 테마 과열과 수급 부재 때문에 '관망-조건부 관심' 판정."
+      },
+      {
+        "agent": "E1",
+        "role": "팩트체커",
+        "class": "LLM",
+        "tier": "core",
+        "brief": "호남 반도체 직접수혜 단정 금지, 수급주체 창작 금지, 현재가·시총은 출처별 시점 차이 명시."
+      },
+      {
+        "agent": "E2",
+        "role": "구조 검증관",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "JSON canonical contract 기준으로 생성. 검증기는 작업 후 실행 필요."
+      },
+      {
+        "agent": "E3",
+        "role": "가격연속성 검증관",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "주가조정 이벤트 미확인. adj_factor=1.0으로 임시 기록. 과거 시계열 확보 전 연속성 판정 보류."
+      },
+      {
+        "agent": "F1",
+        "role": "수석편집장",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "S1~S19 풀버전 조립. 사실·해석·추정·데이터부재를 분리."
+      },
+      {
+        "agent": "F2",
+        "role": "콜 채점관",
+        "class": "LLM",
+        "tier": "Haiku",
+        "brief": "S14는 공식 매매콜이 아니라 관찰 forecast로만 생성. 채점일은 2026-08-18 다음 실적 발표 예정일 기준."
+      },
+      {
+        "agent": "F3",
+        "role": "출판 봇",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "073240_금호타이어.json 신규 직렬화 및 stocks/_index.json 등록."
+      }
+    ]
+  },
+  "meta": {
+    "schema_version": "v2",
+    "code": "073240",
+    "name": "금호타이어",
+    "aliases": ["Kumho Tire"],
+    "market": "KOSPI",
+    "security_type": "보통주",
+    "lifecycle_status": "상장",
+    "sector_wics": "자동차부품",
+    "sector_krx": "화학",
+    "stock_type": "실적저평가주",
+    "valuation_basis": "PER/PBR",
+    "fiscal_year_end": "12",
+    "themes": ["타이어", "전기차타이어", "고인치프리미엄", "호남정책연상"],
+    "market_cap_value": "약 1.35조~1.45조원(2026-07-02 공개 페이지 기준, 출처별 차이)",
+    "market_cap_band": "중형",
+    "shares_outstanding": "287,260,287주",
+    "free_float_pct": null,
+    "listed_date": "2005-02-17",
+    "founded": "2003-06-30",
+    "isin": "데이터부재—미수집",
+    "headquarters": "광주광역시 광산구 어등대로 658",
+    "ceo": "정일택",
+    "major_shareholders": [
+      {
+        "name": "Xingwei Korea Company Limited",
+        "shares": 129267129,
+        "pct": 45.0,
+        "as_of": "2026-03-31"
+      },
+      {
+        "name": "한국산업은행",
+        "shares": 21339320,
+        "pct": 7.43,
+        "as_of": "2026-03-31"
+      }
+    ],
+    "foreign_ownership_pct": "약 7.71%(AlphaSquare, 2026-07-02 화면 기준)",
+    "ledger_created": "2026-07-03",
+    "created": "2026-07-03",
+    "last_updated": "2026-07-03",
+    "last_lens_run": "2026-07-03",
+    "level_maturity": "deep-manual",
+    "tier_profile": "DEEP",
+    "tags_lens": ["DEEP", "저PER", "호남정책연상", "EV타이어", "화재복구"],
+    "adjustment_events": [],
+    "data_absent_fields": [
+      "ISIN — 미수집",
+      "외인·기관 일별 순매수 — 자동 수급 원장 미연결",
+      "MA5·MA20·MA60 — S3 시계열 부족",
+      "정확한 2026E 컨센서스 영업이익 — 회사 가이던스와 브로커별 전망 혼재",
+      "광주공장 부지 매각 조건 — 협상/보도 단계, 확정 공시 미확인",
+      "호남 반도체 정책 수혜의 금액 효과 — 직접 사업 연결 불명확"
+    ],
+    "archive_pointers": []
+  },
+  "S1": {
+    "as_of": "2026-07-03",
+    "business_core": "금호타이어는 신차용(OE)·교체용(RE) 타이어를 제조·판매하는 글로벌 타이어 기업이다. 한국·중국·미국·베트남 생산망과 해외 판매 네트워크를 기반으로 승용차·SUV·트럭/버스용 타이어를 공급한다. 2025년 연결 매출은 4조7013억원, 영업이익은 5755억원으로 창사 이래 최대 매출을 기록했고, 2026년 1분기에도 매출 1조1678억원·영업이익 1470억원·영업이익률 12.6%를 유지했다.",
+    "negative_anchor": [
+      "반도체 직접 생산/장비/소재 수혜주 X",
+      "호남 반도체 정책은 지역·부지·이름 연상 테마이지 본업 직접 매출 연결은 미확정",
+      "화재 복구·관세·차입·신공장 투자 부담이 동시에 존재",
+      "외인·기관 수급 주체별 해석은 데이터부재"
+    ],
+    "value_chain_node": "자동차 밸류체인 — 타이어 제조·판매(OE/RE) / EV·고인치 프리미엄 제품 믹스",
+    "differentiator": "낮은 PER/PBR 구간에서 10분기 연속 매출 1조원대와 두 자릿수 영업이익률을 유지한 실적 재평가 후보",
+    "differentiator_verified": true,
+    "biz_tags": [
+      "#타이어",
+      "#전기차타이어",
+      "#고인치타이어",
+      "#OE",
+      "#RE",
+      "#광주공장복구",
+      "#호남정책연상"
+    ],
+    "revenue_mix": {
+      "타이어": "100%(사업보고서/분기보고서 기준 대분류)",
+      "OE_RE_split": "세부 비중 데이터부재",
+      "EV_OE_ratio": "20.6%(2026년 1분기 글로벌 OE 매출 기준)",
+      "high_inch_ratio": "45.1%(2026년 1분기 18인치 이상)"
+    },
+    "key_customers": {
+      "reported_major_customers": ["현대자동차", "기아", "폭스바겐 그룹", "메르세데스 벤츠"],
+      "ev_oe_examples": ["폭스바겐 ID.4"]
+    },
+    "warning": "호남 반도체 테마는 단기 수급 트리거로만 취급한다. 기업의 본질은 타이어 실적·마진·투자재원·공장복구다."
+  },
+  "S2": {
+    "as_of": "2026-07-03",
+    "primary_theme": "타이어·전기차OE",
+    "secondary_themes": ["고인치프리미엄타이어", "전기차타이어", "광주공장복구", "호남반도체정책연상"],
+    "selection_cascade": "자동차 → 타이어 → EV/OE·고인치 믹스 → 저평가 실적 재평가 → 호남 정책 연상 단기 수급",
+    "theme_tier": "실적주+정책연상",
+    "intensity": {
+      "실적가시성": 3,
+      "EV타이어": 2,
+      "호남정책연상": 1,
+      "쏠림위험": 3
+    },
+    "variant_bucket": "저평가실적주+지역정책테마",
+    "peer_set": ["161390", "002350", "005620", "002990"],
+    "ai_direct_core": false,
+    "caution": "호남 반도체 클러스터 수혜는 직접 매출이 아닌 부지·지역 연상과 유동성 이벤트에 가깝다.",
+    "taxonomy": {
+      "L1": "자동차",
+      "L2": "타이어",
+      "L3": "EV/OE타이어"
+    },
+    "intensity_evidence": {
+      "실적가시성": "2026년 1분기 영업이익률 12.6%, 10분기 연속 매출 1조원대",
+      "EV타이어": "글로벌 OE 매출 기준 EV 타이어 공급 비중 20.6%, 회사 2026년 목표 30%",
+      "호남정책연상": "2026-06-29 호남 반도체 정책 기대감으로 금호 계열/지역주 단기 급등",
+      "쏠림위험": "6월 말 거래대금이 평시 대비 급증 후 2026-07-02 -7.02% 하락"
+    }
+  },
+  "S3": {
+    "rows": [
+      {
+        "date": "20260702",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 4705,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": -7.02,
+        "volume": 2769839,
+        "value_traded": 13226,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "공개 웹 시세 스냅샷. 거래대금 단위 백만원. 외인·기관 net은 종목귀속 원천 미확보로 null."
+      }
+    ]
+  },
+  "S4": {
+    "as_of": "2026-07-03",
+    "coverage": {
+      "s3_rows": 1,
+      "price_coverage": "스냅샷 1일",
+      "supply_coverage": "데이터부재"
+    },
+    "liquidity_rollup": [
+      {
+        "period": "2026-06-25~2026-06-29",
+        "observation": "호남 반도체 정책 기대감 구간에 거래대금 급증. 공개 기사 기준 평시 대비 수십 배 유동성 유입.",
+        "confidence": "medium",
+        "limitation": "주체별 수급 미확보, 날짜별 원장 미완성"
+      }
+    ],
+    "turnover_note": "정량 회전율·z-score는 S3 시계열 축적 후 O3 산출."
+  },
+  "S5": {
+    "as_of": "2026-07-03",
+    "foreign_pattern": "데이터부재",
+    "inst_pattern": "데이터부재",
+    "interpretation": "6월 말 거래대금 급증과 7월 2일 급락은 정책 테마 유동성 쏠림 후 차익실현 가능성을 시사하지만, 외인·기관·개인 어느 주체가 주도했는지는 공개 종목귀속 수급이 없어 단정 금지.",
+    "data_absence": [
+      "foreign_net",
+      "inst_net",
+      "개인·기타법인 종목귀속 순매수",
+      "프로그램·차익거래 종목귀속"
+    ],
+    "risk_label": "매수세 과밀/쏠림 경계"
+  },
+  "S6": {
+    "as_of": "2026-07-02",
+    "current_price": 4705,
+    "position_52w_pct": 14.1,
+    "high_52w": 7650,
+    "low_52w": 4220,
+    "ma5": null,
+    "ma20": null,
+    "ma60": null,
+    "price_vs_ma5": null,
+    "price_vs_ma20": null,
+    "price_vs_ma60": null,
+    "level_maturity": "snapshot-only",
+    "range_note": "최신 종가는 52주 범위 하단 14% 부근이다. 단기 급등 후 -7.02% 하락했지만, 이동평균은 시계열 부족으로 미산출.",
+    "candle_prints": [
+      {
+        "date": "20260629",
+        "type": "정책테마 장중 급등",
+        "level": 5620,
+        "note": "한경 기사 기준 장중 +12.63%"
+      },
+      {
+        "date": "20260702",
+        "type": "급등 후 조정",
+        "level": 4705,
+        "note": "종가 -7.02%"
+      }
+    ]
+  },
+  "S7": {
+    "as_of": "2026-07-02",
+    "market_cap": "약 1.35조~1.45조원",
+    "close": 4705,
+    "per_ttm": 3.91,
+    "pbr": 0.67,
+    "eps_ttm": 1204,
+    "bps": 7065,
+    "valuation_snapshot": [
+      {
+        "metric": "PER",
+        "current": 3.91,
+        "basis": "4705원 / EPS 1204원",
+        "judgement": "저평가권"
+      },
+      {
+        "metric": "PBR",
+        "current": 0.67,
+        "basis": "4705원 / BPS 7065원",
+        "judgement": "순자산 할인"
+      },
+      {
+        "metric": "영업이익률",
+        "current": "12.6%(1Q26)",
+        "judgement": "타이어 제조업 대비 양호"
+      }
+    ],
+    "consensus_2026": {
+      "revenue": 5100000000000,
+      "op_profit": null,
+      "op_margin_pct": null,
+      "source": "회사 2026년 가이던스: 매출 5.1조원, 고인치 47%, EV OE 30%"
+    },
+    "q1_2026_actual": {
+      "revenue": 1167800000000,
+      "op_profit": 147000000000,
+      "op_margin_pct": 12.6,
+      "op_yoy_pct": 0.3,
+      "revenue_yoy_pct": -3.2
+    },
+    "target_prices": [
+      {
+        "target_low": 5800,
+        "target_high": 10000,
+        "target_avg": 8113,
+        "source": "Investing.com analyst target snapshot, 2026-07-02 screen"
+      }
+    ],
+    "broker_breadth": "7명 매수, 0명 매도(Investing.com 화면 기준)",
+    "valuation_note": "낮은 멀티플은 재평가 근거지만, 광주공장 화재 복구·대규모 증설 자금·관세와 안전 리스크가 할인 요인이다."
+  },
+  "S8": {
+    "as_of": "2026-07-03",
+    "annual": [
+      {
+        "year": "2024",
+        "revenue": 4532100000000,
+        "op_profit": 588500000000,
+        "op_margin_pct": 13.0,
+        "yoy_rev_pct": null,
+        "source": "2024 분기 실적 합산 추정"
+      },
+      {
+        "year": "2025",
+        "revenue": 4701300000000,
+        "op_profit": 575500000000,
+        "op_margin_pct": 12.2,
+        "yoy_rev_pct": 3.7,
+        "source": "금호타이어 2025년 경영실적 발표"
+      },
+      {
+        "year": "2026E",
+        "revenue": 5100000000000,
+        "op_profit": null,
+        "op_margin_pct": null,
+        "yoy_rev_pct": 8.5,
+        "source": "회사 2026년 매출 가이던스"
+      }
+    ],
+    "quarterly": [
+      {
+        "quarter": "2025Q4",
+        "revenue": 1160100000000,
+        "op_profit": 145300000000,
+        "op_margin_pct": 12.5,
+        "source": "2025년 경영실적 발표"
+      },
+      {
+        "quarter": "2026Q1",
+        "revenue": 1167800000000,
+        "op_profit": 147000000000,
+        "op_margin_pct": 12.6,
+        "source": "2026년 1분기 실적 발표"
+      }
+    ],
+    "financial_quality": {
+      "profitability": "두 자릿수 OPM 유지",
+      "balance_sheet_watch": "신공장 투자·만기차입·부지 매각 재원 확인 필요",
+      "margin_watch": "미국 관세와 원재료/운임 변동이 마진 변동 요인"
+    }
+  },
+  "S9": [
+    {
+      "event_id": "073240-20250517-001",
+      "date": "20250517",
+      "type": "공장화재",
+      "headline": "광주공장 대형 화재로 생산 전면 중단",
+      "detail": "연합뉴스 기준 2025-05-17 광주공장 화재 발생, 직원·소방관 부상과 생산 전면 중단 보도.",
+      "intensity": "high",
+      "source": "연합뉴스",
+      "next_trigger": "복구 진척, 보험·재해손실, 생산 정상화 속도"
+    },
+    {
+      "event_id": "073240-20260206-001",
+      "date": "20260206",
+      "type": "실적발표",
+      "headline": "2025년 연결 매출 4조7013억원, 영업이익 5755억원 발표",
+      "detail": "창사 이래 최대 매출, 2026년 매출 5.1조원 가이던스 제시.",
+      "intensity": "high",
+      "source": "금호타이어/뉴스와이어",
+      "next_trigger": "2026년 고인치 47%, EV OE 30% 달성 여부"
+    },
+    {
+      "event_id": "073240-20260428-001",
+      "date": "20260428",
+      "type": "실적발표",
+      "headline": "2026년 1분기 매출 1조1678억원, 영업이익 1470억원",
+      "detail": "영업이익률 12.6%, 10분기 연속 매출 1조원 이상. 고인치 45.1%, EV OE 20.6%.",
+      "intensity": "high",
+      "source": "ZDNet/금호타이어 실적 발표",
+      "next_trigger": "2Q26 실적 발표 예정"
+    },
+    {
+      "event_id": "073240-20260629-001",
+      "date": "20260629",
+      "type": "정책테마",
+      "headline": "호남 반도체 정책 기대감에 금호타이어 등 호남 연고주 급등",
+      "detail": "정부의 광주·전남 반도체/AI 생산거점 기대감으로 장중 금호타이어 +12.63% 보도. 직접 사업수혜가 아닌 지역·부지·이름 연상 테마로 분류.",
+      "intensity": "medium",
+      "source": "한국경제/연합인포맥스",
+      "next_trigger": "정책 발표 확정 내용, 부지 매각/신공장 이전 공시"
+    },
+    {
+      "event_id": "073240-20260702-001",
+      "date": "20260702",
+      "type": "가격반응",
+      "headline": "정책테마 급등 후 종가 4705원, -7.02% 조정",
+      "detail": "공개 시세 기준 거래량 276만9839주, 거래대금 13226백만원. 52주 저점권으로 재하락.",
+      "intensity": "medium",
+      "source": "AlphaSquare/Investing/Hankyung Markets",
+      "next_trigger": "거래대금 정상화 여부와 2Q26 실적"
+    }
+  ],
+  "S10": {
+    "as_of": "2026-07-03",
+    "theme_reactions": [
+      {
+        "date": "20260629",
+        "theme_event": "호남 반도체/AI 생산거점 기대감",
+        "stock_reaction_pct": 12.63,
+        "role": "지역 연상주",
+        "supply": "주체별 데이터부재",
+        "quality": "직접성 낮음"
+      },
+      {
+        "date": "20260702",
+        "theme_event": "급등 후 차익실현/변동성 확대",
+        "stock_reaction_pct": -7.02,
+        "role": "테마 후속 조정",
+        "supply": "주체별 데이터부재",
+        "quality": "매수세 과밀 경계"
+      },
+      {
+        "date": "20260428",
+        "theme_event": "1Q26 영업이익률 12.6% 확인",
+        "stock_reaction_pct": null,
+        "role": "실적 재평가 원료",
+        "supply": "데이터부재",
+        "quality": "펀더멘털 직접성 높음"
+      }
+    ]
+  },
+  "S11": {
+    "edges": [
+      {
+        "event_id": "073240-EDGE-20260629-001",
+        "event_date": "20260629",
+        "type": "정책연상 급등",
+        "pattern_label": "직접 사업 연결이 약한 지역 정책 테마 급등 후 변동성 확대",
+        "confidence": "medium",
+        "catalyst": "호남 반도체/AI 생산거점 기대감",
+        "edge_question": "정책 테마 유동성이 빠진 뒤에도 저PER·고마진 펀더멘털 재평가가 지속되는가?",
+        "t1_chg_pct": null,
+        "t3_chg_pct": null,
+        "t5_chg_pct": null,
+        "t10_chg_pct": null,
+        "note": "S3 시계열 부족으로 T+ 수익률 미계산."
+      },
+      {
+        "event_id": "073240-EDGE-20260428-001",
+        "event_date": "20260428",
+        "type": "실적 재평가",
+        "pattern_label": "두 자릿수 OPM 확인 후 저PER/PBR 재평가 후보",
+        "confidence": "medium",
+        "catalyst": "2026년 1분기 영업이익률 12.6%",
+        "edge_question": "2Q26 이후에도 12%대 OPM과 매출 5.1조 가이던스가 유지되는가?",
+        "t1_chg_pct": null,
+        "t3_chg_pct": null,
+        "t5_chg_pct": null,
+        "t10_chg_pct": null,
+        "note": "실적 엣지는 주가 반응보다 2026년 가이던스 달성률 검증이 우선."
+      }
+    ],
+    "synth_narrative": "현재 반복 신호는 정량 통계가 아니라 가설 단계다. 핵심은 '정책 연상 급등이 소멸해도, 낮은 PER/PBR과 고마진 실적이 별도 재평가를 받을 수 있는가'다."
+  },
+  "S12": {
+    "rows": [
+      {
+        "date": "20250517",
+        "expectation_stage": "후퇴",
+        "transition_direction": "backward",
+        "narrative": "광주공장 대형 화재로 생산 차질 우려가 커진 구간.",
+        "stage_evidence": "공장 생산 전면 중단 보도, 화재 복구 비용과 공급차질 우려",
+        "hidden_momentum": {
+          "layer": "L2",
+          "signal": "화재 복구 후 생산 정상화 속도가 향후 실적 신뢰 회복의 핵심",
+          "confidence": "medium"
+        },
+        "invalidation_trigger": "화재 손실이 재무구조를 다시 훼손하거나 생산 정상화가 지연될 경우"
+      },
+      {
+        "date": "20260206",
+        "expectation_stage": "확산",
+        "transition_direction": "forward",
+        "narrative": "2025년 최대 매출과 2026년 5.1조 가이던스로 화재 이후 실적 회복 내러티브가 강화된 구간.",
+        "stage_evidence": "2025 매출 4조7013억원, 영업이익 5755억원, 9분기 연속 매출 1조원대",
+        "hidden_momentum": {
+          "layer": "L1/L2",
+          "signal": "고인치·EV OE 비중이 마진 방어의 핵심 변수로 부상",
+          "confidence": "high"
+        },
+        "invalidation_trigger": "고인치 47%·EV OE 30% 목표 달성률이 2026년 중반 이후 둔화"
+      },
+      {
+        "date": "20260428",
+        "expectation_stage": "확산",
+        "transition_direction": "forward",
+        "narrative": "2026년 1분기에도 영업이익률 12.6%를 유지하며 저평가 실적주 프레임이 재확인된 구간.",
+        "stage_evidence": "1Q26 매출 1조1678억원, 영업이익 1470억원, 10분기 연속 매출 1조원 이상",
+        "hidden_momentum": {
+          "layer": "L2",
+          "signal": "미국 관세에도 제품 믹스 개선으로 수익성을 방어했다는 점",
+          "confidence": "medium"
+        },
+        "invalidation_trigger": "2Q26 실적에서 관세·원가·인센티브 부담으로 OPM이 한 자릿수로 하락"
+      },
+      {
+        "date": "20260629",
+        "expectation_stage": "피크",
+        "transition_direction": "forward",
+        "narrative": "호남 반도체 정책 기대감이 금호타이어까지 끌어올린 단기 테마 과열 구간.",
+        "stage_evidence": "장중 +12.63%, 거래대금 급증, 호남 연고주 동반 급등",
+        "hidden_momentum": {
+          "layer": "L3",
+          "signal": "기존 광주공장 부지 매각/이전 기대와 지역 정책 테마가 결합",
+          "confidence": "low"
+        },
+        "invalidation_trigger": "정책 발표 세부안에 금호타이어 부지·신공장 재원 연결고리가 없을 경우"
+      },
+      {
+        "date": "20260702",
+        "expectation_stage": "후퇴",
+        "transition_direction": "backward",
+        "narrative": "정책 테마 급등 후 종가 -7.02% 조정. 이제 실적과 투자재원 검증으로 초점이 돌아오는 구간.",
+        "stage_evidence": "종가 4705원, 52주 범위 하단 14.1% 위치",
+        "hidden_momentum": {
+          "layer": "L1",
+          "signal": "테마가 꺼진 뒤 낮은 PER/PBR이 방어선이 되는지 확인 필요",
+          "confidence": "medium"
+        },
+        "invalidation_trigger": "2Q26 실적 부진 또는 신공장 자금조달 악재"
+      }
+    ],
+    "default_stage_note": "현재 내러티브는 '정책 테마 피크 후 후퇴, 펀더멘털 재평가 검증 대기'로 본다."
+  },
+  "S13": {
+    "plan_updated": "20260703",
+    "stance": "관망",
+    "entry_level": null,
+    "entry_condition": "레옹 확인 필요: 정책 테마 거래대금 정상화 후에도 4700원대 저PER 방어가 유지되는지, 2Q26 실적 전후로 판단",
+    "entry_confirm_pair": [
+      "2Q26 OPM 12% 내외 유지",
+      "호남 정책 테마 소멸 후 거래대금 안정",
+      "광주공장 부지 매각/함평 신공장 재원 관련 공시"
+    ],
+    "target_range": {
+      "min": null,
+      "max": null
+    },
+    "partial_exit_rule": [],
+    "decision_log": [
+      {
+        "date": "20260703",
+        "decision": "DEEP 초도 생성. 매매 결정은 보류.",
+        "reason": "수급원장 부족과 정책 테마 과열 직후 변동성"
+      }
+    ]
+  },
+  "S14": [
+    {
+      "date": "20260703",
+      "type": "forecast_watch",
+      "headline": "2Q26 실적 전까지 정책 테마 변동성보다 저PER 실적 방어 여부를 우선 관찰",
+      "forecast": "2026-08-18 전후 실적 발표까지 4700원대 하방 방어와 OPM 유지 여부가 핵심",
+      "confidence": "low",
+      "review_date": "20260818",
+      "kill_switch": "2Q26 OPM 한 자릿수 하락 또는 부지/신공장 자금 악재 공시",
+      "note": "공식 매매콜 아님. S3·수급 데이터 부족으로 관찰 forecast만 기록."
+    }
+  ],
+  "S15": {
+    "as_of": "2026-07-03",
+    "birth_date": "2026-07-03",
+    "birth_trigger": "금호타이어 풀버전 DEEP 생성 요청",
+    "data_absent": [
+      "ISIN",
+      "일별 외인·기관 순매수",
+      "60거래일 이상 S3 시계열",
+      "O3 산출 MA·z-score·RS",
+      "확정 2026E 컨센서스 영업이익",
+      "광주공장 부지 매각 확정 조건"
+    ],
+    "absence_log": [
+      {
+        "field": "foreign_net",
+        "reason": "종목귀속 수급 원천 미수집. 공개 가격/거래대금만 확보."
+      },
+      {
+        "field": "inst_net",
+        "reason": "종목귀속 수급 원천 미수집. 기관 매수/매도 단정 금지."
+      },
+      {
+        "field": "MA5/MA20/MA60",
+        "reason": "S3 시계열 1행만 생성. O3 산출 불가."
+      },
+      {
+        "field": "호남 반도체 수혜 금액",
+        "reason": "직접 사업 연결 공시 미확인. 정책/부지 연상 테마로만 기록."
+      }
+    ],
+    "source_notes": [
+      {
+        "source": "금호타이어 IR발표자료 목록",
+        "url": "https://www.kumhotire.com/ko/company/irdata/list.do",
+        "fact": "2026년 1분기 실적보고서와 2025년 4분기 실적보고서 게시 확인"
+      },
+      {
+        "source": "금호타이어 2025년 경영실적 발표/뉴스와이어",
+        "url": "https://www.newswire.co.kr/newsRead.php?no=1028373",
+        "fact": "2025년 매출 4조7013억원, 영업이익 5755억원, 2026년 매출 5.1조원 목표"
+      },
+      {
+        "source": "ZDNet Korea",
+        "url": "https://zdnet.co.kr/view/?no=20260428172143",
+        "fact": "2026년 1분기 매출 1조1678억원, 영업이익 1470억원, OPM 12.6%"
+      },
+      {
+        "source": "WiseReport 기업개요",
+        "url": "https://comp.wisereport.co.kr/company/c1020001.aspx?cmp_cd=073240&cn=",
+        "fact": "설립일 2003-06-30, 상장일 2005-02-17, 발행주식수 287,260,287주"
+      },
+      {
+        "source": "Investing.com",
+        "url": "https://kr.investing.com/equities/kumho-tire",
+        "fact": "2026-07-02 가격 4705원, EPS 1204원, 주요주주 Xingwei Korea 45%, 산업은행 7.43%"
+      },
+      {
+        "source": "AlphaSquare",
+        "url": "https://alphasquare.co.kr/home/stock-summary?code=073240",
+        "fact": "2026-07-02 종가 4705원, 거래량 2,769,839주, 거래대금 13,225,941,296원, 52주 범위 4,220~7,650원"
+      },
+      {
+        "source": "연합뉴스",
+        "url": "https://www.yna.co.kr/view/AKR20250517030951054",
+        "fact": "2025-05-17 광주공장 화재와 생산 전면 중단"
+      },
+      {
+        "source": "한국경제/연합인포맥스",
+        "url": "https://www.hankyung.com/article/2026062931426",
+        "fact": "2026-06-29 호남 반도체 정책 기대감에 금호타이어 장중 급등"
+      }
+    ],
+    "changelog": [
+      {
+        "date": "20260703",
+        "change_type": "create_deep",
+        "detail": "금호타이어 DEEP-MANUAL S1~S19 풀버전 초도 생성",
+        "old_value": null,
+        "new_value": "073240_금호타이어.json"
+      }
+    ]
+  },
+  "S16": {
+    "as_of": "2026-07-03",
+    "roundtable": {
+      "bull": {
+        "thesis": "저PER·저PBR 상태에서 10분기 연속 매출 1조원대와 두 자릿수 OPM을 확인한 실적 재평가 후보.",
+        "evidence": [
+          "2026년 1분기 OPM 12.6%",
+          "TTM PER 약 3.9배, PBR 약 0.67배",
+          "EV OE·고인치 비중 확대와 2026년 매출 5.1조원 가이던스"
+        ],
+        "kill_switch": "2Q26 이후 OPM이 한 자릿수로 하락하거나 EV/OE 믹스 개선이 둔화",
+        "weight": 3.5
+      },
+      "bear": {
+        "thesis": "정책 테마 급등은 직접 사업 연결이 약하고, 화재 복구·관세·대규모 투자·차입 부담이 할인 요인으로 남아 있다.",
+        "evidence": [
+          "2025년 광주공장 대형 화재",
+          "함평 신공장과 유럽공장 등 대규모 투자 재원 필요",
+          "호남 반도체 테마는 지역/부지 연상에 가까움"
+        ],
+        "kill_switch": "광주공장 부지 매각과 신공장 투자 재원이 유리하게 확정되고 2Q26 실적이 컨센서스를 상회",
+        "weight": 3.0
+      },
+      "judge": {
+        "conviction_score": 0.6,
+        "verdict": "관망-조건부 관심",
+        "reason": "펀더멘털 저평가는 분명하지만, 단기 정책 테마 과열과 수급 데이터 부재 때문에 즉시 강한 콜은 부적절하다.",
+        "next_check": ["2Q26 실적", "광주공장 부지 매각/함평 신공장 재원", "거래대금 정상화 후 가격 방어"]
+      }
+    }
+  },
+  "S17": {
+    "scenario_label": "추정",
+    "scenarios": [
+      {
+        "name": "실적 재평가 지속",
+        "probability": "중",
+        "trigger": "2Q26 OPM 12% 내외 유지, 매출 5.1조 가이던스 신뢰 강화",
+        "path": "정책 테마 소멸 후에도 저PER/PBR 매력 부각 → 목표주가 평균 8113원 재접근",
+        "forecast_date": "20260818",
+        "review_date": "20260820",
+        "kill_switch": "관세·원재료·인센티브 부담으로 OPM 한 자릿수 하락"
+      },
+      {
+        "name": "정책 테마 소멸",
+        "probability": "중",
+        "trigger": "호남 반도체 세부안에서 금호타이어 부지·직접 수혜 연결 부재",
+        "path": "거래대금 급감 → 테마 매수세 이탈 → 52주 저점권 재테스트",
+        "forecast_date": null,
+        "review_date": "20260731",
+        "kill_switch": "부지 매각 또는 이전 재원 관련 명확한 호재 공시"
+      },
+      {
+        "name": "투자재원 리스크 확대",
+        "probability": "저~중",
+        "trigger": "신공장 투자비와 차입 상환 부담이 동시 부각",
+        "path": "재무 할인 확대 → PBR 할인 지속 → 실적이 좋아도 주가 재평가 지연",
+        "forecast_date": null,
+        "review_date": "20261231",
+        "kill_switch": "부지 매각대금·채권 조달·영업현금흐름으로 재원 우려 해소"
+      }
+    ]
+  },
+  "S18": {
+    "as_of": "2026-07-03",
+    "verified_hidden_facts": [
+      {
+        "fact": "광주공장 부지 매각과 함평 신공장 투자 재원이 주가 재평가의 숨은 변수",
+        "source": "언론 보도 및 증권가 코멘트",
+        "verification_status": "public_reported",
+        "why_hidden": "실적 숫자보다 자금조달 구조가 멀티플 할인 해소 여부를 좌우할 수 있음"
+      },
+      {
+        "fact": "EV OE 공급 비중 확대는 단순 테마가 아니라 제품 믹스와 마진 방어의 핵심 지표",
+        "source": "회사 실적 발표",
+        "verification_status": "company_reported",
+        "why_hidden": "주가 테마는 호남 정책에 쏠렸지만, 본업의 재평가 트리거는 EV·고인치 믹스"
+      },
+      {
+        "fact": "민간 중대재해 인증 추진 보도는 안전 리스크가 아직 투자자 체크리스트에 남아 있음을 시사",
+        "source": "언론 보도",
+        "verification_status": "public_reported",
+        "why_hidden": "밸류에이션 할인의 비재무 요인. 공식 인증/재발 방지 성과 확인 필요"
+      }
+    ],
+    "rejected_rumors": [
+      {
+        "claim": "삼성전자·SK하이닉스가 기존 광주공장 부지를 직접 매입한다",
+        "reason": "추측 보도/시장 루머 성격. 확정 공시 미확인.",
+        "status": "unverified"
+      },
+      {
+        "claim": "호남 반도체 클러스터가 금호타이어 본업 매출을 직접 증가시킨다",
+        "reason": "타이어 사업과 반도체 생산의 직접 매출 연결고리 미확인.",
+        "status": "unsupported"
+      }
+    ]
+  },
+  "S19": {
+    "as_of": "2026-07-03",
+    "next_action_predictions": [
+      {
+        "actor": "테마 단기자금",
+        "expected_action": "정책 발표 세부안 확인 전후로 빠른 차익실현과 재진입 반복 가능",
+        "direction": "중립~약매도",
+        "confidence": "low",
+        "basis": "6월 말 거래대금 급증 후 2026-07-02 -7.02% 조정",
+        "review_date": "20260731",
+        "kill_switch": "부지 매각/신공장 재원 관련 확정 공시"
+      },
+      {
+        "actor": "펀더멘털 투자자",
+        "expected_action": "2Q26 실적 전까지 관망 후 OPM 유지 확인 시 저PER 재평가 접근",
+        "direction": "관망",
+        "confidence": "medium",
+        "basis": "PER 3.9배, PBR 0.67배와 OPM 12.6%의 조합",
+        "review_date": "20260818",
+        "kill_switch": "OPM 한 자릿수 하락 또는 가이던스 하향"
+      },
+      {
+        "actor": "외인·기관",
+        "expected_action": "데이터부재",
+        "direction": "판정불가",
+        "confidence": "none",
+        "basis": "종목귀속 외인·기관 순매수 원장 미확보",
+        "review_date": null,
+        "kill_switch": "키움/O2 수급원장 연결 후 재분석"
+      }
+    ]
+  }
+}

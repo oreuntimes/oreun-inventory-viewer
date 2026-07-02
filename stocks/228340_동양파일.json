@@ -1,0 +1,185 @@
+{
+  "meta": {
+    "code": "228340",
+    "name": "동양파일",
+    "market": "KOSDAQ",
+    "security_type": "보통주",
+    "lifecycle_status": "상장",
+    "schema_version": "v2",
+    "stock_type": "순수테마주",
+    "valuation_basis": "PBR",
+    "fiscal_year_end": "12",
+    "market_cap_band": "소형",
+    "listed_date": null,
+    "tier_profile": "MINIMAL",
+    "level_maturity": "warm-up",
+    "ledger_created": "2026-06-30",
+    "last_updated": "2026-06-30",
+    "last_lens_run": null,
+    "tags_lens": [],
+    "data_absent_fields": [
+      "종목별_7주체잔여 — 시장레벨만 존재",
+      "반도체 팹 기초 공사 납품 계약 — 공시 없음",
+      "2025·2026 영업이익 — DART 미확인 (적자 보도)"
+    ],
+    "aliases": [],
+    "sector_wics": "데이터부재—미수집",
+    "sector_gics": "데이터부재—미수집",
+    "market_cap_value": "데이터부재—미수집",
+    "shares_outstanding": "데이터부재—미수집",
+    "isin": "데이터부재—미수집",
+    "adjustment_events": [],
+    "archive_pointers": []
+  },
+  "S1": {
+    "as_of": "2026-06-30",
+    "business_core": "PHC파일(고강도 프리스트레스트 콘크리트 말뚝) 전문 제조·판매 / 기초 건축 자재 / 대형 공장·산업단지 기초 공사 투입",
+    "negative_anchor": [
+      "반도체 제조·장비·소부장 X",
+      "건물 시공 X",
+      "기초 자재(파일) 공급 O",
+      "2025년 영업손실 47억 — 재무 리스크"
+    ],
+    "value_chain_node": "소재 (건축 기초 자재 — B2B 납품)",
+    "differentiator": "전북 익산 대규모 생산 공장 — 호남 반도체 팹 기초 공사 파일 지리적 최단 납품 거리",
+    "differentiator_verified": false,
+    "biz_tags": [
+      "#PHC파일",
+      "#기초건축자재",
+      "#전북익산",
+      "#호남기반",
+      "#정책테마"
+    ],
+    "revenue_mix": null,
+    "key_customers": null,
+    "warning": "2025년 영업적자 47억 확인됨. 재무 불안정 + 테마 편승 이중 구조."
+  },
+  "S2": {
+    "as_of": "2026-06-30",
+    "primary_theme": "POLICY-SEMICONDUCTOR-CLUSTER",
+    "secondary_themes": [
+      "INDUST-CONST-MATERIAL"
+    ],
+    "selection_cascade": "정책발표 → 팹 건설 기초 공사 → PHC파일 수요 → 익산 생산 → 물류 최근접",
+    "theme_tier": "건설토목",
+    "intensity": 1,
+    "variant_bucket": "정책취약",
+    "peer_set": [
+      "005620",
+      "002990"
+    ],
+    "theme_change_log": []
+  },
+  "S3": [
+    {
+      "date": "2026-06-29",
+      "close": null,
+      "change_pct": null,
+      "volume": null,
+      "value_traded": null,
+      "vs_20d_avg": null,
+      "foreign_net": null,
+      "inst_net": null,
+      "capture_flag": false,
+      "note": "호남 클러스터 발표일 — 관련주 급등",
+      "row_status": "정상",
+      "capture": "no-rank",
+      "adj_factor": 1.0
+    },
+    {
+      "date": "2026-06-30",
+      "close": null,
+      "change_pct": null,
+      "volume": null,
+      "value_traded": null,
+      "vs_20d_avg": null,
+      "foreign_net": null,
+      "inst_net": null,
+      "capture_flag": false,
+      "note": "LEDGER 생성일",
+      "row_status": "정상",
+      "capture": "no-rank",
+      "adj_factor": 1.0
+    }
+  ],
+  "S4": null,
+  "S5": null,
+  "S6": {
+    "as_of": "2026-06-30",
+    "high_52w": null,
+    "low_52w": null,
+    "position_52w_pct": null,
+    "ledger_high": null,
+    "ledger_low": null,
+    "ma5": null,
+    "ma20": null,
+    "ma60": null,
+    "level_maturity": "warm-up",
+    "invalidation": "팹 착공 지연 공식화 or 2026년 영업적자 지속",
+    "candle_prints": []
+  },
+  "S7": null,
+  "S8": null,
+  "S9": [
+    {
+      "date": "2026-06-29",
+      "type": "정책발표",
+      "headline": "2000조 호남 반도체 클러스터 발표 — 팹 기초 공사 파일 수요 기대감",
+      "source": "언론·인포스탁",
+      "relevance": "간접",
+      "intensity": "🟡",
+      "status": "완료",
+      "next_trigger": "팹 착공 일정 확정 / 동양파일 수주 공시 / 2026 실적 회복"
+    }
+  ],
+  "S10": null,
+  "S11": [
+    {
+      "event_id": "E001",
+      "date": "2026-06-29",
+      "type": "테마급등",
+      "pattern": "정책발표 → 건설자재 서브테마 급등",
+      "catalyst": "2000조 호남 반도체 클러스터 발표",
+      "confidence": "🟡",
+      "edge_question": "착공(수년 후)까지 선반영 기대감 유지 가능한가 vs 영업적자 지속 시 이중 압박",
+      "follow_through": {
+        "t1": null,
+        "t3": null,
+        "t5": null,
+        "t10": null
+      },
+      "note": "익산 생산 → 물류 최근접 논리 실재, 재무 리스크 병기 필수"
+    }
+  ],
+  "S12": null,
+  "S13": null,
+  "S14": null,
+  "S15": {
+    "birth_date": "2026-06-30",
+    "birth_trigger": "2000조 클러스터 N1 배치 #4",
+    "data_absent": [
+      {
+        "field": "S3 가격 수치",
+        "reason": "AUTO-CRAWL 미연결",
+        "resolve": "O2 연결 시 자동"
+      },
+      {
+        "field": "2025·2026 재무",
+        "reason": "DART 미확인",
+        "resolve": "분기보고서 확인 → S8 materialize"
+      }
+    ],
+    "changelog": [
+      {
+        "date": "2026-06-30",
+        "action": "BIRTH",
+        "note": "schema v2, N1 배치 #4, 재무 리스크 병기"
+      },
+      {
+        "date": "2026-06-30",
+        "action": "backport_v2",
+        "note": "schema v2 정합화 — meta 필드 추가: aliases, sector_wics, sector_gics, market_cap_value, shares_outstanding, isin, adjustment_events, archive_pointers"
+      }
+    ]
+  }
+}

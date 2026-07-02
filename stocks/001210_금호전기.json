@@ -1,0 +1,194 @@
+{
+  "meta": {
+    "code": "001210",
+    "name": "금호전기",
+    "market": "KOSPI",
+    "security_type": "보통주",
+    "lifecycle_status": "상장",
+    "schema_version": "v2",
+    "stock_type": "순수테마주",
+    "valuation_basis": "PER",
+    "fiscal_year_end": "12",
+    "market_cap_band": "소형",
+    "listed_date": null,
+    "tier_profile": "MINIMAL",
+    "level_maturity": "warm-up",
+    "ledger_created": "2026-06-30",
+    "last_updated": "2026-06-30",
+    "last_lens_run": null,
+    "tags_lens": [],
+    "data_absent_fields": [
+      "종목별_7주체잔여 — 시장레벨만 존재",
+      "반도체 클러스터 직접 수주 — 사업 무관"
+    ],
+    "aliases": [],
+    "sector_wics": "데이터부재—미수집",
+    "sector_gics": "데이터부재—미수집",
+    "market_cap_value": "데이터부재—미수집",
+    "shares_outstanding": "데이터부재—미수집",
+    "isin": "데이터부재—미수집",
+    "adjustment_events": [],
+    "archive_pointers": []
+  },
+  "S1": {
+    "as_of": "2026-06-30",
+    "business_core": "LED 조명 제조·판매 (직관·환형·전구식형광램프, LED조명, 유도등, 무전극등) + 소프트웨어 개발",
+    "negative_anchor": [
+      "전력 인프라 X",
+      "반도체 소부장 X",
+      "반도체 직접 제조 X",
+      "LED 조명 제조사 O",
+      "테마 편승 수혜 (광주 기반 + '금호' 브랜드 연상)"
+    ],
+    "value_chain_node": "소재/제조 (조명 기기) — 반도체 클러스터 밸류체인 외부",
+    "differentiator": "광주광역시 기반 + '금호' 브랜드 → 호남 반도체 클러스터 테마 이름 연상 편승 (실제 사업 수혜 아님)",
+    "differentiator_verified": true,
+    "biz_tags": [
+      "#LED조명",
+      "#광주기반",
+      "#금호브랜드",
+      "#테마편승"
+    ],
+    "revenue_mix": null,
+    "key_customers": null,
+    "warning": "이 종목의 테마 편입 근거는 지리·브랜드 연상에 국한. 반도체 클러스터 사업 수혜 없음."
+  },
+  "S2": {
+    "as_of": "2026-06-30",
+    "primary_theme": "POLICY-SEMICONDUCTOR-CLUSTER",
+    "secondary_themes": [],
+    "selection_cascade": "광주 기반 기업 → '금호' 브랜드 연상 → 호남 반도체 테마 편승",
+    "theme_tier": "편승(무관)",
+    "intensity": 0,
+    "variant_bucket": "정책취약",
+    "peer_set": [
+      "005620",
+      "002990",
+      "228340"
+    ],
+    "theme_change_log": [],
+    "caution": "테마 직접 수혜 없음. 관찰 목적으로만 편입."
+  },
+  "S3": [
+    {
+      "date": "2026-06-28",
+      "close": null,
+      "change_pct": null,
+      "volume": null,
+      "value_traded": null,
+      "vs_20d_avg": null,
+      "foreign_net": null,
+      "inst_net": null,
+      "capture_flag": false,
+      "note": "2000조 발표 전일",
+      "row_status": "정상",
+      "capture": "no-rank",
+      "adj_factor": 1.0
+    },
+    {
+      "date": "2026-06-29",
+      "close": null,
+      "change_pct": null,
+      "volume": null,
+      "value_traded": null,
+      "vs_20d_avg": null,
+      "foreign_net": null,
+      "inst_net": null,
+      "capture_flag": false,
+      "note": "3거래일 연속 상한가 보도 (수치 미수집)",
+      "row_status": "정상",
+      "capture": "no-rank",
+      "adj_factor": 1.0
+    },
+    {
+      "date": "2026-06-30",
+      "close": null,
+      "change_pct": null,
+      "volume": null,
+      "value_traded": null,
+      "vs_20d_avg": null,
+      "foreign_net": null,
+      "inst_net": null,
+      "capture_flag": false,
+      "note": "LEDGER 생성일",
+      "row_status": "정상",
+      "capture": "no-rank",
+      "adj_factor": 1.0
+    }
+  ],
+  "S4": null,
+  "S5": null,
+  "S6": {
+    "as_of": "2026-06-30",
+    "high_52w": null,
+    "low_52w": null,
+    "position_52w_pct": null,
+    "ledger_high": null,
+    "ledger_low": null,
+    "ma5": null,
+    "ma20": null,
+    "ma60": null,
+    "level_maturity": "warm-up",
+    "invalidation": "2000조 발표 소멸 or 호남 팹 계획 백지화",
+    "candle_prints": []
+  },
+  "S7": null,
+  "S8": null,
+  "S9": [
+    {
+      "date": "2026-06-27",
+      "type": "주가이벤트",
+      "headline": "3거래일 연속 상한가 (6/27~29 추정) — 호남 반도체 클러스터 기대감 테마 편승",
+      "source": "언론 보도",
+      "relevance": "편승(간접)",
+      "intensity": "🔴",
+      "status": "완료",
+      "next_trigger": "조정 깊이 확인 / 실적 발표 시 주가 복귀 여부"
+    }
+  ],
+  "S10": null,
+  "S11": [
+    {
+      "event_id": "E001",
+      "date": "2026-06-27",
+      "type": "테마편승급등",
+      "pattern": "지리·브랜드 연상 → 3연속 상한가",
+      "catalyst": "호남 반도체 클러스터 발표 전후",
+      "confidence": "🔴",
+      "edge_question": "LED 조명 사업 실적과 테마 주가의 괴리 — 테마 소멸 시 복귀 속도",
+      "follow_through": {
+        "t1": null,
+        "t3": null,
+        "t5": null,
+        "t10": null
+      },
+      "note": "전력 인프라로 오인 주의. 사업 본질 = LED 조명"
+    }
+  ],
+  "S12": null,
+  "S13": null,
+  "S14": null,
+  "S15": {
+    "birth_date": "2026-06-30",
+    "birth_trigger": "2000조 클러스터 N1 배치 — 테마 편승 패턴 관찰 목적",
+    "data_absent": [
+      {
+        "field": "S3 가격 수치",
+        "reason": "AUTO-CRAWL 미연결",
+        "resolve": "O2 연결 시 자동"
+      }
+    ],
+    "changelog": [
+      {
+        "date": "2026-06-30",
+        "action": "BIRTH",
+        "note": "schema v2, 편승 관찰 목적, N1 배치 #2"
+      },
+      {
+        "date": "2026-06-30",
+        "action": "backport_v2",
+        "note": "schema v2 정합화 — meta 필드 추가: aliases, sector_wics, sector_gics, market_cap_value, shares_outstanding, isin, adjustment_events, archive_pointers"
+      }
+    ]
+  }
+}

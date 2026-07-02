@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OREUN INVENTORY</title>
+  <style>
+    :root {
+      --bg: #0A0C10; --card: #111318; --card2: #161920;
+      --border: #1E2330; --border2: #252B3B;
+      --text: #E8EAF0; --text2: #9CA3AF; --text3: #4B5563;
+      --accent: #4F8EF7; --green: #22C55E; --yellow: #EAB308; --red: #EF4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Pretendard', 'Apple SD Gothic Neo', -apple-system, sans-serif;
+      font-size: 13px; min-height: 100vh;
+    }
+    header {
+      background: var(--card); border-bottom: 1px solid var(--border);
+      padding: 14px 24px; display: flex; align-items: center; gap: 16px;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .logo {
+      font-size: 13px; font-weight: 800; letter-spacing: 0.15em;
+      color: var(--accent); font-family: 'JetBrains Mono', monospace;
+    }
+    .logo-sub { font-size: 10px; color: var(--text3); margin-left: 2px; }
+    .stat-chips { margin-left: auto; display: flex; gap: 10px; }
+    .stat-chip {
+      font-size: 10px; padding: 2px 8px; border-radius: 3px;
+      background: var(--border); color: var(--text2);
+    }
+    .stat-chip b { color: var(--text); }
+
+    .filter-bar {
+      padding: 12px 24px; border-bottom: 1px solid var(--border);
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+    .filter-btn {
+      font-size: 10px; padding: 3px 10px; border-radius: 3px;
+      border: 1px solid var(--border); background: var(--card);
+      color: var(--text2); cursor: pointer; transition: all 0.15s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      border-color: var(--accent); color: var(--accent);
+      background: #0D1A2D;
+    }
+
+    .grid {
+      padding: 20px 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+
+    .stock-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 7px; padding: 14px 14px 12px;
+      text-decoration: none; color: inherit;
+      border-left-width: 3px; transition: border-color 0.15s, background 0.15s;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .stock-card:hover { background: var(--card2); border-color: var(--border2); }
+    .stock-card.intensity-0 { border-left-color: var(--text3); }
+    .stock-card.intensity-1 { border-left-color: var(--yellow); }
+    .stock-card.intensity-2 { border-left-color: var(--accent); }
+    .stock-card.intensity-3 { border-left-color: var(--green); }
+
+    .card-top { display: flex; align-items: center; gap: 8px; }
+    .card-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; color: var(--text3);
+    }
+    .card-name { font-size: 14px; font-weight: 700; flex: 1; }
+    .card-market {
+      font-size: 9px; padding: 1px 6px; border-radius: 3px;
+      background: var(--border); color: var(--text3);
+    }
+
+    .card-theme {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px; color: var(--accent); opacity: 0.8;
+    }
+
+    .card-meta { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .card-tier-badge {
+      font-size: 9px; padding: 1px 5px; border-radius: 2px;
+      border: 1px solid var(--border); color: var(--text3);
+    }
+    .card-type-badge {
+      font-size: 9px; padding: 1px 5px; border-radius: 2px;
+    }
+    .card-type-badge.warning { background: #1c1000; color: var(--yellow); }
+    .card-type-badge.normal { background: #0a1c0a; color: var(--green); }
+
+    .intensity-row { display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+    .intensity-dots { display: flex; gap: 3px; }
+    .intensity-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border2); }
+    .intensity-dot.i0 { background: var(--text3); }
+    .intensity-dot.i1 { background: var(--yellow); }
+    .intensity-dot.i2 { background: var(--accent); }
+    .intensity-dot.i3 { background: var(--green); }
+    .card-maturity { font-size: 9px; color: var(--text3); margin-left: auto; }
+
+    .card-diff {
+      font-size: 10px; color: var(--text2); line-height: 1.4;
+      border-left: 2px solid var(--border); padding-left: 6px;
+    }
+    .card-diff.dim { color: var(--text3); }
+
+    .loading { text-align: center; padding: 60px; color: var(--text3); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">OREUN INVENTORY <span class="logo-sub">/ LEDGER</span></div>
+    <div class="stat-chips">
+      <div class="stat-chip">총 <b id="total-count">0</b>종목</div>
+      <div class="stat-chip">테마 <b id="theme-count">0</b>개</div>
+    </div>
+  </header>
+
+  <div class="filter-bar" id="filter-bar">
+    <button class="filter-btn active" onclick="filterTheme(null, this)">전체</button>
+  </div>
+
+  <div class="grid" id="grid">
+    <div class="loading">불러오는 중…</div>
+  </div>
+
+<script>
+let allStocks = [];
+const CACHE_BUST = Date.now();
+
+function clampIntensity(value) {
+  if (!Number.isFinite(value)) return 0;
+  return Math.max(0, Math.min(3, Math.round(value)));
+}
+
+function intensityValue(raw) {
+  if (typeof raw === 'number') return clampIntensity(raw);
+  if (raw && typeof raw === 'object') {
+    const values = Object.values(raw).filter(v => typeof v === 'number' && Number.isFinite(v));
+    if (values.length) return clampIntensity(Math.max(...values));
+  }
+  return 0;
+}
+
+function intensityDetail(raw, fallback = '') {
+  if (raw && typeof raw === 'object') {
+    const label = {
+      theme_directness: '테마직접',
+      supply_confirmation: '수급확인',
+      crowding_risk: '쏠림위험',
+      time_decay: '시간감쇠'
+    };
+    return Object.entries(raw)
+      .filter(([, value]) => typeof value === 'number' && Number.isFinite(value))
+      .map(([key, value]) => `${label[key] || key} ${value}`)
+      .join(' · ');
+  }
+  return fallback || (raw ? `강도 ${raw}` : '');
+}
+
+function primaryTheme(s2 = {}) {
+  return s2.primary_theme || s2.taxonomy?.L3 || s2.taxonomy_l3 || '';
+}
+
+function themeLabel(theme) {
+  return theme
+    .replace(/^POLICY-/, '')
+    .replace(/^INDUST-/, '')
+    .replace(/^EE-/, '')
+    .replace(/-/g, ' · ');
+}
+
+async function loadAll() {
+  const idxRes = await fetch(`../stocks/_index.json?v=${CACHE_BUST}`, { cache: 'no-store' });
+  const idx = await idxRes.json();
+  const codes = Object.keys(idx);
+
+  const stocks = await Promise.all(codes.map(async code => {
+    const filename = idx[code];
+    try {
+      const res = await fetch(`../stocks/${encodeURIComponent(filename)}.json?v=${CACHE_BUST}`, { cache: 'no-store' });
+      return await res.json();
+    } catch { return null; }
+  }));
+
+  allStocks = stocks.filter(Boolean);
+  document.getElementById('total-count').textContent = allStocks.length;
+
+  const themes = [...new Set(allStocks.map(s => primaryTheme(s.S2)).filter(Boolean))];
+  document.getElementById('theme-count').textContent = themes.length;
+
+  // Theme filters
+  const bar = document.getElementById('filter-bar');
+  themes.forEach(t => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.textContent = themeLabel(t);
+    btn.onclick = () => filterTheme(t, btn);
+    bar.appendChild(btn);
+  });
+
+  renderGrid(allStocks);
+}
+
+function filterTheme(theme, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = theme ? allStocks.filter(s => primaryTheme(s.S2) === theme) : allStocks;
+  renderGrid(filtered);
+}
+
+function renderGrid(stocks) {
+  const intensity = s => intensityValue(s.S2?.intensity);
+  const sorted = [...stocks].sort((a, b) => intensity(b) - intensity(a));
+
+  document.getElementById('grid').innerHTML = sorted.map(s => {
+    const m = s.meta;
+    const s2 = s.S2 || {};
+    const s1 = s.S1 || {};
+    const inv = intensityValue(s2.intensity);
+    const theme = primaryTheme(s2);
+    const intensityText = intensityDetail(s2.intensity, s2.theme_tier || '');
+    const typeClass = m.stock_type === '순수테마주' ? 'warning' : 'normal';
+
+    const dots = [0,1,2,3].map(i => {
+      const cls = i <= inv ? `i${inv}` : '';
+      return `<div class="intensity-dot ${cls}"></div>`;
+    }).join('');
+
+    return `
+      <a href="stock.html?code=${m.code}&v=${CACHE_BUST}" class="stock-card intensity-${inv}">
+        <div class="card-top">
+          <span class="card-code">${m.code}</span>
+          <span class="card-name">${m.name}</span>
+          <span class="card-market">${m.market}</span>
+        </div>
+        <div class="card-theme">${theme || '—'}</div>
+        <div class="intensity-row">
+          <div class="intensity-dots">${dots}</div>
+          <span style="font-size:10px;color:var(--text3);">${intensityText}</span>
+          <span class="card-maturity">${m.level_maturity || ''}</span>
+        </div>
+        <div class="card-meta">
+          <span class="card-type-badge ${typeClass}">${m.stock_type || ''}</span>
+          <span class="card-tier-badge">${m.tier_profile}</span>
+        </div>
+        ${s1.differentiator ? `<div class="card-diff${inv === 0 ? ' dim' : ''}">${s1.differentiator}</div>` : ''}
+      </a>
+    `;
+  }).join('');
+}
+
+loadAll();
+</script>
+</body>
+</html>

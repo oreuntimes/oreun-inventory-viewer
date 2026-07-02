@@ -1,0 +1,2038 @@
+{
+  "S0": {
+    "section": "에이전트 브리핑 레이어",
+    "protocol": "LENS 세션 초입 필수 로드. 각 에이전트가 담당 섹션을 서술형으로 요약. 결정론 봇은 수행 작업만 기재.",
+    "as_of": "2026-07-01",
+    "session_trigger": "LENS-20260629(마지막 RANK 포착일)",
+    "agent_count": {
+      "llm": 24,
+      "deterministic": 8,
+      "total": 32
+    },
+    "briefs": [
+      {
+        "agent": "O1",
+        "role": "런 컨덕터",
+        "role_full": "워크플로우 오케스트레이터",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "[결정론 봇] DAG 위상 정렬·멱등키 발행·임시파일→원자 rename·서킷브레이커(최대 2회 재시도) 실행. 이번 런: BIRTH+DATA-FILL 모드. E2·E3 게이트 통과 후 커밋 완료."
+      },
+      {
+        "agent": "O2",
+        "role": "일별 크롤 봇",
+        "role_full": "자동 수집·append 봇",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "[결정론 봇] nightly cron으로 S3에 일별 종가·거래량 append. 이번 런: Yahoo Finance API로 2026-03-25~2026-06-30 65거래일 수집. row_status enum(정상/휴장/수집실패) 강제 기재. 침묵 갭 0."
+      },
+      {
+        "agent": "O3",
+        "role": "계산층 봇",
+        "role_full": "롤업·산술 계산 봇",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "[결정론 봇] MA5=69,300 / MA20=75,525 / MA60=74,412 산출. 전체 66거래일 커버리지 롤업. vs_20d_pct 47일 산출(6/16 이전 ADV 기준값 부재로 나머지 null). 패턴 통계(T+1 평균반락 -13.6%) 집계."
+      },
+      {
+        "agent": "A1",
+        "role": "수급 파서",
+        "role_full": "수급 데이터 파서",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "[결정론 봇] infostock 공급 데이터에서 외인·기관 net 추출. RANK 13일 포착(포착일 목록: 3/25·4/1·4/23·4/24·4/30·5/7·5/26·5/27·6/1·6/11·6/22·6/23·6/29). capture=RANK 마킹."
+      },
+      {
+        "agent": "A2",
+        "role": "공시 파서",
+        "role_full": "재무·공시 스카우트",
+        "class": "LLM",
+        "tier": "Haiku",
+        "brief": "DART 공시 목록에서 4/30 1Q26 실적 잠정공시·5/18 IR 개최 공시를 추출했습니다. 공시 유형 분류: 실적발표(EPS 트리거), IR(투자자 이벤트). 기업행위(분할·병합·유증) 없음 — E3에 전달."
+      },
+      {
+        "agent": "A3",
+        "role": "시세 파서",
+        "role_full": "가격 시계열 파서",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "[결정론 봇] Yahoo Finance query1 API로 2026-03-25~06-30 OHLCV 파싱. 6/30 종가 null → kokstock 실측 70,500 대체. adj_factor 전 기간 1.0 확정(기업행위 없음). 전일비 등락률 소수점 2자리 재계산."
+      },
+      {
+        "agent": "A4",
+        "role": "테마·뉴스 파서",
+        "role_full": "테마·뉴스 스카우트",
+        "class": "LLM",
+        "tier": "Haiku",
+        "brief": "6/22 '반도체 수출 사상 최고' 뉴스를 테마 반응 트리거로 분류했습니다. canonical 테마 매핑: 반도체재료부품 / DDR5메모리기판 / 차량용반도체 / 반도체후공정패키징. 4건 이벤트 태깅 완료."
+      },
+      {
+        "agent": "A5",
+        "role": "웹 정보 수집가",
+        "role_full": "웹리서치 스카우트",
+        "class": "LLM",
+        "tier": "Sonnet",
+        "brief": "S1·S7 원료를 위해 웹 교차검증을 수행했습니다. 주요 수집 결과: ISIN KR7195870001 확인, 매출 비중 수정(리드프레임 64%/기판 36%), 2026E 컨센서스 OPM 13.9%(브로커 7곳+ 합산), 목표주가 67,000~120,000 범위 확인. Naver Finance 차단 → Yahoo Finance·kokstock 피벗. 데이터 출처 전부 confidence 태깅."
+      },
+      {
+        "agent": "A6",
+        "role": "데이터 통합관",
+        "role_full": "데이터 스튜어드",
+        "class": "LLM",
+        "tier": "결정론+Sonnet",
+        "brief": "다중 소스 데이터를 단일 spine으로 병합했습니다. 핵심 충돌 해소: 4/1 Yahoo(55,900) vs infostock RANK(55,700) → 실측 우선 원칙으로 55,700 채택. 6/27 토요일 오행 삭제(비거래일 오염 제거). 6/26 거래량 null→201,110 보정(kokstock 확인). 우선순위: 실측 > 역산 > 추정."
+      },
+      {
+        "agent": "A7",
+        "role": "기업 스파이",
+        "role_full": "1차출처 검증 리서처",
+        "class": "LLM",
+        "tier": "Sonnet",
+        "brief": "미가동 — deep-lens 플래그 미충족(레옹 명시 트리거 또는 |CS|<0.5 조건 없음). 가동 시 담당: S18 히든인텔(특허·채용·공시 행간 검증사실 발굴). 다음 소환 예상 조건: 2Q26 대형 이벤트 또는 레옹 명시 지정."
+      },
+      {
+        "agent": "M1",
+        "role": "경제환경 분석가",
+        "role_full": "매크로 이코노미스트",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "해성디에스의 실적은 두 사이클에 연동됩니다. 첫째, DDR5 수요 사이클 — 서버·PC 교체 주기가 2026년 하반기 진입 구간으로, DDR5 기판 수요 회복이 가시권입니다. 둘째, 차량반도체 사이클 — EV 보급 확대에 따라 ECU당 리드프레임 수요가 구조적으로 증가합니다. 1Q26 차량용 기판 910억(전체 48%) 사상최대가 이를 입증합니다. 매크로 리스크: 원화 강세(ASP 압박)·중국 리드프레임 덤핑. 현재 6월 반도체 수출 사상최고 확인됐으나 AI 수익성 회의론이 하방 압력으로 작동 중."
+      },
+      {
+        "agent": "M2",
+        "role": "시장 지위 분석가",
+        "role_full": "인덱스 스트래티지스트",
+        "class": "LLM",
+        "tier": "O3계산read+Sonnet",
+        "brief": "반도체재료부품 테마 내 해성디에스의 상대강도(RS) 정량 수치는 O3 미경화로 산출 불가 상태입니다. 레짐 라벨 판정: 반도체 섹터 레짐 '회복 초입 → 과열 후 조정'으로 전환 중. 해성디에스는 테마 내 후발 반응형 — 선도 종목 대비 2~5일 지연 패턴. 테마 강도(assoc_count) 데이터 부재로 군집도 판단 불가. 다음 레짐 체크: 2Q26 실적 시즌."
+      },
+      {
+        "agent": "B1",
+        "role": "기업조사관",
+        "role_full": "종목 정체성 확인관",
+        "class": "LLM",
+        "tier": "Sonnet",
+        "brief": "해성디에스는 반도체 후공정 소재 전문사입니다. 에칭 리드프레임(ELF) 글로벌 1위, DDR5 기판을 삼성·하이닉스에 납품합니다. 매출 비중: 리드프레임 64% / 기판 36%(기판 확대 추세). 고객: TI·Infineon·ST Micro·NXP(리드프레임), 삼성·하이닉스(기판). 부정 앵커 셋: HBM 직접수혜 없음 / 장비주 아님 / OSAT 자체 아님. 테마 귀속: 반도체재료부품·반도체후공정패키징·DDR5메모리기판·차량용반도체."
+      },
+      {
+        "agent": "B2",
+        "role": "수급원장 지킴이",
+        "role_full": "수급원장 키퍼",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "[결정론 봇] S3 append 검증: 날짜 dedup 0건, row_status enum 준수 확인, RANK/no-rank capture 마킹 정합 확인. 총 70행(66거래일+4휴장). 6/27 토요일 오행 삭제 완료. adj_factor=1.0 전 행 일관."
+      },
+      {
+        "agent": "B3",
+        "role": "차트 분석가",
+        "role_full": "차트 테크니션",
+        "class": "LLM",
+        "tier": "O3계산read+Haiku",
+        "brief": "S6 기준 현재 가격 위치를 분석했습니다. 현재가 70,500원은 MA5(69,300) 위(+1.73%)이지만 MA20(75,525, -6.65%)·MA60(74,412, -5.26%) 아래에 위치합니다. 단기·중기 저항선을 모두 하회하는 기술적으로 불리한 포지션입니다. 52주 위치는 53.3%(중간). 스윙 고점 102,400(5/26)에서 스윙 저점 68,000(6/29)까지 -33.6% 하락. level_maturity: warm-up(아직 통계 의미 있는 충분한 기간 미확보). 지지선: 68,000(최근 스윙 저점) / 저항선: MA60 74,412 → MA20 75,525."
+      },
+      {
+        "agent": "B4",
+        "role": "가치평가 애널리스트",
+        "role_full": "가치평가 애널리스트",
+        "class": "LLM",
+        "tier": "Sonnet",
+        "brief": "현재 밸류에이션: PER(TTM) 12.05배, PBR 0.88배, ROE 7.32%. PBR 1 미만은 자산가치 대비 할인 상태로 글로벌 ELF 1위 기업 대비 이례적으로 낮습니다. 2026E 컨센서스(브로커 7곳+): 매출 7,843억(+20% YoY), 영업이익 1,089억(+134.3%), OPM 13.9%. 1Q26 실제 OPM 5.8%에서 연간 13.9% 달성까지 가파른 개선이 필요합니다. 목표주가 범위: 67,000원(iM증권)~120,000원(DS증권). BUY 7곳+ 일색. 현재가 70,500은 최저 목표주가와 3,500원 차이(하방 제한적)."
+      },
+      {
+        "agent": "B5",
+        "role": "호재·악재 기록관",
+        "role_full": "이벤트·촉매 트래커",
+        "class": "LLM",
+        "tier": "Haiku",
+        "brief": "2026년 3월 이후 주요 이벤트 4건. ① 4/30 1Q26 실적발표: OPM 5.8%(+2,650% YoY), 매출 1,887억(+37.2%), 차량기판 910억 사상최대. ② 5/7 리서치 클러스터: 7곳+ BUY, 목표가 최고 120K. ③ 5/18 IR 개최. ④ 6/22 반도체수출 사상최고 뉴스 → +17.19%·VI발동 → 익일 -17.35%. 다음 트리거 후보: 2Q26 잠정실적(7월 말 예상). post_reaction_pct(4/30 익일 반응률) 미수집."
+      },
+      {
+        "agent": "C1",
+        "role": "테마 흐름 추적자",
+        "role_full": "테마·로테이션 전략가",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "반도체재료부품 테마에서 해성디에스의 포지션: 후발 반응형(선도주 대비 2~5일 지연). 세 번의 테마 반응 중 1회 지속(4/23)·2회 소멸(5/26·6/22). '진짜 대장주'가 아닌 테마 확산 수혜주로 분류됩니다. 테마 강도 정량화(value_mult·assoc_count) 부재로 대장·추종 판정은 추정 수준. 비교 종목: 034810(동아엘텍)·281820(케이씨텍) 동반 반응 여부 차회 확인 필요."
+      },
+      {
+        "agent": "C2",
+        "role": "유동성·회전율 퀀트",
+        "role_full": "유동성·회전율 퀀트",
+        "class": "LLM",
+        "tier": "O3계산read+Haiku",
+        "brief": "S4 기준 유동성 분석. 전체 커버리지 66거래일(100%). 외인 누적 순매수 +347,233주, 기관 -58,920주(13일 실측). 최근 20일 기관 순매도 -119,718주로 기관 이탈 구조. 거래대금 ADV는 6/17~6/30 14일만 실측(6/17 이전 null) — 회전율 z-score 산출 불가. 5일 단위: 기관 -33,579주(1일만 포착). go/no-go: 유동성 충분(66거래일 가격 데이터 100%), 수급 go/no-go는 보류(ADV 부족)."
+      },
+      {
+        "agent": "C3",
+        "role": "수급 탐정",
+        "role_full": "히든시그널·세력추적 헌터",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "S5 기반 수급 성격 분석. 핵심 발견: 6/23 수급 역설 — 외인 +88,918주·기관 +20,261주 동시 순매수에도 주가 -17.35%. 이는 비공개 주체(개인·기타법인)의 대규모 매도 분배를 의미합니다. 수급 성격 태그: 외인우세형·크라우디드 경계. 전체 구조: 외인 선행 매집(3월~4월) → 기관 역매도(최근 20일 -119K) 전환. 비공개 주체 분배 완전 해소 전까지 상승 추진력 구조적 제약. S19(next-action 예측) 미생성 — LENS 터치 충분 데이터 부족."
+      },
+      {
+        "agent": "C4",
+        "role": "기대감 스토리텔러",
+        "role_full": "내러티브·기대감 분석가",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "현재 단계: 소멸. 라이프사이클: 태동(3/25 외인 선행)→확산(4/23 실적 확인·기관 동반)→과열(5/26 102,400 신고가·blow-off)→확산 재시도(6/22 수출 뉴스)→소멸(6/23 수급 역설). 소멸 판정 근거: 6/23 외인+기관 동시 순매수에도 -17.35% 하락 = 크라우디드 분배 미해소. 재진입 조건: 2Q26 OPM 13%대 실증 또는 DDR5 기판 판가 인상 뉴스. S17(미래 시나리오) 미생성 — DEEP 모드 전용."
+      },
+      {
+        "agent": "C5",
+        "role": "패턴 발굴가",
+        "role_full": "패턴·엣지 퀀트",
+        "class": "LLM",
+        "tier": "O3계산read+Sonnet",
+        "brief": "S11 기준 반복 패턴 분석. 확인된 패턴: blow-off(급등익일반전) N=2회. ① 5/26 +22.63% → T+1 -9.86%, ② 6/22 +17.19% → T+1 -17.35%. T+1 평균 반락: -13.6%. 이 패턴은 실질적 '상승 추진력 고갈' 신호입니다. 주의: synthesis_min_count=3 기준에서 N=2라 AUTO 패턴 합성 미발동 — 통계 신뢰도는 medium 수준. t3·t5·t10 후속 등락률 미수집(T+1 이후 추적 데이터 없음). value_mult(거래대금배수)·assoc_count(동반종목수) 전부 null — 패턴 강도 정량화 불가."
+      },
+      {
+        "agent": "C6",
+        "role": "섹터 전문가",
+        "role_full": "섹터 도메인 애널리스트",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "미가동 — lazy-load 조건(도메인 의존 명제 발생) 미충족. 가동 시 담당: 반도체 후공정 소재 밸류체인 심층 분석, HBM 직접수혜 부정 권위 판정, TI·Infineon 고객 집중도 리스크 분석. 다음 소환 예상 조건: 경쟁사 위협 명제 또는 고객사 수주 변동 공시 발생 시."
+      },
+      {
+        "agent": "D1",
+        "role": "강세론자",
+        "role_full": "Bull — 상승론자",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "상승 명제: 지금은 저가 매집 구간. 근거 ①: 2026E OPM 13.9% 컨센서스 경로 유효(1Q26 5.8% 확인·차량기판 판가 인상 진행·하반기 DDR5 수요 회복). 근거 ②: PBR 0.88배 = 글로벌 ELF 1위 기업으로 이례적 할인. 근거 ③: 최저 목표주가 67K vs 현재가 70.5K — 하방 3,500원 제한. Kill-switch: 2Q26 OPM 8% 하회 또는 TI·Infineon 수주 축소 공시."
+      },
+      {
+        "agent": "D2",
+        "role": "약세론자",
+        "role_full": "Bear — 하락론자",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "하락 명제: 지금 진입하면 크라우디드 포지션에 끼는 것. 근거 ①: blow-off N=2회 재현 = 상승 추진력 구조적 소진. 근거 ②: 현재가 MA20(-6.65%)·MA60(-5.26%) 동시 하회 = 단기·중기 저항 이중 존재. 근거 ③: 1Q26 OPM 5.8% → 연간 13.9% 달성까지 하반기 가중치가 과도하게 집중(판가 인상 미실현 시 달성 불가). Kill-switch: 주가가 MA20 위에서 2주 이상 유지 또는 외인 순매수 3일 연속 전환."
+      },
+      {
+        "agent": "D3",
+        "role": "투자 판정관",
+        "role_full": "컨빅션 심판",
+        "class": "LLM",
+        "tier": "O3계산read+Sonnet",
+        "brief": "CS(컨빅션 스코어): Bull +35 / Bear +60. N=2 blow-off·수급 왜곡·MA 이중 저항 가중 반영. 단기(~1개월): Bear 우위. 중기(~3개월): Bull 우위 조건부(2Q26 OPM 10%+ 확인 시). 현시점 콜: 관망. 2Q26 잠정실적(7월 말) 이후 재판단. |CS|=25 > 0.5 기준 — DEEP 모드 풀가동 조건 미충족."
+      },
+      {
+        "agent": "E1",
+        "role": "팩트체커",
+        "role_full": "정직성 검증관",
+        "class": "LLM",
+        "tier": "결정론+Sonnet",
+        "brief": "데이터 품질 경고 사항 5개. ① S11 value_mult·assoc_count 전부 null — blow-off 강도 정량화 불가, 강도 표현은 추정. ② S9 post_reaction_pct(4/30 익일 반응률) 미수집. ③ S3 3/25~6/16 value_traded 전부 null — ADV 기반 산출 불가. ④ 외인·기관 수급 13일만 실측(53거래일 추정 불가). ⑤ 판가 인상 사이클은 2Q26 실적 전까지 가정. VETO 이슈 없음 — 확인 불가 항목은 null 처리 완료."
+      },
+      {
+        "agent": "E2",
+        "role": "구조 검증관",
+        "role_full": "구조·파싱 검증관",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "[결정론 봇] 스키마 lint 통과: 앵커쌍 정합, 고정헤더 diff 0, ASCII 부호 정상, 날짜 중복 0건, row 순서 오름차순 확인. S3 70행 전수 검증."
+      },
+      {
+        "agent": "E3",
+        "role": "가격연속성 검증관",
+        "role_full": "가격연속성·라이프사이클 검증관",
+        "class": "LLM",
+        "tier": "결정론+Haiku",
+        "brief": "이 기간 adj_factor 전 행 1.0 — 분할·병합·유상증자 없음 확인. -80% 가짜급락 없음(최대 낙폭: 6/22→6/23 -17.35%). 6/27 토요일 오행 삭제로 비거래일 오염 제거 완료. lifecycle: 상장 유지 중. 기업행위 공시(A2 전달값): 해당 없음."
+      },
+      {
+        "agent": "F1",
+        "role": "수석편집장",
+        "role_full": "수석편집장",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "이번 런 모드: BIRTH+DATA-FILL (delta mode). 업데이트된 섹션: S0(신규), S3(70행 완성), S4(롤업 갱신), S6(MA 갱신), S1(revenue_mix 수정), S15(changelog 추가). S13(매매플랜): 미생성 — 활성매매 아님, 레옹 수동 터치 시 materialize. S16~S19: 미생성 — DEEP 모드 전용. Bull/Bear 양 thesis 병존 보존 원칙 준수."
+      },
+      {
+        "agent": "F2",
+        "role": "콜 채점관",
+        "role_full": "콜 채점관",
+        "class": "LLM",
+        "tier": "O3계산read+Haiku",
+        "brief": "S14 미생성 — 공식 LENS 콜 미발행 상태. 채점 대상 없음. 가동 조건: S13 stance가 '관망' 이외로 전환 시(매수 or 매도 콜 발행) 자동 소환. 이전 콜 추적 이력: 없음."
+      },
+      {
+        "agent": "F3",
+        "role": "출판 봇",
+        "role_full": "출판·커밋 에디터",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "[결정론 봇] 승인본 JSON 직렬화·temp 파일 기록·atomic rename 실행. HTML 앵커 삽입, dedup upsert, 2쪽 넘침 체크 완료. 커밋 시각: 2026-07-01."
+      }
+    ]
+  },
+  "meta": {
+    "schema_version": "v2",
+    "code": "195870",
+    "name": "해성디에스",
+    "aliases": [],
+    "market": "KOSPI",
+    "security_type": "보통주",
+    "lifecycle_status": "상장",
+    "sector_wics": "반도체 및 관련장비(FICS, web/fnguide)",
+    "sector_gics": "데이터부재—미수집",
+    "stock_type": "소재주",
+    "valuation_basis": "PER",
+    "fiscal_year_end": "12",
+    "themes": [
+      "반도체재료부품",
+      "반도체후공정패키징",
+      "DDR5메모리기판",
+      "차량용반도체"
+    ],
+    "market_cap_value": "약 1조 1,560억원(2026-06-29 종가 68,000원 × 17.0M주, alphasquare·추정)",
+    "market_cap_band": "중형",
+    "shares_outstanding": "17,000,000주(보통주, fnguide Snapshot)",
+    "listed_date": "2016-06-24",
+    "isin": "KR7195870001",
+    "ledger_created": "2026-06-28",
+    "created": "2026-06-28",
+    "last_updated": "2026-07-01",
+    "last_lens_run": "2026-06-29",
+    "level_maturity": "warm-up",
+    "tier_profile": "EXTENDED",
+    "tags_lens": [],
+    "adjustment_events": [],
+    "data_absent_fields": [
+      "거래대금(value_traded)—kokstock 6/17~6/30 14일만 수집(백만원), 그 전 3/25~6/16은 null",
+      "거래량 일부—RANK일 중 infostock 실측 정밀은 6/22·6/23·6/25뿐, 그 외는 supply 역산 추정치",
+      "종목단위_개인+기타법인 net—외인·기관 합산 역산 가능하나 spine 흡수 금지(lens.md §2)",
+      "종목단위_7주체잔여(연기금/금융투자/투신/사모/보험) net—시장레벨만 존재",
+      "종목단위_program(차익/비차익)—supply.json 전종목 공란(검증완료)",
+      "fwd_PER/PBR 정밀치—최근결산 PER 48.89·PBR 2.06만 확정, fwd는 컨센서스 역산",
+      "GEX·다크풀방향·일간공매도—구조적 부재(공매도는 주간만)",
+      "분기재무 본문수치—DART JSON 공시목록만, 분기라벨 파싱 필요",
+      "일중고저(OHLC)—6/22만 infostock 실측(시71,100·고86,600·저71,000), 그 외 종가중심",
+      "supply foreign/institution net 단위=주(株)—백만원 아님(infostock CSV 교차확정)"
+    ],
+    "archive_pointers": []
+  },
+  "S1": {
+    "as_of": "2026-06-28",
+    "business_core": "반도체 패키징 소재 전문 — ① 리드프레임(Lead Frame) 매출 약 79% (차량용/범용 IDM·OSAT 공급) ② 패키지 서브스트레이트(Package Substrate) 약 21% (메모리용 기판·DDR5 확장). 제품: ELF(Etched Lead Frame, 에칭공법 글로벌 1위)·SLF(Stamped, 글로벌 5위)·FBGA·Fc-FBGA(2Layer)·BOC.",
+    "negative_anchor": [
+      "HBM 직접수혜 X (DDR5/메모리기판 간접연동)",
+      "반도체 장비주 X",
+      "후공정 소재주 O",
+      "OSAT(패키징 외주) 자체 X (소재 공급)"
+    ],
+    "value_chain_node": "소재 (반도체 후공정 패키징 소재)",
+    "differentiator": "에칭 리드프레임(ELF) 글로벌 1위 점유 + 삼성전자·SK하이닉스向 메모리 substrate 동시 공급",
+    "differentiator_verified": true,
+    "biz_tags": [
+      "#리드프레임",
+      "#반도체후공정",
+      "#패키지서브스트레이트",
+      "#DDR5기판",
+      "#차량용반도체",
+      "#에칭공법1위"
+    ],
+    "revenue_mix": {
+      "리드프레임": "약 64%",
+      "서브스트레이트": "약 36%"
+    },
+    "key_customers": {
+      "리드프레임": [
+        "TI",
+        "Infineon",
+        "ST Micro",
+        "NXP(IDM)",
+        "ASE",
+        "Amkor",
+        "SPIL",
+        "JCET",
+        "UTAC(OSAT)"
+      ],
+      "서브스트레이트": [
+        "삼성전자",
+        "SK하이닉스"
+      ]
+    },
+    "revenue_mix_source": "alphasquare 2026-06-30 (리드프레임 63.79%, 서브스트레이트 36.21%)",
+    "revenue_mix_note": "기존 79/21은 구형 수치. 서브스트레이트 비중 확대 반영"
+  },
+  "S2": {
+    "as_of": "2026-06-28",
+    "primary_theme": "반도체재료부품",
+    "secondary_themes": [
+      "DDR5메모리기판",
+      "차량용반도체",
+      "반도체후공정패키징"
+    ],
+    "selection_cascade": "반도체 → 후공정/패키징 → 소재(리드프레임+substrate) → leaf(해성디에스)",
+    "theme_tier": "소재부품",
+    "intensity": {
+      "테마직접": 2,
+      "팹인프라": 0,
+      "실적가시성": 2,
+      "개인쏠림": 1
+    },
+    "variant_bucket": "캐팩스미스프라이스엣지",
+    "peer_set": [
+      "034810",
+      "281820"
+    ],
+    "ai_direct_core": false,
+    "theme_change_log": [
+      {
+        "date": "20260628",
+        "prev": null,
+        "next": "반도체재료부품",
+        "reason": "ledger 생성 시 1차 귀속(infostock 테마DB 직접확인)"
+      }
+    ],
+    "taxonomy": {
+      "L1": "반도체",
+      "L2": "후공정/패키징",
+      "L3": "소재/기판"
+    },
+    "intensity_evidence": {
+      "테마직접": "ELF 글로벌1위(에칭공법)·삼성/하이닉스向 DDR5기판 직접공급",
+      "실적가시성": "1Q26 OPM 5.8%(전년 0.3%), 2026E OPM 13.9% 컨센서스 확보",
+      "개인쏠림": "6/22 반도체테마 동반급등·VI발동 확인, 6/23 즉각 매도세 역전"
+    }
+  },
+  "S3": {
+    "unit_note": "raw_close=원·chg_pct=등락률(%)·volume=주·value_traded=백만원(kokstock 6/17~6/30)·foreign_net/inst_net=주(RANK일만·순매수+/-)",
+    "rows": [
+      {
+        "date": "20260325",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 60300,
+        "adj_factor": 1.0,
+        "adj_close": 60300,
+        "chg_pct": 9.64,
+        "volume": 392400,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": 3488,
+        "inst_net": 11208
+      },
+      {
+        "date": "20260326",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 56600,
+        "adj_factor": 1.0,
+        "adj_close": 56600,
+        "chg_pct": -6.14,
+        "volume": 170310,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260327",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 54200,
+        "adj_factor": 1.0,
+        "adj_close": 54200,
+        "chg_pct": -4.24,
+        "volume": 213336,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260330",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 50300,
+        "adj_factor": 1.0,
+        "adj_close": 50300,
+        "chg_pct": -7.2,
+        "volume": 100329,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260331",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 46750,
+        "adj_factor": 1.0,
+        "adj_close": 46750,
+        "chg_pct": -7.06,
+        "volume": 192540,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260401",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 55700,
+        "adj_factor": 1.0,
+        "adj_close": 55700,
+        "chg_pct": 19.14,
+        "volume": 331700,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": 37823,
+        "inst_net": -88239
+      },
+      {
+        "date": "20260402",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 52300,
+        "adj_factor": 1.0,
+        "adj_close": 52300,
+        "chg_pct": -6.1,
+        "volume": 152677,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260403",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 52600,
+        "adj_factor": 1.0,
+        "adj_close": 52600,
+        "chg_pct": 0.57,
+        "volume": 136045,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260406",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 52300,
+        "adj_factor": 1.0,
+        "adj_close": 52300,
+        "chg_pct": -0.57,
+        "volume": 127070,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260407",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 52000,
+        "adj_factor": 1.0,
+        "adj_close": 52000,
+        "chg_pct": -0.57,
+        "volume": 82946,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260408",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 55600,
+        "adj_factor": 1.0,
+        "adj_close": 55600,
+        "chg_pct": 6.92,
+        "volume": 164192,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260409",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 53100,
+        "adj_factor": 1.0,
+        "adj_close": 53100,
+        "chg_pct": -4.5,
+        "volume": 159629,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260410",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 54900,
+        "adj_factor": 1.0,
+        "adj_close": 54900,
+        "chg_pct": 3.39,
+        "volume": 148772,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260413",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 57000,
+        "adj_factor": 1.0,
+        "adj_close": 57000,
+        "chg_pct": 3.83,
+        "volume": 219649,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260414",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 57200,
+        "adj_factor": 1.0,
+        "adj_close": 57200,
+        "chg_pct": 0.35,
+        "volume": 160131,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260415",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 56500,
+        "adj_factor": 1.0,
+        "adj_close": 56500,
+        "chg_pct": -1.22,
+        "volume": 218026,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260416",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 59300,
+        "adj_factor": 1.0,
+        "adj_close": 59300,
+        "chg_pct": 4.96,
+        "volume": 283145,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260417",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 60500,
+        "adj_factor": 1.0,
+        "adj_close": 60500,
+        "chg_pct": 2.02,
+        "volume": 157558,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260420",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 61300,
+        "adj_factor": 1.0,
+        "adj_close": 61300,
+        "chg_pct": 1.32,
+        "volume": 159994,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260421",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 65500,
+        "adj_factor": 1.0,
+        "adj_close": 65500,
+        "chg_pct": 6.85,
+        "volume": 401932,
+        "value_traded": null,
+        "vs_20d_pct": 202.4,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260422",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 68500,
+        "adj_factor": 1.0,
+        "adj_close": 68500,
+        "chg_pct": 4.58,
+        "volume": 437142,
+        "value_traded": null,
+        "vs_20d_pct": 217.6,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260423",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 76100,
+        "adj_factor": 1.0,
+        "adj_close": 76100,
+        "chg_pct": 11.09,
+        "volume": 935700,
+        "value_traded": null,
+        "vs_20d_pct": 391.3,
+        "foreign_net": 38634,
+        "inst_net": 66503
+      },
+      {
+        "date": "20260424",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 81700,
+        "adj_factor": 1.0,
+        "adj_close": 81700,
+        "chg_pct": 7.36,
+        "volume": 566900,
+        "value_traded": null,
+        "vs_20d_pct": 220.8,
+        "foreign_net": 212389,
+        "inst_net": 99874
+      },
+      {
+        "date": "20260427",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 80400,
+        "adj_factor": 1.0,
+        "adj_close": 80400,
+        "chg_pct": -1.59,
+        "volume": 451682,
+        "value_traded": null,
+        "vs_20d_pct": 164.6,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260428",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 76300,
+        "adj_factor": 1.0,
+        "adj_close": 76300,
+        "chg_pct": -5.1,
+        "volume": 360431,
+        "value_traded": null,
+        "vs_20d_pct": 127.5,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260429",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 75200,
+        "adj_factor": 1.0,
+        "adj_close": 75200,
+        "chg_pct": -1.44,
+        "volume": 206626,
+        "value_traded": null,
+        "vs_20d_pct": 74.7,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260430",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 80200,
+        "adj_factor": 1.0,
+        "adj_close": 80200,
+        "chg_pct": 6.65,
+        "volume": 620200,
+        "value_traded": null,
+        "vs_20d_pct": 206.8,
+        "foreign_net": 46955,
+        "inst_net": -18777
+      },
+      {
+        "date": "20260501",
+        "row_status": "휴장",
+        "capture": "no-rank",
+        "raw_close": null,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": null,
+        "volume": null,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "근로자의 날 KRX 휴장"
+      },
+      {
+        "date": "20260504",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 79500,
+        "adj_factor": 1.0,
+        "adj_close": 79500,
+        "chg_pct": -0.87,
+        "volume": 327495,
+        "value_traded": null,
+        "vs_20d_pct": 105.8,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260505",
+        "row_status": "휴장",
+        "capture": "no-rank",
+        "raw_close": null,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": null,
+        "volume": null,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "어린이날 KRX 휴장"
+      },
+      {
+        "date": "20260506",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 78000,
+        "adj_factor": 1.0,
+        "adj_close": 78000,
+        "chg_pct": -1.89,
+        "volume": 354754,
+        "value_traded": null,
+        "vs_20d_pct": 110.6,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260507",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 86000,
+        "adj_factor": 1.0,
+        "adj_close": 86000,
+        "chg_pct": 10.26,
+        "volume": 590700,
+        "value_traded": null,
+        "vs_20d_pct": 170.6,
+        "foreign_net": -55028,
+        "inst_net": -42138
+      },
+      {
+        "date": "20260508",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 87500,
+        "adj_factor": 1.0,
+        "adj_close": 87500,
+        "chg_pct": 1.74,
+        "volume": 315017,
+        "value_traded": null,
+        "vs_20d_pct": 89.0,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260511",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 85400,
+        "adj_factor": 1.0,
+        "adj_close": 85400,
+        "chg_pct": -2.4,
+        "volume": 269030,
+        "value_traded": null,
+        "vs_20d_pct": 74.9,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260512",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 81300,
+        "adj_factor": 1.0,
+        "adj_close": 81300,
+        "chg_pct": -4.8,
+        "volume": 352996,
+        "value_traded": null,
+        "vs_20d_pct": 95.5,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260513",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 86800,
+        "adj_factor": 1.0,
+        "adj_close": 86800,
+        "chg_pct": 6.77,
+        "volume": 327233,
+        "value_traded": null,
+        "vs_20d_pct": 87.3,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260514",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 88300,
+        "adj_factor": 1.0,
+        "adj_close": 88300,
+        "chg_pct": 1.73,
+        "volume": 238546,
+        "value_traded": null,
+        "vs_20d_pct": 63.0,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260515",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 87600,
+        "adj_factor": 1.0,
+        "adj_close": 87600,
+        "chg_pct": -0.79,
+        "volume": 440331,
+        "value_traded": null,
+        "vs_20d_pct": 112.9,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260518",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 85900,
+        "adj_factor": 1.0,
+        "adj_close": 85900,
+        "chg_pct": -1.94,
+        "volume": 223771,
+        "value_traded": null,
+        "vs_20d_pct": 57.8,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260519",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 81000,
+        "adj_factor": 1.0,
+        "adj_close": 81000,
+        "chg_pct": -5.7,
+        "volume": 211833,
+        "value_traded": null,
+        "vs_20d_pct": 54.4,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260520",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 78700,
+        "adj_factor": 1.0,
+        "adj_close": 78700,
+        "chg_pct": -2.84,
+        "volume": 169535,
+        "value_traded": null,
+        "vs_20d_pct": 43.5,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260521",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 81200,
+        "adj_factor": 1.0,
+        "adj_close": 81200,
+        "chg_pct": 3.18,
+        "volume": 245794,
+        "value_traded": null,
+        "vs_20d_pct": 64.3,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260522",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 83500,
+        "adj_factor": 1.0,
+        "adj_close": 83500,
+        "chg_pct": 2.83,
+        "volume": 193529,
+        "value_traded": null,
+        "vs_20d_pct": 52.3,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260525",
+        "row_status": "휴장",
+        "capture": "no-rank",
+        "raw_close": null,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": null,
+        "volume": null,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "부처님오신날 대체공휴일 KRX 휴장"
+      },
+      {
+        "date": "20260526",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 102400,
+        "adj_factor": 1.0,
+        "adj_close": 102400,
+        "chg_pct": 22.63,
+        "volume": 744700,
+        "value_traded": null,
+        "vs_20d_pct": 206.5,
+        "foreign_net": 27311,
+        "inst_net": -36594
+      },
+      {
+        "date": "20260527",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 92300,
+        "adj_factor": 1.0,
+        "adj_close": 92300,
+        "chg_pct": -9.86,
+        "volume": 554400,
+        "value_traded": null,
+        "vs_20d_pct": 154.0,
+        "foreign_net": 17533,
+        "inst_net": 34379
+      },
+      {
+        "date": "20260528",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 90600,
+        "adj_factor": 1.0,
+        "adj_close": 90600,
+        "chg_pct": -1.84,
+        "volume": 355044,
+        "value_traded": null,
+        "vs_20d_pct": 100.0,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260529",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 89100,
+        "adj_factor": 1.0,
+        "adj_close": 89100,
+        "chg_pct": -1.66,
+        "volume": 382132,
+        "value_traded": null,
+        "vs_20d_pct": 107.3,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260601",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 80600,
+        "adj_factor": 1.0,
+        "adj_close": 80600,
+        "chg_pct": -9.54,
+        "volume": 448100,
+        "value_traded": null,
+        "vs_20d_pct": 121.7,
+        "foreign_net": -117730,
+        "inst_net": 34582
+      },
+      {
+        "date": "20260602",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 76100,
+        "adj_factor": 1.0,
+        "adj_close": 76100,
+        "chg_pct": -5.58,
+        "volume": 350446,
+        "value_traded": null,
+        "vs_20d_pct": 98.8,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260603",
+        "row_status": "휴장",
+        "capture": "no-rank",
+        "raw_close": null,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": null,
+        "volume": null,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "전국동시지방선거일 KRX 휴장"
+      },
+      {
+        "date": "20260604",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 81100,
+        "adj_factor": 1.0,
+        "adj_close": 81100,
+        "chg_pct": 6.57,
+        "volume": 416038,
+        "value_traded": null,
+        "vs_20d_pct": 115.8,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260605",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 74800,
+        "adj_factor": 1.0,
+        "adj_close": 74800,
+        "chg_pct": -7.77,
+        "volume": 173963,
+        "value_traded": null,
+        "vs_20d_pct": 49.7,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260608",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 66500,
+        "adj_factor": 1.0,
+        "adj_close": 66500,
+        "chg_pct": -11.1,
+        "volume": 126046,
+        "value_traded": null,
+        "vs_20d_pct": 38.6,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260609",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 73600,
+        "adj_factor": 1.0,
+        "adj_close": 73600,
+        "chg_pct": 10.68,
+        "volume": 185117,
+        "value_traded": null,
+        "vs_20d_pct": 57.8,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260610",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 74100,
+        "adj_factor": 1.0,
+        "adj_close": 74100,
+        "chg_pct": 0.68,
+        "volume": 204244,
+        "value_traded": null,
+        "vs_20d_pct": 64.4,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260611",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 80900,
+        "adj_factor": 1.0,
+        "adj_close": 80900,
+        "chg_pct": 9.18,
+        "volume": 325700,
+        "value_traded": null,
+        "vs_20d_pct": 103.1,
+        "foreign_net": -55084,
+        "inst_net": 9925
+      },
+      {
+        "date": "20260612",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 78500,
+        "adj_factor": 1.0,
+        "adj_close": 78500,
+        "chg_pct": -2.97,
+        "volume": 421904,
+        "value_traded": null,
+        "vs_20d_pct": 131.6,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260615",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 85500,
+        "adj_factor": 1.0,
+        "adj_close": 85500,
+        "chg_pct": 8.92,
+        "volume": 233969,
+        "value_traded": null,
+        "vs_20d_pct": 73.0,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260616",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 82100,
+        "adj_factor": 1.0,
+        "adj_close": 82100,
+        "chg_pct": -3.98,
+        "volume": 167645,
+        "value_traded": null,
+        "vs_20d_pct": 54.7,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260617",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 81200,
+        "adj_factor": 1.0,
+        "adj_close": 81200,
+        "chg_pct": -1.1,
+        "volume": 245257,
+        "value_traded": 19700,
+        "vs_20d_pct": 79.7,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260618",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 79400,
+        "adj_factor": 1.0,
+        "adj_close": 79400,
+        "chg_pct": -2.22,
+        "volume": 132754,
+        "value_traded": 10700,
+        "vs_20d_pct": 43.7,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260619",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 73300,
+        "adj_factor": 1.0,
+        "adj_close": 73300,
+        "chg_pct": -7.68,
+        "volume": 253898,
+        "value_traded": 18700,
+        "vs_20d_pct": 82.4,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260622",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 85900,
+        "adj_factor": 1.0,
+        "adj_close": 85900,
+        "chg_pct": 17.19,
+        "volume": 377764,
+        "value_traded": 30800,
+        "vs_20d_pct": 120.1,
+        "foreign_net": 79537,
+        "inst_net": -116325,
+        "note": "infostock 실측(정밀)"
+      },
+      {
+        "date": "20260623",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 71000,
+        "adj_factor": 1.0,
+        "adj_close": 71000,
+        "chg_pct": -17.35,
+        "volume": 287335,
+        "value_traded": 21500,
+        "vs_20d_pct": 90.0,
+        "foreign_net": 88918,
+        "inst_net": 20261,
+        "note": "infostock 실측(정밀)"
+      },
+      {
+        "date": "20260624",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 69600,
+        "adj_factor": 1.0,
+        "adj_close": 69600,
+        "chg_pct": -1.97,
+        "volume": 162481,
+        "value_traded": 11200,
+        "vs_20d_pct": 56.0,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260625",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 69900,
+        "adj_factor": 1.0,
+        "adj_close": 69900,
+        "chg_pct": 0.43,
+        "volume": 123926,
+        "value_traded": 8700,
+        "vs_20d_pct": 46.1,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260626",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 68500,
+        "adj_factor": 1.0,
+        "adj_close": 68500,
+        "chg_pct": -2.0,
+        "volume": 201110,
+        "value_traded": 14200,
+        "vs_20d_pct": 77.1,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      },
+      {
+        "date": "20260629",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 68000,
+        "adj_factor": 1.0,
+        "adj_close": 68000,
+        "chg_pct": -0.73,
+        "volume": 154246,
+        "value_traded": 10500,
+        "vs_20d_pct": 61.8,
+        "foreign_net": 22487,
+        "inst_net": -33579
+      },
+      {
+        "date": "20260630",
+        "row_status": "정상",
+        "capture": "no-rank",
+        "raw_close": 70500,
+        "adj_factor": 1.0,
+        "adj_close": 70500,
+        "chg_pct": 3.68,
+        "volume": 117395,
+        "value_traded": 8100,
+        "vs_20d_pct": 50.4,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Yahoo Finance 수집 (adj_close=raw_close, adj_factor=1.0)"
+      }
+    ]
+  },
+  "S4": {
+    "as_of": "2026-07-01",
+    "materialize_note": "RANK 13일 수급 포착 + no-rank 57거래일 Yahoo Finance 가격/거래량 채움. 전체 66거래일 커버(3/25~6/30). value_traded=kokstock 6/17~6/30 14일.",
+    "capture_coverage": {
+      "captured_days": 66,
+      "est_total_days": 66,
+      "coverage_pct": 100.0
+    },
+    "cumulative_net": {
+      "full_period": {
+        "label": "20260325~20260630(RANK 13일 수급합산)",
+        "foreign_net": 347233,
+        "inst_net": -58920,
+        "dominant": "외인"
+      },
+      "d20": {
+        "label": "20260605~20260630(RANK 4일)",
+        "captured": 4,
+        "foreign_net": 135858,
+        "inst_net": -119718,
+        "dominant": "기관매도·외인매수 교차"
+      },
+      "d5": {
+        "label": "20260625~20260629",
+        "captured": 1,
+        "foreign_net": 22487,
+        "inst_net": -33579,
+        "dominant": "기관매도 우세(1일만 포착)"
+      }
+    },
+    "adv_note": "거래대금(value_traded) 미수집 — ADV 산출 불가. 거래량 RANK평균 약 487천주/일(상방편향)",
+    "turnover_rate": "계산보류—유동주식 상세 미확보(발행주식 17,000,000주 기준 대략 2.9~5.5%/포착일)"
+  },
+  "S5": {
+    "as_of": "2026-06-30",
+    "materialize_note": "S3 RANK 13일 기반 파생. 외인·기관 net만 귀속가능(§ data_absent_fields 참조).",
+    "dominant_label": "외인우세형(크라우디드 경계)",
+    "dominant_basis": "전체 누적 외인 +347,233 vs 기관 -58,920. 단 6/23 외인+기관 동시 순매수 상황에서 -17.35% = 크라우디드 분배 가능성 상존",
+    "supply_character_tag": "외인주도형",
+    "foreign_inst_relationship": "외인 선행 매집 → 기관 반매도(20d 기관 -119K) 구조. 6/22-6/23 외인매수 지속에도 가격하락 = 비공개주체 투매 존재",
+    "indiv_relationship": "데이터부재—귀속불가(7주체 시장레벨만)",
+    "character_log": [
+      {
+        "date": "20260325",
+        "prev": null,
+        "next": "외인주도형",
+        "basis": "초기 3일간 외인 누적 +254K(4/23-24) — 기관 +166K 동반"
+      },
+      {
+        "date": "20260601",
+        "prev": "외인·기관 동반매수형",
+        "next": "외인우세·기관반매도형",
+        "basis": "6/1 기관 +34K에도 외인 -117K 이탈. 이후 기관 누적 음수 전환"
+      }
+    ]
+  },
+  "S6": {
+    "as_of": "2026-07-01",
+    "current_price": 70500,
+    "current_chg_pct": 3.68,
+    "market_cap": "약 1조 1,560억원",
+    "high_52w": 108500,
+    "low_52w": 21650,
+    "position_52w_pct": 53.3,
+    "ledger_high": 102400,
+    "ledger_high_date": "20260526",
+    "ledger_low": 55700,
+    "ledger_low_date": "20260401",
+    "swing_high": 102400,
+    "swing_high_date": "20260526",
+    "swing_low": 68000,
+    "swing_low_date": "20260629",
+    "ma5": 69300,
+    "ma20": 75525,
+    "ma60": 74412,
+    "level_maturity": "warm-up",
+    "rs_proxy": null,
+    "candle_prints": [
+      {
+        "date": "20260622",
+        "type": "동적VI발동",
+        "level": 80900,
+        "note": "09:29:01, 기준 76,000 +6.06%"
+      },
+      {
+        "date": "20260622",
+        "type": "일중고",
+        "level": 86600,
+        "note": "시71,100·저71,000 — 당일 변동폭 15,600원"
+      },
+      {
+        "date": "20260526",
+        "type": "신고가권종가",
+        "level": 102400,
+        "note": "ledger-since 최고·저항(블로우오프 정점)"
+      },
+      {
+        "date": "20260623",
+        "type": "스윙저종가",
+        "level": 71000,
+        "note": "지지테스트(-17.35%)"
+      }
+    ],
+    "price_vs_ma5": 1.73,
+    "price_vs_ma20": -6.65,
+    "price_vs_ma60": -5.26,
+    "range_high_in_s3": 102400,
+    "range_low_in_s3": 46750,
+    "range_note": "3/25~6/30 S3 범위 내 고저. 52주 전체는 alphasquare 기준 21,650~108,500."
+  },
+  "S7": {
+    "as_of": "2026-06-29",
+    "note": "ON-DEMAND — 부분 materialize(1Q26 확정실적 + 컨센서스 반영)",
+    "close": 68000,
+    "market_cap": "약 1조 1,560억원",
+    "valuation_basis": "PER",
+    "per_ttm": 12.05,
+    "pbr": 0.88,
+    "roe": 7.32,
+    "consensus_2026": {
+      "revenue": 784300000000,
+      "revenue_yoy_pct": 20.0,
+      "op_profit": 108900000000,
+      "op_yoy_pct": 134.3,
+      "op_margin_pct": 13.9,
+      "source": "web교차(브로커 다수)"
+    },
+    "q1_2026_actual": {
+      "revenue": 188700000000,
+      "op_profit": 11000000000,
+      "op_margin_pct": 5.8,
+      "net_profit": 10800000000,
+      "op_yoy_pct": 2650,
+      "note": "전년 4억→110억"
+    },
+    "position_52w_pct": 53.3,
+    "target_prices": [
+      {
+        "broker": "iM",
+        "target": 67000
+      },
+      {
+        "broker": "SK",
+        "target": 72000
+      },
+      {
+        "broker": "DS",
+        "target": 120000,
+        "note": "상향"
+      },
+      {
+        "broker": "메리츠",
+        "target": null,
+        "note": "상향"
+      }
+    ],
+    "broker_breadth": "BUY일색(iM·SK·DS·메리츠·삼성·DB·교보·유진 7곳+)"
+  },
+  "S8": {
+    "note": "실적발표·컨센대폭개정 트리거만 append (일별 금지)",
+    "rows": [
+      {
+        "date": "20260430",
+        "trigger": "실적발표(1Q26 잠정)",
+        "fwd_PER": null,
+        "fwd_PBR": null,
+        "fwd_note": "데이터부재—커버 0~2곳, fwd 컨센 미확보",
+        "market_cap": "약 1조 3,634억원(종가 80,200 × 17,000,000주 추정)",
+        "revenue_q": 188700000000,
+        "op_profit_q": 11000000000,
+        "op_margin_pct": 5.8,
+        "net_profit_q": 10800000000,
+        "yoy_op_pct": 2650,
+        "consensus_update": "BUY 클러스터 형성 트리거(5/7 리포트 쏠림)",
+        "surprise_note": "컨센 부재로 서프라이즈 정량화 불가. 전년 OPM 0.3%→5.8% 질적 서프라이즈"
+      },
+      {
+        "date": "20260629",
+        "trigger": "LENS materialize(현재 스냅샷)",
+        "fwd_PER": 12.05,
+        "fwd_PBR": 0.88,
+        "fwd_note": "2026E 컨센 역산 PER (per_ttm=12.05, PBR=0.88 — fnguide Snapshot 기준)",
+        "market_cap": "약 1조 1,560억원(68,000 × 17,000,000주)",
+        "revenue_2026e": 784300000000,
+        "op_profit_2026e": 108900000000,
+        "op_margin_pct_2026e": 13.9,
+        "yoy_op_pct_2026e": 134.3,
+        "consensus_source": "web교차(삼성·DB·메리츠·교보·iM·DS·유진 7곳+)",
+        "broker_breadth": "BUY일색(7곳+)",
+        "target_high": 120000,
+        "target_low": 67000,
+        "surprise_note": "현재가 68,000 vs 최저목표가 67,000 — 하방 리스크 제한적"
+      }
+    ]
+  },
+  "S9": [
+    {
+      "date": "20260430",
+      "type": "실적공시",
+      "headline": "1Q26 잠정실적: 영업이익 110억(+2,650% YoY) · 매출 1,887억(+37.2% YoY) · 순이익 108억. OPM 5.8%. 차량용기판 910억(전체 48%, 사상최대)",
+      "source": "datatooza / newsprime",
+      "relevance": "직접",
+      "pre_drift_pct": null,
+      "post_reaction_pct": null,
+      "status": "완료",
+      "note": "1Q25 저점(OPM 0.3%) 탈출, 2Q26 판가인상·추가개선 기대 내러티브 강화",
+      "event_id": "195870-20260430-001"
+    },
+    {
+      "date": "20260507",
+      "type": "촉매(리서치)",
+      "headline": "증권사 BUY 리포트 클러스터(삼성·DB·메리츠·교보·iM·DS·유진 일색 매수)",
+      "source": "crawl_kr CSV(aux, 정밀일자 재확인요)",
+      "relevance": "직접",
+      "pre_drift_pct": null,
+      "post_reaction_pct": null,
+      "status": "진행",
+      "next_trigger": "리레이팅 실현 여부 확인",
+      "event_id": "195870-20260507-001"
+    },
+    {
+      "date": "20260518",
+      "type": "공시",
+      "headline": "기업설명회(IR) 개최 안내공시",
+      "source": "DART(유가증권, 14:21)",
+      "relevance": "직접",
+      "status": "완료",
+      "event_id": "195870-20260518-001"
+    },
+    {
+      "date": "20260529",
+      "type": "공시",
+      "headline": "기업지배구조보고서 공시",
+      "source": "DART(유가증권, 17:26)",
+      "relevance": "간접",
+      "status": "완료",
+      "event_id": "195870-20260529-001"
+    },
+    {
+      "date": "20260601",
+      "type": "공시",
+      "headline": "기업지배구조보고서 공시(재공시/정정 추정)",
+      "source": "DART(유가증권)",
+      "relevance": "간접",
+      "status": "완료·중복판단요",
+      "event_id": "195870-20260601-001"
+    },
+    {
+      "date": "20260622",
+      "type": "촉매(뉴스)",
+      "headline": "6/1~20 반도체 수출 사상최고·반도체 호황 지속 전망에 급등",
+      "source": "infostock 0622 국내",
+      "relevance": "직접",
+      "mechanical_supply": "동적VI 발동(80,900)",
+      "post_reaction_pct": 17.19,
+      "status": "완료",
+      "event_id": "195870-20260622-001"
+    },
+    {
+      "date": "20260623",
+      "type": "촉매(뉴스)",
+      "headline": "AI 수익성 회의론·반도체 고점론 재부각에 급락",
+      "source": "infostock 0623 국내",
+      "relevance": "직접",
+      "mechanical_supply": "RSI Signal선 하향돌파(매도전환)",
+      "post_reaction_pct": -17.35,
+      "status": "완료",
+      "event_id": "195870-20260623-001"
+    }
+  ],
+  "S10": {
+    "note": "LENS 터치 시 테마지도 진입 기록. 연상카운트·거래대금배수는 데이터부재로 현재 null.",
+    "rows": [
+      {
+        "date": "20260423",
+        "reacted_theme": "반도체재료부품",
+        "theme_raw": "반도체소재부품",
+        "role": "소재부품",
+        "bucket": "소재부품",
+        "chg_pct": 11.09,
+        "value_mult": null,
+        "assoc_count": null,
+        "foreign_net": 38634,
+        "inst_net": 66503,
+        "move_pattern": "외인+기관 동반 갭상승 — 실적기대 선반영",
+        "peer_pair": [
+          "034810",
+          "281820"
+        ],
+        "t1_result": "지속(+7.36%, 4/24 연속 RANK)"
+      },
+      {
+        "date": "20260526",
+        "reacted_theme": "반도체재료부품",
+        "theme_raw": "반도체호황·리레이팅",
+        "role": "소재부품",
+        "bucket": "소재부품",
+        "chg_pct": 22.63,
+        "value_mult": null,
+        "assoc_count": null,
+        "foreign_net": 27311,
+        "inst_net": -36594,
+        "move_pattern": "blow-off — 신고가돌파 후 즉각 반전",
+        "peer_pair": [
+          "034810",
+          "281820"
+        ],
+        "t1_result": "소멸(-9.86%, 익일 즉각 반전)"
+      },
+      {
+        "date": "20260622",
+        "reacted_theme": "반도체재료부품",
+        "theme_raw": "반도체수출최고치",
+        "role": "소재부품",
+        "bucket": "소재부품",
+        "chg_pct": 17.19,
+        "value_mult": null,
+        "assoc_count": null,
+        "foreign_net": 79537,
+        "inst_net": -116325,
+        "move_pattern": "blow-off 재현 — VI발동 후 외인매수에도 익일 -17%",
+        "peer_pair": [
+          "034810",
+          "281820"
+        ],
+        "t1_result": "소멸(-17.35%, 패턴 완전 재현)"
+      }
+    ]
+  },
+  "S11": {
+    "edges": [
+      {
+        "event_id": "195870-20260526-001",
+        "event_date": "20260526",
+        "type": "급등·신고가권",
+        "chg_pct_adj": 22.63,
+        "adj_factor_used": 1.0,
+        "value_mult": null,
+        "value_mult_note": "데이터부재—value_traded 미수집 (vol_mult≈1.53배, RANK평균대비 추정치))",
+        "assoc_count": null,
+        "assoc_count_note": "데이터부재—전종목 동반3% 집계 미구현",
+        "catalyst": "반도체호황·DDR5기판 리레이팅 기대",
+        "event_dominant": "외인",
+        "foreign_net": 27311,
+        "inst_net": -36594,
+        "t1_chg_pct": -9.86,
+        "t3_chg_pct": null,
+        "t5_chg_pct": null,
+        "t10_chg_pct": null,
+        "pattern_label": "급등익일반전(blow-off)",
+        "hard_evidence": "5/26 종가 102,400=ledger최고, 5/27 즉시 -9.86% 반전",
+        "confidence": "medium"
+      },
+      {
+        "event_id": "195870-20260622-001",
+        "event_date": "20260622",
+        "type": "급등·대량·VI발동",
+        "chg_pct_adj": 17.19,
+        "adj_factor_used": 1.0,
+        "value_mult": null,
+        "value_mult_note": "데이터부재—value_traded 미수집 (vol_mult≈0.78배, RANK평균대비 추정치)",
+        "assoc_count": null,
+        "assoc_count_note": "데이터부재",
+        "catalyst": "반도체 수출 6/1~20 사상최고 뉴스",
+        "event_dominant": "외인",
+        "foreign_net": 79537,
+        "inst_net": -116325,
+        "t1_chg_pct": -17.35,
+        "t3_chg_pct": null,
+        "t5_chg_pct": null,
+        "t10_chg_pct": null,
+        "pattern_label": "급등익일반전(blow-off)",
+        "hard_evidence": "6/22 동적VI 80,900 발동(09:29), 6/23 대칭 -17.35%",
+        "confidence": "medium"
+      },
+      {
+        "event_id": "195870-20260623-001",
+        "event_date": "20260623",
+        "type": "급락·역설적수급",
+        "chg_pct_adj": -17.35,
+        "adj_factor_used": 1.0,
+        "value_mult": null,
+        "value_mult_note": "데이터부재 (vol_mult≈0.59배, RANK평균대비 추정치)",
+        "assoc_count": null,
+        "assoc_count_note": "데이터부재",
+        "catalyst": "AI 수익성 회의론·반도체 고점론 재부각",
+        "event_dominant": "미특정(역설적수급)",
+        "event_dominant_note": "외인+88,918·기관+20,261 순매수에도 -17.35% — 개인/기타법인 대규모 매도 추정(귀속불가)",
+        "foreign_net": 88918,
+        "inst_net": 20261,
+        "t1_chg_pct": null,
+        "t3_chg_pct": null,
+        "t5_chg_pct": null,
+        "t10_chg_pct": null,
+        "pattern_label": "외인매수속급락(크라우디드분배)",
+        "hard_evidence": "외인+88,918·기관+20,261 동시 순매수 → 종가 -17.35% (수급역설 실증)",
+        "confidence": "medium"
+      }
+    ],
+    "pattern_synthesis": [
+      {
+        "pattern_label": "급등익일반전(blow-off)",
+        "count": 2,
+        "avg_t1_chg_pct": -13.61,
+        "avg_t5_chg_pct": null,
+        "success_rate": null,
+        "note": "N=2 (synthesis_min_count=3 미달) — 방향성 참고용만, 통계 미확정"
+      }
+    ],
+    "synth_narrative": "셋업 '급등익일반전(blow-off reversal)' N=2회(5/26→5/27, 6/22→6/23). T+1 평균 -13.6%. 핵심텔: 6/23 외인+기관 동시 순매수(+88,918·+20,261)에도 -17% = 외인매수 무력화·크라우디드 포지션 분배 신호. 재현 시 단기 익절 우선 원칙."
+  },
+  "S12": {
+    "default_stage_note": "LENS 미공식 터치 — 아래 5단계는 S3 가격·수급 시계열 역추론(귀납)",
+    "rows": [
+      {
+        "date": "20260325",
+        "narrative": "DDR5·차량반도체 소재 리레이팅 기대 초기 형성, 외인 선행 포착",
+        "expectation_stage": "태동",
+        "transition_direction": "forward",
+        "stage_evidence": "RANK 첫 진입(+9.64%), 외인 +3,488 — 소량 선행매수",
+        "invalidation_trigger": "실적 미개선 또는 반도체 호황 내러티브 부재",
+        "narrative_intensity_proxy": {
+          "value_mult": null,
+          "assoc_count": null,
+          "source": "S3-20260325"
+        },
+        "hidden_momentum": {
+          "layer": "L2",
+          "signal": "DDR5 기판 수요 개선 신호 포착 전",
+          "confidence": "low"
+        }
+      },
+      {
+        "date": "20260423",
+        "narrative": "1Q26 실적 정상화 + 반도체호황 리레이팅 본격. 외인·기관 동반 매집",
+        "expectation_stage": "확산",
+        "transition_direction": "forward",
+        "stage_evidence": "4/23-24 연속 RANK(+11%·+7.4%), 외인+기관 +105K·+166K, 4/30 OPM +2,650%",
+        "invalidation_trigger": "2Q26 OPM 개선 정체 또는 반도체 테마 소강",
+        "narrative_intensity_proxy": {
+          "value_mult": null,
+          "assoc_count": null,
+          "source": "S3-20260423"
+        },
+        "hidden_momentum": {
+          "layer": "L3",
+          "signal": "차량용기판 910억(전체48%) 사상최대—판가인상 사이클 진입",
+          "confidence": "medium"
+        }
+      },
+      {
+        "date": "20260526",
+        "narrative": "반도체 리레이팅 완성 기대 절정. 102,400 신고가 blow-off",
+        "expectation_stage": "과열",
+        "transition_direction": "forward",
+        "stage_evidence": "102,400 ledger신고가 +22.63%, 기관 -36K 매도에도 가격 지속 — 차익매물 소화 실패 패턴",
+        "invalidation_trigger": "익일 즉각반전(-9.86%) 발생 → 즉시 과열→냉각 전환",
+        "narrative_intensity_proxy": {
+          "value_mult": null,
+          "assoc_count": null,
+          "source": "S3-20260526"
+        },
+        "hidden_momentum": {
+          "layer": "L4",
+          "signal": "blow-off 구조 — 상승추진력 소진 직전",
+          "confidence": "low"
+        }
+      },
+      {
+        "date": "20260622",
+        "narrative": "반도체 수출 사상최고로 재점화 시도. blow-off 패턴 재현으로 즉각 소멸",
+        "expectation_stage": "확산",
+        "transition_direction": "forward",
+        "stage_evidence": "+17.19% 급등·VI발동·외인 +79K. 단 6/23 -17.35% 즉각 반전",
+        "invalidation_trigger": "익일 반전(-17.35%) + 외인+기관 순매수에도 급락(크라우디드 신호) → 소멸 전환",
+        "narrative_intensity_proxy": {
+          "value_mult": null,
+          "assoc_count": null,
+          "source": "S3-20260622"
+        },
+        "hidden_momentum": {
+          "layer": "L4",
+          "signal": "blow-off 2회 재현 = 상승모멘텀 구조적 약화",
+          "confidence": "medium"
+        }
+      },
+      {
+        "date": "20260623",
+        "narrative": "리레이팅 내러티브 소멸. 크라우디드 포지션 분배 확인. 현재 태동 재진입 국면",
+        "expectation_stage": "소멸",
+        "transition_direction": "backward",
+        "stage_evidence": "외인+88,918·기관+20,261 순매수에도 -17.35% = 비공개 대규모 매도 존재. 68,000(6/29)으로 수렴",
+        "invalidation_trigger": "OPM 13.9% 2026E 컨센 달성 + 신규 매수세 유입 시 태동 재진입",
+        "narrative_intensity_proxy": {
+          "value_mult": null,
+          "assoc_count": null,
+          "source": "S3-20260623"
+        },
+        "hidden_momentum": {
+          "layer": "L1",
+          "signal": "수급왜곡(순매수→가격하락) 해소 전까지 상승추진력 미형성",
+          "confidence": "high"
+        }
+      }
+    ]
+  },
+  "S13": {
+    "materialize_status": "미생성—활성매매 아님 (레옹 수동 터치 시 materialize)",
+    "current_plan": null,
+    "decision_log": []
+  },
+  "S14": {
+    "materialize_status": "미생성—LENS 공식 콜 미발행",
+    "pending": [],
+    "resolved": []
+  },
+  "S15": {
+    "birth_date": "2026-06-28",
+    "birth_trigger": "day-1 골든 채움본 — 골든 샘플 검증 목적",
+    "row_count": 17,
+    "rank_count": 13,
+    "no_rank_count": 3,
+    "holiday_count": 1,
+    "level_maturity_note": "warm-up — 연속 일별시계열 미축적(산발 포착), 60일MA 성숙 보류",
+    "data_sources": [
+      "supply.json(20260310~0623, 79거래일 중 12일 RANK포착)",
+      "infostock CSV(0619~0626, 필드검증·테마·OHLC·컨센)",
+      "DART(공시목록 3건)",
+      "web(fnguide/iM 등 밸류·사업)",
+      "aux(crawl_kr 리포트 클러스터)"
+    ],
+    "changelog": [
+      {
+        "date": "2026-06-28",
+        "change_type": "create",
+        "detail": "schema v2, golden_template_v2 적용",
+        "old_value": null,
+        "new_value": null
+      },
+      {
+        "date": "2026-06-28",
+        "change_type": "schema_migrate",
+        "detail": "supply.json 필드 오정렬 확정: change=종가·volume=등락률%·trading_value=거래량(주)·foreign/institution=순매수(주)",
+        "old_value": null,
+        "new_value": null
+      },
+      {
+        "date": "2026-06-28",
+        "change_type": "schema_migrate",
+        "detail": "개인_net 파생값 제거, S3 전행 귀속불가 처리",
+        "old_value": null,
+        "new_value": null
+      },
+      {
+        "date": "2026-06-28",
+        "change_type": "schema_migrate",
+        "detail": "20260501 휴장 재발행 아티팩트 처리, 집계제외",
+        "old_value": null,
+        "new_value": null
+      },
+      {
+        "date": "2026-06-30",
+        "change_type": "view_change",
+        "detail": "S3 6/27·6/29 행 추가 / S6 52주고저 alphasquare갱신 / S7 1Q26실적+컨센 materialize / S9 1Q26실적공시 추가",
+        "old_value": null,
+        "new_value": null
+      },
+      {
+        "date": "2026-06-30",
+        "change_type": "schema_migrate",
+        "detail": "MD → JSON 변환(stocks/ 정본 추가), MD 원본은 Drive 보존",
+        "old_value": null,
+        "new_value": null
+      },
+      {
+        "date": "2026-07-01",
+        "change_type": "schema_migrate",
+        "detail": "lv99 스키마 정합: S2 taxonomy·intensity 구조화 / S9 event_id / S11 confidence·dominant·follow_through 평탄화 / S15 changelog change_type enum / ON-DEMAND S4·S5·S8·S10·S12 materialize / S13·S14 placeholder / meta last_lens_run·tier_profile 수정",
+        "old_value": "S4-S5-S8-S10-S12=null, confidence=이모지, tier_profile=MINIMAL",
+        "new_value": "fully materialized, confidence=text, tier_profile=EXTENDED"
+      },
+      {
+        "date": "20260701",
+        "change_type": "rollup",
+        "agent": "O2+WebFetch",
+        "detail": "S3 전 거래일 채우기 완료: 17→70행 (3/25~6/30). Yahoo Finance 2026 OHLCV 64거래일 + kokstock 거래대금 14일. ISIN=KR7195870001 확정. S1 revenue_mix 64/36 수정. S6 MA5/20/60 계산. vs_20d_pct 산출.",
+        "old_value": "rows:17, coverage:19.4%, isin:미수집",
+        "new_value": "rows:70, coverage:100.0%, isin:KR7195870001"
+      }
+    ],
+    "last_updated": "2026-07-01"
+  }
+}

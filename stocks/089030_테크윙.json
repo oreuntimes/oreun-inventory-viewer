@@ -1,0 +1,523 @@
+{
+  "S0": {
+    "section": "에이전트 브리핑 레이어",
+    "protocol": "LENS 세션 초입 필수 로드. 각 에이전트가 담당 섹션을 서술형으로 요약. 결정론 봇은 수행 작업만 기재.",
+    "as_of": "2026-07-01",
+    "session_trigger": "BIRTH-MANUAL (수동 수집 기반 초도 생성. S3 키움API 연결 예정)",
+    "agent_count": { "llm": 24, "deterministic": 8, "total": 32 },
+    "briefs": [
+      {
+        "agent": "O1", "role": "런 컨덕터", "role_full": "워크플로우 오케스트레이터",
+        "class": "결정론", "tier": "det",
+        "brief": "[결정론 봇] BIRTH-MANUAL 모드 실행. S3 없음(키움API 연결 예정) → 가격·수급 의존 에이전트 전면 대기. 가동 범위: A5(웹리서치)·B1·B4·B5·C1·C4·F1·F3. 커밋 완료: S0·S1·S2·S7·S8·S9·S12·S15."
+      },
+      {
+        "agent": "O2", "role": "일별 크롤 봇", "role_full": "자동 수집·append 봇",
+        "class": "결정론", "tier": "det",
+        "brief": "[결정론 봇] 키움API 연결 대기 — S3 미가동. 가동 시: nightly cron으로 089030.KQ 일별 OHLCV append, row_status enum 강제 기재."
+      },
+      {
+        "agent": "O3", "role": "계산층 봇", "role_full": "롤업·산술 계산 봇",
+        "class": "결정론", "tier": "det",
+        "brief": "[결정론 봇] S3 없음 → MA·52주·RS·패턴 통계 미산출. 키움API 연결 후 S3 채워지면 자동 실행."
+      },
+      {
+        "agent": "A1", "role": "수급 파서", "role_full": "수급 데이터 파서",
+        "class": "결정론", "tier": "det",
+        "brief": "[결정론 봇] 키움API 연결 대기 — 외인·기관 net 수집 미가동."
+      },
+      {
+        "agent": "A2", "role": "공시 파서", "role_full": "재무·공시 스카우트",
+        "class": "LLM", "tier": "Haiku",
+        "brief": "DART 공시에서 주요 이벤트 추출. ① 2026-04-15 1Q26 잠정실적(매출 524억·OI 97억). ② 2026-02-04 Micron(Xi'an) 수주(110.6억). ③ 2026-04-13 Micron Malaysia 수주(USD 1,539만). 기업행위(분할·병합·유증) 없음 확인."
+      },
+      {
+        "agent": "A3", "role": "시세 파서", "role_full": "가격 시계열 파서",
+        "class": "결정론", "tier": "det",
+        "brief": "[결정론 봇] 키움API 연결 대기. Yahoo Finance API가 089030.KQ에 대해 2026년 타임스탬프를 2024년 데이터로 오매핑하는 문제 확인 — 신뢰 불가. 키움API 연결 전 S3 null 유지."
+      },
+      {
+        "agent": "A4", "role": "테마·뉴스 파서", "role_full": "테마·뉴스 스카우트",
+        "class": "LLM", "tier": "Haiku",
+        "brief": "테크윙 관련 뉴스 태깅. 핵심 테마: HBM 검사장비·큐브 프로버. 주요 촉매: SK하이닉스 퀄 통과(2026-03)·초도 수주(2026-06-17). 마이크론 퀄 진행 중(미통과) — 다음 내러티브 트리거 후보."
+      },
+      {
+        "agent": "A5", "role": "웹 정보 수집가", "role_full": "웹리서치 스카우트",
+        "class": "LLM", "tier": "Sonnet",
+        "brief": "25+ 소스 교차검증. 핵심 수집: 발행주식수 37,053,645주(와이즈리포트 공시기반), 2026Q1 실적 복수 소스 일치, 연간 실적 2022~2025 확정, Cube Prober 고객별 타임라인 재구성. SK하이닉스 최종 퀄 날짜 '2026-03-04'는 단일소스(greened.kr) — 검증 권장."
+      },
+      {
+        "agent": "A6", "role": "데이터 통합관", "role_full": "데이터 스튜어드",
+        "class": "LLM", "tier": "결정론+Sonnet",
+        "brief": "다중 소스 병합. 매출 믹스: 핸들러 44% / COK 26% / 부품 18% / 디스플레이 12%(2024 사업보고서). 주주구조 공시기반 확정. Cube Prober 단가 '200~250억/대'는 미공식 추정 — null 유지. 우선순위: 실측(공시) > 복수 기사 > 단일소스."
+      },
+      {
+        "agent": "A7", "role": "기업 스파이", "role_full": "1차출처 검증 리서처",
+        "class": "LLM", "tier": "Sonnet",
+        "brief": "미가동 — deep-lens 플래그 미충족. 가동 시: 천안 신공장 진행 상황·HBM4 대응 로드맵·마이크론 퀄 정확 날짜 원문 검증. 소환 조건: 레옹 명시 또는 |CS|<0.5."
+      },
+      {
+        "agent": "M1", "role": "경제환경 분석가", "role_full": "매크로 이코노미스트",
+        "class": "LLM", "tier": "Opus",
+        "brief": "테크윙 실적은 HBM 투자 사이클에 직결됩니다. 2026년 HBM3e 양산·HBM4 개발 동시 진행 구조에서 전수 검사 수요가 폭발적으로 증가합니다. 매크로 순풍: AI 서버 투자 지속·HBM 수율 압박(검사 중요성↑). 리스크: 미중 반도체 제재로 Micron Xi'an 수주 불확실성. 현재 레짐: HBM 투자 사이클 확장 초입."
+      },
+      {
+        "agent": "M2", "role": "시장 지위 분석가", "role_full": "인덱스 스트래티지스트",
+        "class": "LLM", "tier": "O3계산read+Sonnet",
+        "brief": "S3 없음 → RS 정량 미산출. 섹터 레짐: 반도체 테스트·장비 섹터 '수혜 집중 초입'. 테크윙 메모리 핸들러 시장 70% 점유 — 섹터 내 대장주 지위. 비교 벤치: Cohu·Advantest 대비 HBM 특화 프리미엄 정량화 필요."
+      },
+      {
+        "agent": "B1", "role": "기업조사관", "role_full": "종목 정체성 확인관",
+        "class": "LLM", "tier": "Sonnet",
+        "brief": "테크윙은 반도체 후공정 검사 장비 전문사입니다. 메모리 테스트 핸들러 글로벌 점유율 약 70%(메모리 핸들러 세그먼트). 핵심 신제품 Cube Prober — 세계 최초 HBM 다이 레벨 전수 검사 장비. HBM 메이커 3사(SK하이닉스·삼성전자·마이크론) 동시 공략. 매출 믹스: 핸들러 44% / COK 26% / 부품 18% / 디스플레이 12%(2024). 부정 앵커: HBM 칩 직접 제조 X / ATE 테스터 제조 X / 소재주 X."
+      },
+      {
+        "agent": "B2", "role": "수급원장 지킴이", "role_full": "수급원장 키퍼",
+        "class": "결정론", "tier": "det",
+        "brief": "[결정론 봇] S3 빈 배열 — 수급 데이터 없음. 키움API 연결 후 append 시 검증 실행."
+      },
+      {
+        "agent": "B3", "role": "차트 분석가", "role_full": "차트 테크니션",
+        "class": "LLM", "tier": "O3계산read+Haiku",
+        "brief": "S3 없음 → MA·가격레벨 분석 불가. 시총 1조 9,120억(와이즈리포트 2026-06-30) / 발행주식수 3,705만주 → 역산 주가 약 51,600원(추정). S6 materialize 후 재가동."
+      },
+      {
+        "agent": "B4", "role": "가치평가 애널리스트", "role_full": "가치평가 애널리스트",
+        "class": "LLM", "tier": "Sonnet",
+        "brief": "현재가 null → PER·PBR 역산 불가. 2026E 컨센서스: 매출 4,352억(+170.8%), OI 956억(+503.4%), OPM 22%. 강세 케이스(현대차증권): 매출 7,657억·OI 2,176억(Cube Prober 290대 가정). 시총 1.9조 / OI 956억 → fwd PER 약 20배(추정, 현재가 확인 후 갱신)."
+      },
+      {
+        "agent": "B5", "role": "호재·악재 기록관", "role_full": "이벤트·촉매 트래커",
+        "class": "LLM", "tier": "Haiku",
+        "brief": "2025~2026 주요 이벤트 9건 S9 기록. 핵심 마일스톤: 삼성 첫 수주(2025-01-17) → SK 1단계 퀄(2025-09-15) → Micron Xi'an 공시(2026-02-04) → SK 최종 퀄(2026-03-04⚠️) → SK 초도 수주(2026-06-17). 다음 트리거: 마이크론 최종 퀄·2Q26 잠정실적(2026-07 말 예상)."
+      },
+      {
+        "agent": "C1", "role": "테마 흐름 추적자", "role_full": "테마·로테이션 전략가",
+        "class": "LLM", "tier": "Opus",
+        "brief": "테마 귀속: 반도체테스트장비(primary) / HBM·큐브프로버·반도체후공정(secondary). ai_direct_core=true (HBM=AI반도체 핵심 메모리). 내러티브 구조: HBM 수요 확장 → 검사 병목(yield 압박) → Cube Prober 수주 선순환. 정량화(assoc_count·value_mult) S3 없어 미산출."
+      },
+      {
+        "agent": "C2", "role": "유동성·회전율 퀀트", "role_full": "유동성·회전율 퀀트",
+        "class": "LLM", "tier": "O3계산read+Haiku",
+        "brief": "S3·S4 없음 → 유동성·회전율 분석 불가. 키움API 연결 후 재가동."
+      },
+      {
+        "agent": "C3", "role": "수급 탐정", "role_full": "히든시그널·세력추적 헌터",
+        "class": "LLM", "tier": "Opus",
+        "brief": "S3·S5 없음 → 수급 패턴 분석 불가. 공시 기반 관찰: 삼성자산운용 7.12%·JP Morgan 5.53% 보유. 외국인 합계 13.46%. S3 확보 후 세부 분석 재개."
+      },
+      {
+        "agent": "C4", "role": "기대감 스토리텔러", "role_full": "내러티브·기대감 분석가",
+        "class": "LLM", "tier": "Opus",
+        "brief": "테크윙 내러티브 현재 단계: 확산. 스토리 핵: 'HBM 수율 압박 → 전수 검사 필수재화 → Cube Prober 독점 수혜'. 라이프사이클: 태동(2025 삼성 첫 수주) → 확산(2026-03 SK퀄·06 수주). 다음 촉매 대기: Micron 퀄 통과·2Q26 실적 확인. 무효화 조건: HBM 투자 급감 또는 경쟁 장비 등장."
+      },
+      {
+        "agent": "C5", "role": "패턴 발굴가", "role_full": "패턴·엣지 퀀트",
+        "class": "LLM", "tier": "O3계산read+Sonnet",
+        "brief": "S3 없음 → 엣지 통계 미산출. S11 빈 배열. 키움API 연결 후 재가동."
+      },
+      {
+        "agent": "C6", "role": "섹터 전문가", "role_full": "섹터 도메인 애널리스트",
+        "class": "LLM", "tier": "Opus",
+        "brief": "미가동 — 소환 조건 미충족. 가동 시: 반도체 후공정 장비 밸류체인 심층 분석·Cube Prober 경쟁우위 지속 가능성(FormFactor·TEL 진입 리스크)·HBM4 대응 로드맵."
+      },
+      {
+        "agent": "D1", "role": "강세론자", "role_full": "Bull — 상승론자",
+        "class": "LLM", "tier": "Opus",
+        "brief": "상승 명제: Cube Prober 독점 + 3사 동시 퀄 진행 = 수주 S커브 초입. 근거 ①: SK하이닉스 초도 수주 확정(2026-06-17) — 양산 가속. 근거 ②: Micron 퀄 통과 시 3번째 고객 추가 → 수주 급증. 근거 ③: 2026E OPM 22%·시총 1.9조 — 강세 케이스 달성 시 대폭 상승 여력. Kill-switch: HBM 투자 축소 또는 경쟁 장비 공식 등장."
+      },
+      {
+        "agent": "D2", "role": "약세론자", "role_full": "Bear — 하락론자",
+        "class": "LLM", "tier": "Opus",
+        "brief": "하락 명제: 기대감 선반영·실적 확인 대기 구간. 근거 ①: 2025 연간 매출 1,591억(-14% YoY) — 다운사이클 경험 있음. 근거 ②: Cube Prober 단가·수량 공시 없음 — 컨센서스 신뢰도 낮음. 근거 ③: Micron 퀄 2025-12 기대 → 지연 중 — 수주 속도 불확실. Kill-switch: 2Q26 OPM 20%+ 확인 또는 Micron 공식 수주 공시."
+      },
+      {
+        "agent": "D3", "role": "투자 판정관", "role_full": "컨빅션 심판",
+        "class": "LLM", "tier": "O3계산read+Sonnet",
+        "brief": "S3 없음 → CS 정량 산출 불가. 정성 판단: 관망. 체크포인트: 2Q26 실적(2026-07 말), Micron 퀄 완료 공시, 천안 신공장 가동 타임라인."
+      },
+      {
+        "agent": "E1", "role": "팩트체커", "role_full": "정직성 검증관",
+        "class": "LLM", "tier": "결정론+Sonnet",
+        "brief": "데이터 품질 경고 4건. ① SK하이닉스 최종 퀄 날짜 '2026-03-04' 단일소스(greened.kr) — 공식 확인 필요. ② Cube Prober 단가 '200~250억/대' 미공식 추정 — null 처리 유지. ③ Micron 퀄 완료 시점 불명확 — 2025-12 기대 후 지연 중. ④ S3 전면 null — 가격 기반 분석 전부 불가. VETO 이슈 없음."
+      },
+      {
+        "agent": "E2", "role": "구조 검증관", "role_full": "구조·파싱 검증관",
+        "class": "결정론", "tier": "det",
+        "brief": "[결정론 봇] 스키마 lint 통과. S3 빈 배열 정상(BIRTH-MANUAL §11 허용). S11 빈 배열 정상. 앵커쌍 정합."
+      },
+      {
+        "agent": "E3", "role": "가격연속성 검증관", "role_full": "가격연속성·라이프사이클 검증관",
+        "class": "LLM", "tier": "결정론+Haiku",
+        "brief": "S3 없음 → adj_factor 체크 불가. 기업행위(A2 확인): 분할·병합·유증 없음. lifecycle: 상장 유지 중(코스닥 2011-11-10~)."
+      },
+      {
+        "agent": "F1", "role": "수석편집장", "role_full": "수석편집장",
+        "class": "LLM", "tier": "Opus",
+        "brief": "BIRTH-MANUAL 모드. 가동 섹션: S0·S1·S2·S7·S8·S9·S12·S15. 키움API 대기(S3·S4·S5·S6·S11). 미생성(활성매매 미충족): S10·S13·S14. 미생성(DEEP 전용): S16~S19."
+      },
+      {
+        "agent": "F2", "role": "콜 채점관", "role_full": "콜 채점관",
+        "class": "LLM", "tier": "O3계산read+Haiku",
+        "brief": "S14 미생성 — 공식 콜 미발행. 채점 대상 없음."
+      },
+      {
+        "agent": "F3", "role": "출판 봇", "role_full": "출판·커밋 에디터",
+        "class": "결정론", "tier": "det",
+        "brief": "[결정론 봇] BIRTH-MANUAL 커밋 완료. 089030_테크윙.json 직렬화. 커밋 시각: 2026-07-01."
+      }
+    ]
+  },
+  "meta": {
+    "schema_version": "v2",
+    "code": "089030",
+    "name": "테크윙",
+    "aliases": [],
+    "market": "KOSDAQ",
+    "security_type": "보통주",
+    "lifecycle_status": "상장",
+    "sector_wics": "반도체 및 관련장비",
+    "sector_gics": "데이터부재—미수집",
+    "stock_type": "장비주",
+    "valuation_basis": "PER",
+    "fiscal_year_end": "12",
+    "themes": ["반도체테스트장비", "HBM", "큐브프로버", "반도체후공정"],
+    "market_cap_value": "약 1조 9,120억원(2026-06-30, 와이즈리포트 기준)",
+    "market_cap_band": "중형",
+    "shares_outstanding": "37,053,645주(보통주, 와이즈리포트 공시기반 2026-06-30)",
+    "free_float_pct": 72.29,
+    "listed_date": "2011-11-10",
+    "founded": "2002-07-18",
+    "isin": "데이터부재—미수집",
+    "major_shareholders": [
+      { "name": "나윤성 외 6인(최대주주)", "shares": 8942075, "pct": 24.13 },
+      { "name": "삼성자산운용", "shares": 2636897, "pct": 7.12 },
+      { "name": "JP Morgan Securities Ltd.", "shares": 2050004, "pct": 5.53 },
+      { "name": "자사주", "shares": 1313171, "pct": 3.54, "note": "의결권 없음" }
+    ],
+    "foreign_ownership_pct": 13.46,
+    "ledger_created": "2026-07-01",
+    "created": "2026-07-01",
+    "last_updated": "2026-07-01",
+    "last_lens_run": null,
+    "level_maturity": "birth",
+    "tier_profile": "BIRTH",
+    "tags_lens": [],
+    "adjustment_events": [],
+    "data_absent_fields": [
+      "S3 전 필드 — 키움API 연결 예정",
+      "current_price·MA·52주 고저 — 키움API 연결 예정",
+      "foreign_net·inst_net — 키움API 연결 예정",
+      "ISIN — 미수집",
+      "PER·PBR 정밀수치 — 현재가 null로 역산 불가",
+      "Cube Prober 단가 — 미공식 추정치(200~250억/대), 공시 없음",
+      "SK하이닉스 최종 퀄 정확 날짜 — greened.kr 단일소스, 공식 확인 필요",
+      "마이크론 퀄 완료 시점 — 진행 중, 미결정",
+      "고객사별 매출 비중(%) — 사업보고서 내 비공개"
+    ],
+    "archive_pointers": []
+  },
+  "S1": {
+    "as_of": "2026-07-01",
+    "business_core": "반도체 후공정 검사 장비 전문 — ① 메모리 테스트 핸들러: 글로벌 시장점유율 약 70%(메모리 핸들러 세그먼트). ② Cube Prober: HBM 다이 레벨 전수 검사 세계 최초 장비(자체 주장). ③ C.O.K(Change Over Kit): 핸들러 소모성 부속으로 반복 매출 구조. 설립 2002-07-18, 코스닥 상장 2011-11-10. 본사: 경기도 화성시 동탄구 동탄산단6길 37.",
+    "negative_anchor": [
+      "HBM 칩 직접 제조 X — 후공정 검사 장비 공급자",
+      "ATE 테스터(Advantest·Teradyne) 직접 제조 X — 핸들러는 테스터 연동 기구부",
+      "소재주 X / 파운드리 X",
+      "비메모리 핸들러 주력 X — 메모리 특화(비메모리는 미래산업 영역)"
+    ],
+    "value_chain_node": "장비 (반도체 후공정 검사 기구부 — 핸들러·프로버)",
+    "differentiator": "메모리 핸들러 글로벌 점유율 약 70% + Cube Prober 세계 최초 HBM 다이 레벨 전수 검사 양산 공급",
+    "differentiator_verified": true,
+    "biz_tags": [
+      "#반도체핸들러",
+      "#메모리테스트장비",
+      "#HBM검사",
+      "#큐브프로버",
+      "#반도체후공정",
+      "#COK소모품"
+    ],
+    "revenue_mix": {
+      "테스트핸들러": "44%",
+      "COK(Change_Over_Kit)": "26%",
+      "부품": "18%",
+      "디스플레이장비": "12%"
+    },
+    "key_customers": {
+      "핸들러": ["SK하이닉스", "삼성전자", "Micron", "기타 메모리 메이커"],
+      "CubeProber": ["삼성전자(양산 공급 중)", "SK하이닉스(초도 수주 2026-06-17)", "Micron(퀄 진행 중)"]
+    },
+    "revenue_mix_source": "2024 사업보고서 (KIND 공시 2025-03-17 기준)",
+    "revenue_mix_note": "Cube Prober 수주 본격화 시 핸들러·COK 비중 변동 예상. 2026E 믹스 업데이트 필요.",
+    "ceo": "나윤성(창업자, 삼성전자 출신)",
+    "headcount": "약 559명(잡코리아 2025-08 기준)"
+  },
+  "S2": {
+    "as_of": "2026-07-01",
+    "primary_theme": "반도체테스트장비",
+    "secondary_themes": ["HBM", "큐브프로버", "반도체후공정"],
+    "selection_cascade": "반도체 → 테스트/검사 → 핸들러 → HBM Cube Prober",
+    "theme_tier": "장비주",
+    "intensity": {
+      "테마직접": 3,
+      "팹인프라": 0,
+      "실적가시성": 3,
+      "개인쏠림": 2
+    },
+    "variant_bucket": "수주모멘텀엣지",
+    "peer_set": ["131290", "049830"],
+    "ai_direct_core": true,
+    "theme_change_log": [
+      {
+        "date": "20260701",
+        "prev": null,
+        "next": "반도체테스트장비",
+        "reason": "ledger 최초 생성 — BIRTH-MANUAL"
+      }
+    ],
+    "taxonomy": {
+      "L1": "반도체",
+      "L2": "테스트/검사장비",
+      "L3": "메모리핸들러"
+    },
+    "intensity_evidence": {
+      "테마직접": "메모리 핸들러 글로벌 1위(70%) + Cube Prober 세계 최초 HBM 다이 레벨 전수 검사",
+      "실적가시성": "2026Q1 OPM 18.5% 확인, 2026E OPM 22% 컨센서스, 수주 공시 복수 확인",
+      "개인쏠림": "HBM·큐브프로버 키워드 미디어 노출 고, 수주 뉴스마다 급등 패턴 예상"
+    }
+  },
+  "S3": {
+    "unit_note": "raw_close=원·chg_pct=등락률(%)·volume=주·value_traded=백만원·foreign_net/inst_net=주 | 키움API 연결 예정 — 전 필드 null 유지 (§11 BIRTH-MANUAL 허용)",
+    "rows": []
+  },
+  "S7": {
+    "as_of": "2026-07-01",
+    "note": "ON-DEMAND — 부분 materialize(2026Q1 확정실적 + 컨센서스). 가격 기반 수치(PER·PBR·52w위치) 키움API 연결 후 업데이트.",
+    "close": null,
+    "market_cap": "약 1조 9,120억원(2026-06-30, 와이즈리포트 기준)",
+    "valuation_basis": "PER",
+    "per_ttm": null,
+    "pbr": null,
+    "roe": null,
+    "consensus_2026": {
+      "revenue": 435200000000,
+      "revenue_yoy_pct": 170.8,
+      "op_profit": 95600000000,
+      "op_yoy_pct": 503.4,
+      "op_margin_pct": 22.0,
+      "source": "증권사 컨센서스(복수)"
+    },
+    "consensus_2026_bull": {
+      "broker": "현대차증권",
+      "revenue": 765700000000,
+      "op_profit": 217600000000,
+      "op_margin_pct": 28.4,
+      "assumption": "Cube Prober 납품 290대 가정",
+      "note": "강세 케이스 추정 — 공식 컨센서스 아님"
+    },
+    "q1_2026_actual": {
+      "revenue": 52400000000,
+      "op_profit": 9700000000,
+      "op_margin_pct": 18.5,
+      "net_profit": null,
+      "op_yoy_pct": 443.96,
+      "note": "2026-04-15 잠정 공시 확정"
+    },
+    "position_52w_pct": null,
+    "target_prices": [
+      {
+        "broker": "복수 증권사",
+        "target_low": 66000,
+        "target_high": 90000,
+        "note": "확인된 범위. 개별 증권사별 수치 추후 업데이트 필요"
+      }
+    ],
+    "broker_breadth": "BUY 일색(복수 증권사)"
+  },
+  "S8": {
+    "note": "실적발표·컨센대폭개정 트리거만 append. 연간 + 분기 시계열 기록.",
+    "annual": [
+      { "year": "2022", "revenue": 267500000000, "op_profit": 57700000000, "op_margin_pct": 21.6, "yoy_rev_pct": 4.5, "note": "확정" },
+      { "year": "2023", "revenue": 133600000000, "op_profit": 3200000000, "op_margin_pct": 2.4, "yoy_rev_pct": -50.0, "note": "확정 — 다운사이클 직격" },
+      { "year": "2024", "revenue": 185500000000, "op_profit": 23400000000, "op_margin_pct": 12.6, "yoy_rev_pct": 38.9, "note": "확정" },
+      { "year": "2025", "revenue": 159100000000, "op_profit": 15800000000, "op_margin_pct": 9.9, "yoy_rev_pct": -14.2, "note": "확정(분기합 교차검증)" },
+      { "year": "2026E", "revenue": 435200000000, "op_profit": 95600000000, "op_margin_pct": 22.0, "note": "추정 — 컨센서스 기준" }
+    ],
+    "quarterly": [
+      { "quarter": "2025Q1", "revenue": 34600000000, "op_profit": 1800000000, "op_margin_pct": 5.2 },
+      { "quarter": "2025Q2", "revenue": 48900000000, "op_profit": 6400000000, "op_margin_pct": 13.1 },
+      { "quarter": "2025Q3", "revenue": 41800000000, "op_profit": 7100000000, "op_margin_pct": 17.0 },
+      { "quarter": "2025Q4", "revenue": 33900000000, "op_profit": 600000000, "op_margin_pct": 1.8 },
+      { "quarter": "2026Q1", "revenue": 52400000000, "op_profit": 9700000000, "op_margin_pct": 18.5 }
+    ],
+    "rows": [
+      {
+        "date": "20260415",
+        "trigger": "실적발표(2026Q1 잠정)",
+        "fwd_PER": null,
+        "fwd_PBR": null,
+        "fwd_note": "현재가 null — PER·PBR 계산 불가. 키움API 연결 후 갱신.",
+        "market_cap": "약 1조 9,120억원(2026-06-30 와이즈리포트 기준)",
+        "revenue_q": 52400000000,
+        "op_profit_q": 9700000000,
+        "op_margin_pct": 18.5,
+        "net_profit_q": null,
+        "yoy_op_pct": 443.96,
+        "consensus_update": "2026E 컨센서스 매출 4,352억·OI 956억(OPM 22%) 형성 트리거",
+        "surprise_note": "2025Q1 OPM 5.2% → 2026Q1 18.5% — 실적 구조 전환 확인"
+      }
+    ]
+  },
+  "S9": [
+    {
+      "date": "20250117",
+      "type": "촉매(수주)",
+      "headline": "삼성전자 Cube Prober 첫 양산 수주 확보",
+      "source": "이투데이 2025-01-17",
+      "relevance": "직접",
+      "pre_drift_pct": null,
+      "post_reaction_pct": null,
+      "status": "완료",
+      "note": "최초 비거래사(삼성전자)와 수주. HBM 검사 새 수요 개막",
+      "event_id": "089030-20250117-001"
+    },
+    {
+      "date": "20250310",
+      "type": "촉매(수주)",
+      "headline": "삼성전자 Cube Prober 2차 수주",
+      "source": "이투데이 2025-03-10",
+      "relevance": "직접",
+      "status": "완료",
+      "note": "첫 수주 약 2개월 만에 추가 발주 — 수요 가속 신호",
+      "event_id": "089030-20250310-001"
+    },
+    {
+      "date": "20250915",
+      "type": "촉매(퀄)",
+      "headline": "SK하이닉스 HBM 검사장비 1단계 성능평가 통과",
+      "source": "복수 기사",
+      "relevance": "직접",
+      "status": "완료",
+      "event_id": "089030-20250915-001"
+    },
+    {
+      "date": "20260204",
+      "type": "공시(수주)",
+      "headline": "Micron Semiconductor(Xi'an) 수주 공시 — 110.6억원",
+      "source": "DART 공시",
+      "relevance": "직접",
+      "status": "완료",
+      "note": "미중 반도체 제재 리스크 내재 — Xi'an 법인 소재",
+      "event_id": "089030-20260204-001"
+    },
+    {
+      "date": "20260304",
+      "type": "촉매(퀄)",
+      "headline": "SK하이닉스 Cube Prober 최종 퀄테스트 통과",
+      "source": "greened.kr 2026-03-05 (단일소스 ⚠️)",
+      "relevance": "직접",
+      "status": "완료",
+      "note": "단일소스 — DART 공식 확인 필요. 날짜 '2026-03-04' 추정 유지",
+      "event_id": "089030-20260304-001"
+    },
+    {
+      "date": "20260413",
+      "type": "공시(수주)",
+      "headline": "Micron Memory Malaysia 수주 공시 — USD 1,539만(약 228.6억원), 납기 2026-06~08",
+      "source": "DART 공시",
+      "relevance": "직접",
+      "status": "완료",
+      "event_id": "089030-20260413-001"
+    },
+    {
+      "date": "20260415",
+      "type": "실적공시",
+      "headline": "2026Q1 잠정실적: 매출 524억(+51.5% YoY) · OI 97억(+443.96% YoY) · OPM 18.5%",
+      "source": "DART 잠정 공시",
+      "relevance": "직접",
+      "pre_drift_pct": null,
+      "post_reaction_pct": null,
+      "status": "완료",
+      "note": "2025Q1 OPM 5.2% → 2026Q1 18.5% — 실적 구조 전환 확인",
+      "event_id": "089030-20260415-001"
+    },
+    {
+      "date": "20260608",
+      "type": "촉매(미디어)",
+      "headline": "삼성·SK 동시 납품 체제 가동 보도. CEO '베이스 다이 검사 솔루션 사실상 테크윙 유일' 발언",
+      "source": "복수 보도",
+      "relevance": "직접",
+      "status": "완료",
+      "event_id": "089030-20260608-001"
+    },
+    {
+      "date": "20260617",
+      "type": "촉매(수주)",
+      "headline": "SK하이닉스 Cube Prober 초도 양산 수주 확정",
+      "source": "The Elec 2026-06-17",
+      "relevance": "직접",
+      "status": "완료",
+      "note": "SK퀄 통과(3월) → 초도 수주(6월) — 양산 공급 체계 가동",
+      "event_id": "089030-20260617-001"
+    }
+  ],
+  "S11": {
+    "edges": [],
+    "pattern_synthesis": [],
+    "synth_narrative": "S3 데이터 없음 — 가격·수급 기반 패턴 분석 불가. 키움API 연결 후 재가동."
+  },
+  "S12": {
+    "default_stage_note": "BIRTH-MANUAL — 이벤트 시계열 귀납으로 내러티브 구성. S3 미확보로 가격 반응 정량화 불가.",
+    "rows": [
+      {
+        "date": "20250117",
+        "narrative": "Cube Prober 태동 — 삼성전자 첫 수주로 '세계 최초 HBM 전수 검사' 시장 인지 시작",
+        "expectation_stage": "태동",
+        "transition_direction": "forward",
+        "stage_evidence": "삼성전자 최초 수주 공시 → 미디어 '세계 최초' 키워드 확산",
+        "invalidation_trigger": "수주 취소 또는 경쟁 장비 공식 등장",
+        "narrative_intensity_proxy": { "value_mult": null, "assoc_count": null, "source": "S9-20250117" },
+        "hidden_momentum": {
+          "layer": "L2",
+          "signal": "HBM 수율 압박 → 전수 검사 경제성 임계점 돌파. 검사 비용 < 불량 HBM 처리 비용",
+          "confidence": "medium"
+        }
+      },
+      {
+        "date": "20260304",
+        "narrative": "확산 전환 — SK하이닉스 퀄 통과로 '삼성 독점 → 3사 동시 공략' 내러티브로 전환",
+        "expectation_stage": "확산",
+        "transition_direction": "forward",
+        "stage_evidence": "SK 최종 퀄(추정)·초도 수주(6/17) 확정. Micron 퀄 진행 중 — 3번째 고객 카운트다운",
+        "invalidation_trigger": "Micron 퀄 실패 또는 HBM 투자 급감",
+        "narrative_intensity_proxy": { "value_mult": null, "assoc_count": null, "source": "S9-20260304·S9-20260617" },
+        "hidden_momentum": {
+          "layer": "L3",
+          "signal": "천안 신공장(약 2.5만평) 건축 중 — 2027H2 가동 시 생산능력 급증 → 수주 S커브 가속",
+          "confidence": "medium"
+        }
+      }
+    ]
+  },
+  "S15": {
+    "as_of": "2026-07-01",
+    "absence_log": [
+      "S3 — 키움API 연결 전 빈 배열 유지",
+      "S4·S5·S6 — S3 없어 생략(키움API 대기)",
+      "S10 — LENS 터치 기록 없음",
+      "S11 edges — S3 없어 빈 배열",
+      "S13 — 활성매매 미충족, 미생성",
+      "S14 — 공식 콜 미발행",
+      "S16~S19 — DEEP 모드 전용, 미생성"
+    ],
+    "changelog": [
+      {
+        "date": "20260701",
+        "change_type": "create",
+        "section": "ALL",
+        "agent": "F1+F3",
+        "note": "BIRTH-MANUAL 초도 생성. S0·S1·S2·S7·S8·S9·S12·S15 수동 수집 완료. S3 키움API 연결 예정."
+      }
+    ]
+  }
+}

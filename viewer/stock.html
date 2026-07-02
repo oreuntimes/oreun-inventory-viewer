@@ -1,0 +1,2305 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OREUN INVENTORY</title>
+  <style>
+    :root {
+      --bg: #0A0C10;
+      --card: #111318;
+      --card2: #161920;
+      --border: #1E2330;
+      --border2: #252B3B;
+      --text: #E8EAF0;
+      --text2: #9CA3AF;
+      --text3: #4B5563;
+      --accent: #4F8EF7;
+      --green: #22C55E;
+      --yellow: #EAB308;
+      --red: #EF4444;
+      --purple: #A78BFA;
+      --orange: #F97316;
+      --left-w: 320px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: 'Pretendard', 'Apple SD Gothic Neo', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 13px; line-height: 1.6;
+      min-height: 100vh;
+    }
+    #loading {
+      display: flex; align-items: center; justify-content: center;
+      height: 100vh; color: var(--text2); font-size: 14px; letter-spacing: 0.1em;
+    }
+    #error {
+      display: none; align-items: center; justify-content: center;
+      height: 100vh; color: var(--red); font-size: 14px; text-align: center;
+    }
+    #app { display: none; flex-direction: column; min-height: 100vh; }
+
+    /* HEADER */
+    #stock-header {
+      background: var(--card); border-bottom: 1px solid var(--border);
+      padding: 14px 24px; display: flex; align-items: center; gap: 16px;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .header-code {
+      font-family: 'JetBrains Mono', 'SF Mono', monospace;
+      font-size: 11px; color: var(--text3); letter-spacing: 0.1em;
+    }
+    .header-name { font-size: 17px; font-weight: 700; color: var(--text); }
+    .header-market {
+      font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 3px;
+      background: var(--border); color: var(--text2); letter-spacing: 0.05em;
+    }
+    .header-meta { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .badge-maturity {
+      font-size: 10px; padding: 2px 8px; border-radius: 3px;
+      border: 1px solid var(--border2); color: var(--text2);
+    }
+    .badge-tier { font-size: 10px; padding: 2px 8px; border-radius: 3px; }
+    .badge-tier.MINIMAL { background: #1a2035; color: #6B8FD0; }
+    .badge-tier.BIRTH   { background: #1a1a35; color: #8B7FD0; }
+    .badge-stock-type { font-size: 10px; padding: 2px 8px; border-radius: 3px; }
+    .badge-stock-type.warning { background: #2A1A12; color: var(--yellow); }
+    .badge-stock-type.normal  { background: #122A1A; color: var(--green); }
+    .header-updated { font-size: 10px; color: var(--text3); }
+
+    /* LAYOUT — mobile-first: column 기본, 데스크톱에서 row */
+    .layout-b { display: flex; flex-direction: column; }
+
+    /* LEFT PANEL — mobile default */
+    .left-panel {
+      width: 100%;
+      background: var(--card); border-bottom: 1px solid var(--border);
+      padding: 14px 12px; display: flex; flex-direction: column; gap: 12px;
+    }
+    .left-panel::-webkit-scrollbar { width: 3px; }
+    .left-panel::-webkit-scrollbar-thumb { background: var(--border2); }
+
+    /* SECTION CARD — shared */
+    .section-card { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+    .section-header {
+      background: var(--border); padding: 6px 10px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .section-label {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.15em;
+      color: var(--text3); text-transform: uppercase;
+    }
+    .section-sub { font-size: 9px; color: var(--text3); }
+    .section-body { padding: 10px; }
+    /* COLLAPSIBLE GROUPS */
+    .section-group {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: rgba(17, 19, 24, 0.74);
+      overflow: hidden;
+    }
+    .section-group + .section-group { margin-top: 10px; }
+    .section-group > summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+      min-height: 38px;
+      padding: 8px 10px;
+      background: var(--card2);
+      border-bottom: 1px solid transparent;
+      user-select: none;
+    }
+    .section-group > summary::-webkit-details-marker { display: none; }
+    .section-group[open] > summary { border-bottom-color: var(--border); }
+    .group-toggle {
+      width: 16px; height: 16px; border-radius: 3px;
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--border); color: var(--text3);
+      font-family: 'JetBrains Mono', 'SF Mono', monospace;
+      font-size: 11px; flex: 0 0 16px;
+    }
+    .group-toggle::before { content: '+'; }
+    .section-group[open] > summary .group-toggle::before { content: '-'; }
+    .timeline-group[open] > summary .group-toggle::before { content: '-'; }
+    .group-title {
+      font-size: 10px; font-weight: 700;
+      color: var(--text); letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .group-meta {
+      margin-left: auto;
+      font-size: 9px; color: var(--text3);
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+    .section-group-body {
+      padding: 10px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .left-panel .section-group + .section-group { margin-top: 0; }
+    .right-panel .section-group + .section-group { margin-top: 12px; }
+    .main-group > .section-group-body { padding: 14px; }
+
+    /* S1 */
+    .dna-core { font-size: 12px; color: var(--text); line-height: 1.5; margin-bottom: 10px; }
+    .neg-anchor { margin-bottom: 10px; }
+    .neg-label { font-size: 9px; color: var(--text3); font-weight: 600; letter-spacing: 0.1em; margin-bottom: 4px; }
+    .neg-list { display: flex; flex-direction: column; gap: 2px; }
+    .neg-item { font-size: 11px; display: flex; align-items: center; gap: 6px; color: var(--text2); }
+    .neg-item.x-mark   { color: var(--red); }
+    .neg-item.o-mark   { color: var(--green); }
+    .neg-item.warn-mark { color: var(--yellow); }
+    .dna-row { margin-bottom: 6px; }
+    .dna-row-label { font-size: 9px; color: var(--text3); font-weight: 600; letter-spacing: 0.08em; margin-bottom: 2px; }
+    .dna-row-val { font-size: 11px; color: var(--text2); }
+    .dna-row-val.highlight { color: var(--accent); font-weight: 600; }
+    .biz-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+    .biz-tag { font-size: 10px; padding: 1px 6px; border-radius: 3px; background: var(--border); color: var(--text3); }
+    .warning-box {
+      margin-top: 8px; padding: 6px 8px; border-radius: 4px;
+      background: #2A1A12; border-left: 2px solid var(--yellow);
+      font-size: 10px; color: var(--yellow); line-height: 1.4;
+    }
+
+    /* S2 */
+    .theme-primary {
+      font-size: 11px; font-weight: 700; color: var(--accent);
+      font-family: 'JetBrains Mono', 'SF Mono', monospace; letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .theme-row { margin-bottom: 6px; }
+    .theme-row-label { font-size: 9px; color: var(--text3); letter-spacing: 0.08em; font-weight: 600; margin-bottom: 2px; }
+    .theme-row-val { font-size: 11px; color: var(--text2); }
+    .cascade-text { font-size: 10px; color: var(--text2); line-height: 1.5; }
+    .cascade-arrow { color: var(--accent); margin: 0 2px; }
+    .intensity-bar { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+    .intensity-dots { display: flex; gap: 3px; }
+    .intensity-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border2); }
+    .intensity-dot.active-0 { background: var(--text3); }
+    .intensity-dot.active-1 { background: var(--yellow); }
+    .intensity-dot.active-2 { background: var(--accent); }
+    .intensity-dot.active-3 { background: var(--green); }
+    .intensity-label { font-size: 10px; color: var(--text3); }
+    .peer-set { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+    .peer-chip {
+      font-family: 'JetBrains Mono', 'SF Mono', monospace;
+      font-size: 10px; padding: 1px 6px; border-radius: 3px;
+      background: var(--border2); color: var(--text2); cursor: pointer;
+      text-decoration: none; transition: background 0.15s;
+    }
+    .peer-chip:hover { background: var(--accent); color: white; }
+    .caution-box {
+      margin-top: 8px; padding: 6px 8px; border-radius: 4px;
+      background: #2A1210; border-left: 2px solid var(--red);
+      font-size: 10px; color: var(--red); line-height: 1.4;
+    }
+
+    /* S7 VALUATION */
+    .val-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; margin-bottom: 10px;
+    }
+    .val-item-label { font-size: 9px; color: var(--text3); }
+    .val-item-val {
+      font-size: 12px; color: var(--text);
+      font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    }
+    .val-item-val.null-val { color: var(--text3); font-size: 10px; }
+    .val-item-val.highlight { color: var(--accent); }
+    .val-block {
+      margin-bottom: 8px; padding: 7px 8px; border-radius: 4px;
+      background: var(--card2); border: 1px solid var(--border);
+    }
+    .val-block-title {
+      font-size: 9px; color: var(--text3); font-weight: 700;
+      letter-spacing: 0.12em; margin-bottom: 5px; text-transform: uppercase;
+    }
+    .val-block-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
+    .val-block-key { font-size: 10px; color: var(--text3); }
+    .val-block-val { font-size: 11px; color: var(--text2); font-family: 'JetBrains Mono', 'SF Mono', monospace; }
+    .val-block-val.up { color: var(--green); }
+    .val-block-val.down { color: var(--red); }
+    .val-block-val.bull-tag { color: var(--yellow); font-size: 10px; }
+    .broker-row { font-size: 10px; color: var(--text2); margin-top: 4px; }
+    .broker-tag {
+      display: inline-block; font-size: 9px; padding: 1px 5px; border-radius: 2px;
+      background: #122A1A; color: var(--green); margin-bottom: 2px;
+    }
+
+    /* S8 FINANCIALS */
+    .fin-table {
+      width: 100%; border-collapse: collapse; font-size: 10px;
+      font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    }
+    .fin-table th {
+      font-size: 8px; color: var(--text3); letter-spacing: 0.1em; text-align: right;
+      border-bottom: 1px solid var(--border); padding: 3px 4px; font-weight: 600;
+    }
+    .fin-table th:first-child { text-align: left; }
+    .fin-table td {
+      color: var(--text2); text-align: right; padding: 3px 4px;
+      border-bottom: 1px solid var(--border);
+    }
+    .fin-table td:first-child { text-align: left; color: var(--text); }
+    .fin-table tr:last-child td { border-bottom: none; }
+    .fin-table tr.current-year td { color: var(--accent); }
+    .fin-table tr.est-row td { color: var(--text3); }
+    .fin-table tr.est-row td:first-child { color: var(--yellow); }
+    .fin-pct.up { color: var(--green); }
+    .fin-pct.down { color: var(--red); }
+    .fin-section-label {
+      font-size: 9px; color: var(--text3); font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; margin-top: 8px;
+    }
+    .fin-section-label:first-child { margin-top: 0; }
+
+    /* S6 PRICE LEVEL */
+    .level-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; margin-bottom: 8px; }
+    .level-item-label { font-size: 9px; color: var(--text3); }
+    .level-item-val {
+      font-size: 11px; color: var(--text2);
+      font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    }
+    .level-item-val.null-val { color: var(--text3); }
+    .level-ma-row {
+      display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap;
+    }
+    .level-ma-chip { text-align: center; }
+    .level-ma-label { font-size: 8px; color: var(--text3); }
+    .level-ma-val {
+      font-size: 10px; font-family: 'JetBrains Mono', 'SF Mono', monospace; color: var(--text2);
+    }
+    .level-ma-delta { font-size: 9px; }
+    .level-ma-delta.up   { color: var(--green); }
+    .level-ma-delta.down { color: var(--red); }
+    .candle-prints { margin-top: 6px; }
+    .candle-item {
+      display: flex; gap: 6px; font-size: 10px; color: var(--text3);
+      border-bottom: 1px solid var(--border); padding: 3px 0;
+    }
+    .candle-item:last-child { border-bottom: none; }
+    .candle-date { font-family: 'JetBrains Mono', 'SF Mono', monospace; color: var(--text3); white-space: nowrap; }
+    .candle-type { color: var(--yellow); white-space: nowrap; }
+    .candle-level { color: var(--accent); margin-left: auto; font-family: 'JetBrains Mono', 'SF Mono', monospace; }
+
+    /* RIGHT PANEL */
+    .right-panel { flex: 1; padding: 14px 12px; }
+    .right-panel::-webkit-scrollbar { width: 4px; }
+    .right-panel::-webkit-scrollbar-thumb { background: var(--border); }
+
+    /* S12 NARRATIVE */
+    .s12-section { margin-bottom: 0; }
+    .s12-header { margin-bottom: 12px; }
+    .s12-title {
+      font-size: 10px; font-weight: 700; color: var(--text3);
+      letter-spacing: 0.15em; text-transform: uppercase;
+    }
+    .s12-cards { display: flex; gap: 10px; flex-wrap: wrap; }
+    .s12-card {
+      flex: 1; min-width: 220px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 6px; padding: 10px 12px;
+      border-top-width: 3px;
+    }
+    .s12-card.stage-태동    { border-top-color: var(--yellow); }
+    .s12-card.stage-확산    { border-top-color: var(--accent); }
+    .s12-card.stage-가속    { border-top-color: var(--green); }
+    .s12-card.stage-피크    { border-top-color: var(--orange); }
+    .s12-card.stage-소멸    { border-top-color: var(--red); }
+    .s12-card.stage-후퇴    { border-top-color: var(--text3); }
+    .s12-stage-badge {
+      display: inline-block; font-size: 9px; font-weight: 700;
+      padding: 1px 6px; border-radius: 2px; margin-bottom: 6px;
+      letter-spacing: 0.1em;
+    }
+    .stage-badge-태동 { background: #2A1F00; color: var(--yellow); }
+    .stage-badge-확산 { background: #0d1a2d; color: var(--accent); }
+    .stage-badge-가속 { background: #0A2016; color: var(--green); }
+    .stage-badge-피크 { background: #2A1200; color: var(--orange); }
+    .stage-badge-소멸 { background: #2A1010; color: var(--red); }
+    .stage-badge-후퇴 { background: var(--card2); color: var(--text3); }
+    .s12-date {
+      font-size: 9px; color: var(--text3);
+      font-family: 'JetBrains Mono', 'SF Mono', monospace; margin-bottom: 6px;
+    }
+    .s12-narrative { font-size: 11px; color: var(--text); line-height: 1.5; margin-bottom: 6px; }
+    .s12-evidence { font-size: 10px; color: var(--text2); line-height: 1.4; margin-bottom: 4px; }
+    .s12-hm {
+      padding: 5px 8px; border-radius: 4px;
+      background: var(--card2); border: 1px solid var(--border);
+      font-size: 10px; color: var(--text2); line-height: 1.4; margin-top: 4px;
+    }
+    .s12-hm-label { font-size: 8px; color: var(--text3); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 2px; }
+    .s12-invalidation { font-size: 10px; color: var(--text3); margin-top: 4px; }
+    .s12-invalidation-label { color: var(--red); font-size: 9px; font-weight: 600; }
+
+    /* TIMELINE */
+    .timeline-header { margin-bottom: 16px; }
+    .timeline-title {
+      font-size: 10px; font-weight: 700; color: var(--text3);
+      letter-spacing: 0.15em; text-transform: uppercase;
+    }
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .timeline-group {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--card);
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    .timeline-group > summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 10px;
+      background: var(--card2);
+      border-left: 3px solid var(--border2);
+      user-select: none;
+    }
+    .timeline-group > summary::-webkit-details-marker { display: none; }
+    .timeline-group.layer-SIGNAL > summary { border-left-color: var(--green); }
+    .timeline-group.layer-S11 > summary { border-left-color: var(--accent); }
+    .timeline-group.layer-S9 > summary { border-left-color: var(--yellow); }
+    .timeline-group.layer-S3 > summary { border-left-color: var(--text3); }
+    .timeline-group.layer-S15 > summary { border-left-color: var(--red); }
+    .timeline-group-title {
+      font-size: 10px; font-weight: 700;
+      color: var(--text); letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .timeline-group-count {
+      margin-left: auto;
+      font-size: 9px; color: var(--text3);
+      font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    }
+    .timeline-group-body { padding: 10px; }
+    .timeline-group:not([open]) { margin-bottom: 6px; }
+    .tl-date-sep {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 8px; margin-top: 12px;
+    }
+    .tl-date-sep:first-child { margin-top: 0; }
+    .tl-date-chip {
+      font-family: 'JetBrains Mono', 'SF Mono', monospace;
+      font-size: 10px; color: var(--text3); white-space: nowrap;
+    }
+    .tl-date-line { flex: 1; height: 1px; background: var(--border); }
+    .tl-item {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 6px; padding: 10px 12px; margin-bottom: 6px;
+      border-left-width: 3px;
+    }
+    .tl-item.layer-S11 { border-left-color: var(--accent); }
+    .tl-item.layer-S9  { border-left-color: var(--yellow); }
+    .tl-item.layer-S3  { border-left-color: var(--text3); }
+    .tl-item.layer-S14 { border-left-color: var(--purple); }
+    .tl-item-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .tl-layer-badge {
+      font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 2px;
+      letter-spacing: 0.1em; font-family: 'JetBrains Mono', 'SF Mono', monospace;
+    }
+    .layer-badge-S11 { background: #0d1a2d; color: var(--accent); }
+    .layer-badge-S9  { background: #1c1700; color: var(--yellow); }
+    .layer-badge-S3  { background: var(--card2); color: var(--text3); }
+    .layer-badge-S14 { background: #150d2a; color: var(--purple); }
+    .tl-type { font-size: 10px; font-weight: 600; color: var(--text); }
+    .tl-confidence { margin-left: auto; font-size: 12px; }
+    .tl-headline { font-size: 12px; color: var(--text); line-height: 1.5; margin-bottom: 4px; }
+    .tl-pattern { font-size: 11px; color: var(--text2); line-height: 1.4; margin-bottom: 4px; }
+    .tl-edge-q {
+      padding: 5px 8px; border-radius: 4px;
+      background: var(--card2); border: 1px solid var(--border);
+      font-size: 10px; color: var(--text2); line-height: 1.4; margin-top: 6px;
+    }
+    .tl-edge-q-label { font-size: 9px; color: var(--text3); font-weight: 600; margin-bottom: 2px; letter-spacing: 0.08em; }
+    .tl-follow { display: flex; gap: 8px; margin-top: 6px; }
+    .tl-ft-item { text-align: center; }
+    .tl-ft-label { font-size: 9px; color: var(--text3); }
+    .tl-ft-val { font-size: 11px; font-family: 'JetBrains Mono', 'SF Mono', monospace; color: var(--text3); }
+    .tl-ft-val.pos { color: var(--green); }
+    .tl-ft-val.neg { color: var(--red); }
+    .tl-note { font-size: 10px; color: var(--text3); margin-top: 4px; }
+    .tl-source { font-size: 9px; color: var(--text3); margin-top: 2px; }
+    .tl-next-trigger {
+      margin-top: 6px; padding: 4px 8px; border-radius: 3px;
+      background: #0A1520; border: 1px dashed #1E3A5F;
+      font-size: 10px; color: var(--accent); opacity: 0.8;
+    }
+    .tl-next-label { font-size: 9px; font-weight: 600; color: #2A5A8F; margin-bottom: 1px; letter-spacing: 0.08em; }
+    .price-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .price-cell-label { font-size: 9px; color: var(--text3); }
+    .price-cell-val { font-family: 'JetBrains Mono', 'SF Mono', monospace; font-size: 11px; color: var(--text2); }
+    .price-cell-val.null-val { color: var(--text3); }
+    .empty-timeline { padding: 40px 0; text-align: center; color: var(--text3); font-size: 12px; }
+
+    /* S11 synthesis */
+    .s11-synth {
+      margin-top: 20px; padding: 10px 12px; border-radius: 6px;
+      background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--accent);
+    }
+    .s11-synth-label { font-size: 9px; color: var(--text3); font-weight: 700; letter-spacing: 0.12em; margin-bottom: 6px; }
+    .s11-synth-text { font-size: 11px; color: var(--text2); line-height: 1.5; }
+
+    /* S0 AGENT BRIEFING */
+    .s0-section { margin-top: 0; }
+    .s0-header { margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+    .s0-title { font-size: 10px; font-weight: 700; color: var(--text3); letter-spacing: 0.15em; text-transform: uppercase; }
+    .s0-meta { font-size: 9px; color: var(--text3); }
+    .s0-group { margin-bottom: 10px; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; border-left-width: 3px; }
+    .s0-group.grp-O { border-left-color: var(--text3); }
+    .s0-group.grp-A { border-left-color: var(--yellow); }
+    .s0-group.grp-M { border-left-color: var(--purple); }
+    .s0-group.grp-B { border-left-color: var(--accent); }
+    .s0-group.grp-C { border-left-color: var(--green); }
+    .s0-group.grp-D { border-left-color: var(--orange); }
+    .s0-group.grp-E { border-left-color: var(--red); }
+    .s0-group.grp-F { border-left-color: var(--text2); }
+    .s0-group-header {
+      background: var(--card2); padding: 5px 10px;
+      display: flex; align-items: center; gap: 8px; cursor: pointer;
+    }
+    .s0-group-label { font-size: 9px; font-weight: 700; color: var(--text3); letter-spacing: 0.12em; }
+    .s0-group-name  { font-size: 10px; color: var(--text2); }
+    .s0-group-count { font-size: 9px; color: var(--text3); margin-left: auto; }
+    .s0-group-body  { display: none; }
+    .s0-group.open .s0-group-body { display: block; }
+    .s0-agent {
+      display: flex; gap: 8px; padding: 7px 10px; align-items: flex-start;
+      border-bottom: 1px solid var(--border);
+    }
+    .s0-agent:last-child { border-bottom: none; }
+    .s0-agent.standby { opacity: 0.45; }
+    .s0-agent-id {
+      font-family: 'JetBrains Mono','SF Mono',monospace;
+      font-size: 10px; font-weight: 700; color: var(--text3); white-space: nowrap; min-width: 24px;
+    }
+    .s0-agent-role { font-size: 10px; color: var(--text2); white-space: nowrap; min-width: 80px; }
+    .s0-tier-badge {
+      font-size: 8px; padding: 1px 5px; border-radius: 2px; white-space: nowrap;
+      font-family: 'JetBrains Mono','SF Mono',monospace; letter-spacing: 0.05em;
+    }
+    .tier-det    { background: #1a1a1a; color: var(--text3); }
+    .tier-Haiku  { background: #0A2016; color: var(--green); }
+    .tier-Sonnet { background: #0d1a2d; color: var(--accent); }
+    .tier-Opus   { background: #150d2a; color: var(--purple); }
+    .s0-brief { font-size: 10px; color: var(--text2); line-height: 1.5; flex: 1; }
+    .s0-brief.standby-text { color: var(--text3); }
+
+    /* DATA ABSENT */
+    .data-absent-bar {
+      margin-top: 10px; padding: 8px 10px; border-radius: 4px;
+      background: var(--card2); border: 1px solid var(--border);
+    }
+    .da-label { font-size: 9px; color: var(--text3); font-weight: 600; letter-spacing: 0.1em; margin-bottom: 4px; }
+    .da-item { font-size: 10px; color: var(--text3); margin-bottom: 2px; }
+    .da-field { color: var(--text2); }
+
+    .nav-back {
+      position: fixed; bottom: 16px; right: 20px;
+      background: var(--card); border: 1px solid var(--border);
+      color: var(--text2); font-size: 11px; padding: 6px 12px; border-radius: 4px;
+      text-decoration: none; opacity: 0.7; transition: opacity 0.15s; z-index: 200;
+    }
+    .nav-back:hover { opacity: 1; }
+
+    /* ── MOBILE defaults (above) ── */
+    #stock-header { flex-wrap: wrap; gap: 6px; }
+    .header-meta { flex-wrap: wrap; gap: 6px; }
+    .section-group > summary { flex-wrap: wrap; }
+    .group-meta { margin-left: 24px; }
+    .s12-cards { flex-direction: column; }
+    .s12-card { min-width: unset; }
+
+    /* ── DESKTOP ── */
+    @media (min-width: 769px) {
+      .layout-b {
+        flex-direction: row;
+        overflow: hidden;
+        height: calc(100vh - 53px);
+      }
+      .left-panel {
+        width: var(--left-w); min-width: var(--left-w); max-width: var(--left-w);
+        border-bottom: none; border-right: 1px solid var(--border);
+        overflow-y: auto; padding: 16px 14px;
+      }
+      .right-panel {
+        overflow-y: auto;
+        padding: 20px 24px;
+      }
+      #stock-header {
+        flex-wrap: nowrap; gap: 16px; padding: 14px 24px;
+      }
+      .header-meta { flex-wrap: nowrap; margin-left: auto; }
+      .section-group > summary { flex-wrap: nowrap; }
+      .group-meta { margin-left: auto; }
+      .s12-cards { flex-direction: row; }
+    }
+
+    /* LV99 READABILITY REDESIGN */
+    :root {
+      --bg: #080A0E;
+      --card: #11151C;
+      --card2: #171D27;
+      --surface: #0E1218;
+      --surface2: #151B24;
+      --border: #242D3B;
+      --border2: #334054;
+      --text: #F4F6FA;
+      --text2: #C8D0DC;
+      --text3: #7D8899;
+      --accent: #6AA5FF;
+      --green: #28D17C;
+      --yellow: #F2C94C;
+      --red: #FF6565;
+      --purple: #B69CFF;
+      --orange: #FF9B54;
+      --left-w: 420px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.72;
+      letter-spacing: 0;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #loading, #error { font-size: 16px; letter-spacing: 0.02em; }
+
+    #stock-header {
+      min-height: 78px;
+      padding: 16px 30px;
+      background: rgba(12, 15, 21, 0.96);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+      backdrop-filter: blur(14px);
+    }
+    .header-identity { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+    .header-kicker { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .header-code {
+      font-size: 12px;
+      color: var(--text3);
+      letter-spacing: 0.16em;
+    }
+    .header-name {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--text);
+      letter-spacing: 0;
+    }
+    .header-market {
+      font-size: 12px;
+      padding: 3px 9px;
+      border-radius: 5px;
+      background: #202838;
+      color: var(--text2);
+      letter-spacing: 0.04em;
+    }
+    .header-meta {
+      gap: 8px;
+      align-items: center;
+    }
+    .badge-maturity,
+    .badge-tier,
+    .badge-stock-type,
+    .header-updated {
+      font-size: 12px;
+      line-height: 1.2;
+      padding: 5px 9px;
+      border-radius: 5px;
+      letter-spacing: 0;
+    }
+    .header-updated {
+      color: var(--text3);
+      padding-right: 0;
+    }
+
+    .layout-b { background: var(--bg); }
+    .left-panel,
+    .right-panel {
+      background: var(--bg);
+      scrollbar-color: var(--border2) transparent;
+    }
+    .left-panel {
+      padding: 20px;
+      gap: 22px;
+      border-color: var(--border);
+    }
+    .right-panel { padding: 20px; }
+
+    .section-group {
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      overflow: visible;
+    }
+    .left-panel .section-group + .section-group,
+    .right-panel .section-group + .section-group {
+      margin-top: 26px;
+    }
+    .section-group > summary {
+      min-height: 52px;
+      padding: 0 2px 13px;
+      background: transparent;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-group[open] > summary { border-bottom-color: var(--border2); }
+    .group-toggle {
+      width: 24px;
+      height: 24px;
+      flex-basis: 24px;
+      border-radius: 6px;
+      background: #202838;
+      color: var(--text2);
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .group-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: 0;
+      text-transform: none;
+    }
+    .group-meta {
+      font-size: 12px;
+      color: var(--text3);
+      letter-spacing: 0.04em;
+    }
+    .section-group-body {
+      padding: 18px 0 0;
+      gap: 18px;
+    }
+    .main-group > .section-group-body { padding: 18px 0 0; }
+
+    .section-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card);
+      overflow: hidden;
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.18);
+    }
+    .section-header {
+      padding: 12px 16px;
+      background: var(--card2);
+      border-bottom: 1px solid var(--border);
+    }
+    .section-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text3);
+      letter-spacing: 0.1em;
+    }
+    .section-sub {
+      font-size: 12px;
+      color: var(--text3);
+    }
+    .section-body { padding: 16px; }
+    .read-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+    .read-line { display: block; }
+    .read-muted {
+      color: var(--text3);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .term-help {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 7px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .dna-core,
+    .theme-row-val,
+    .dna-row-val,
+    .s12-narrative,
+    .tl-headline,
+    .tl-pattern,
+    .s0-brief {
+      font-size: 15px;
+      line-height: 1.72;
+    }
+    .dna-core {
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .neg-anchor { margin-bottom: 16px; }
+    .neg-label,
+    .dna-row-label,
+    .theme-row-label,
+    .val-item-label,
+    .level-item-label,
+    .fin-section-label,
+    .tl-edge-q-label,
+    .da-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text3);
+      letter-spacing: 0.06em;
+    }
+    .neg-list { gap: 5px; }
+    .neg-item {
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    .dna-row { margin-bottom: 12px; }
+    .dna-row-val.highlight { font-size: 15px; color: var(--accent); }
+    .biz-tags { gap: 7px; margin-top: 12px; }
+    .biz-tag {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 5px;
+      background: #202838;
+      color: var(--text2);
+    }
+    .warning-box,
+    .caution-box {
+      margin-top: 14px;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .theme-primary {
+      font-size: 16px;
+      line-height: 1.4;
+      margin-bottom: 12px;
+      color: var(--accent);
+      letter-spacing: 0;
+    }
+    .theme-row { margin-bottom: 12px; }
+    .cascade-text {
+      font-size: 13px;
+      line-height: 1.65;
+    }
+    .intensity-bar { gap: 10px; margin-top: 6px; }
+    .intensity-dot { width: 10px; height: 10px; }
+    .intensity-label { font-size: 13px; }
+    .peer-set { gap: 7px; }
+    .peer-chip {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 5px;
+      background: #202838;
+      color: var(--text2);
+    }
+
+    .val-grid,
+    .level-grid {
+      gap: 14px 18px;
+      margin-bottom: 18px;
+    }
+    .val-item-val,
+    .level-item-val,
+    .val-block-val,
+    .level-ma-val,
+    .price-cell-val,
+    .tl-ft-val {
+      font-size: 15px;
+      color: var(--text);
+    }
+    .val-item-val.null-val,
+    .level-item-val.null-val {
+      font-size: 13px;
+      color: var(--text3);
+    }
+    .val-block {
+      margin-bottom: 12px;
+      padding: 13px 14px;
+      border-radius: 8px;
+      background: var(--surface2);
+    }
+    .val-block-title {
+      font-size: 12px;
+      color: var(--text3);
+      margin-bottom: 9px;
+    }
+    .val-block-row { margin-bottom: 6px; gap: 14px; }
+    .val-block-key { font-size: 13px; color: var(--text3); }
+    .broker-tag {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 5px;
+    }
+
+    .fin-table {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .fin-table th {
+      font-size: 12px;
+      padding: 8px 6px;
+    }
+    .fin-table td { padding: 8px 6px; }
+
+    .level-ma-row {
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .level-ma-chip {
+      flex: 1 1 84px;
+      padding: 9px 8px;
+      border-radius: 7px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+    }
+    .level-ma-label { font-size: 12px; }
+    .level-ma-delta { font-size: 13px; }
+    .candle-item {
+      font-size: 13px;
+      padding: 7px 0;
+      gap: 10px;
+    }
+
+    .s12-header { margin-bottom: 14px; }
+    .s12-title,
+    .timeline-title,
+    .s0-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text3);
+      letter-spacing: 0.08em;
+    }
+    .s12-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 14px;
+    }
+    .s12-list {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card);
+      overflow: hidden;
+    }
+    .s12-item {
+      display: grid;
+      grid-template-columns: 94px 1fr;
+      gap: 18px;
+      padding: 18px 18px 20px;
+      border-bottom: 1px solid var(--border);
+      border-left: 4px solid var(--border2);
+    }
+    .s12-item:last-child { border-bottom: 0; }
+    .s12-item.stage-태동 { border-left-color: var(--yellow); }
+    .s12-item.stage-확산 { border-left-color: var(--accent); }
+    .s12-item.stage-가속 { border-left-color: var(--green); }
+    .s12-item.stage-피크 { border-left-color: var(--orange); }
+    .s12-item.stage-소멸 { border-left-color: var(--red); }
+    .s12-item.stage-후퇴 { border-left-color: var(--text3); }
+    .s12-rail {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .s12-step {
+      font-family: 'JetBrains Mono', 'SF Mono', monospace;
+      font-size: 12px;
+      color: var(--text3);
+    }
+    .s12-item-head {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 7px;
+      min-width: 0;
+    }
+    .s12-item-body {
+      min-width: 0;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+    .s12-card {
+      min-width: 0;
+      padding: 16px;
+      border-radius: 8px;
+      background: var(--card);
+      border-color: var(--border);
+    }
+    .s12-stage-badge {
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 5px;
+      margin-bottom: 0;
+    }
+    .s12-date { font-size: 12px; margin-bottom: 0; }
+    .s12-evidence,
+    .s12-hm,
+    .s12-invalidation {
+      font-size: 13px;
+      line-height: 1.62;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+    .s12-hm {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 7px;
+    }
+    .s12-hm-label,
+    .s12-invalidation-label {
+      font-size: 11px;
+      letter-spacing: 0.05em;
+    }
+
+    .timeline { gap: 14px; }
+    .timeline-group {
+      border-color: var(--border);
+      border-radius: 8px;
+      background: var(--card);
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+    .timeline-group > summary {
+      min-height: 48px;
+      padding: 12px 14px;
+      border-radius: 8px 8px 0 0;
+      background: var(--card2);
+      border-left-width: 4px;
+    }
+    .timeline-group-title {
+      font-size: 14px;
+      letter-spacing: 0.02em;
+    }
+    .timeline-group-count {
+      font-size: 12px;
+      color: var(--text3);
+    }
+    .timeline-group-body { padding: 0; }
+    .timeline-group-body > .term-help {
+      margin: 14px 16px;
+    }
+    .signal-date-list {
+      border-top: 1px solid var(--border);
+    }
+    .signal-date-row {
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      border-bottom: 1px solid var(--border);
+      background: var(--card);
+    }
+    .signal-date-row:last-child { border-bottom: 0; }
+    .signal-date-side {
+      padding: 17px 16px;
+      border-right: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .signal-date {
+      font-family: 'JetBrains Mono', 'SF Mono', monospace;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.25;
+    }
+    .signal-date-sub {
+      margin-top: 7px;
+      font-size: 12px;
+      color: var(--text3);
+      line-height: 1.35;
+    }
+    .signal-date-body {
+      min-width: 0;
+    }
+    .signal-date-body .tl-item {
+      border-bottom: 1px solid var(--border);
+    }
+    .signal-date-body .tl-item:last-child {
+      border-bottom: 0;
+    }
+    .tl-date-sep {
+      gap: 12px;
+      margin: 0;
+      padding: 18px 16px 6px;
+      background: var(--card);
+    }
+    .tl-date-chip {
+      font-size: 12px;
+      color: var(--text3);
+    }
+    .tl-item {
+      padding: 15px 16px 17px;
+      margin: 0;
+      border: 0;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      background: transparent;
+    }
+    .tl-item:last-child { border-bottom: 0; }
+    .tl-item.layer-S11,
+    .tl-item.layer-S9,
+    .tl-item.layer-S3,
+    .tl-item.layer-S14 {
+      border-left: 0;
+    }
+    .tl-item-header {
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .tl-layer-badge {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 5px;
+    }
+    .tl-type { font-size: 14px; }
+    .tl-confidence { font-size: 14px; }
+    .tl-headline,
+    .tl-pattern {
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+    .tl-note,
+    .tl-source,
+    .tl-next-trigger {
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .tl-edge-q {
+      padding: 11px 12px;
+      border-radius: 7px;
+      font-size: 13px;
+      background: var(--surface2);
+    }
+    .tl-follow { gap: 14px; }
+    .tl-ft-label,
+    .price-cell-label {
+      font-size: 12px;
+    }
+    .price-row { gap: 16px 22px; }
+    .price-cell {
+      min-width: 90px;
+      padding: 7px 0;
+    }
+    .empty-timeline {
+      padding: 34px 0;
+      font-size: 14px;
+    }
+    .s11-synth {
+      margin-top: 0;
+      padding: 14px 16px;
+      border: 0;
+      border-top: 1px solid var(--border);
+      border-left: 0;
+      border-radius: 0;
+      background: var(--surface);
+    }
+    .s11-synth-label { font-size: 12px; }
+    .s11-synth-text { font-size: 14px; line-height: 1.65; }
+
+    .s0-header {
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      margin-bottom: 16px;
+    }
+    .s0-meta { font-size: 13px; }
+    .s0-group {
+      margin-bottom: 12px;
+      border-radius: 8px;
+    }
+    .s0-group-header {
+      padding: 11px 14px;
+      gap: 10px;
+    }
+    .s0-group-label,
+    .s0-group-name,
+    .s0-group-count {
+      font-size: 13px;
+    }
+    .s0-agent {
+      display: grid;
+      grid-template-columns: 42px minmax(76px, 118px) minmax(54px, 82px) 1fr;
+      gap: 10px;
+      padding: 12px 14px;
+    }
+    .s0-agent-id,
+    .s0-agent-role,
+    .s0-tier-badge {
+      font-size: 12px;
+    }
+    .s0-tier-badge {
+      align-self: start;
+      padding: 3px 7px;
+      border-radius: 5px;
+    }
+    .s0-brief { font-size: 14px; }
+
+    .data-absent-bar {
+      margin-top: 0;
+      padding: 12px 14px;
+      border-radius: 8px;
+    }
+    .da-item {
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .nav-back {
+      right: 22px;
+      bottom: 18px;
+      padding: 9px 13px;
+      border-radius: 8px;
+      font-size: 13px;
+      background: rgba(17, 21, 28, 0.9);
+      backdrop-filter: blur(10px);
+    }
+
+    @media (min-width: 769px) {
+      .layout-b { height: calc(100vh - 78px); }
+      .left-panel {
+        width: var(--left-w);
+        min-width: var(--left-w);
+        max-width: var(--left-w);
+        padding: 24px 22px 36px;
+      }
+      .right-panel {
+        padding: 28px 34px 46px;
+      }
+      .right-panel > .section-group {
+        max-width: 1320px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      #stock-header {
+        padding: 16px;
+        gap: 10px;
+        align-items: flex-start;
+      }
+      .header-identity { width: 100%; }
+      .header-name { font-size: 24px; }
+      .header-meta {
+        width: 100%;
+        margin-left: 0;
+      }
+      .left-panel,
+      .right-panel {
+        padding: 16px 12px;
+      }
+      .section-group > summary {
+        min-height: 48px;
+        padding-bottom: 10px;
+      }
+      .group-meta { margin-left: auto; }
+      .section-body { padding: 14px; }
+      .s12-cards {
+        grid-template-columns: 1fr;
+      }
+      .s12-item {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 16px 14px 18px;
+      }
+      .s12-rail {
+        flex-direction: row;
+        align-items: center;
+      }
+      .s0-agent {
+        grid-template-columns: 38px 1fr;
+      }
+      .s0-tier-badge,
+      .s0-brief {
+        grid-column: 2;
+      }
+      .price-row { display: grid; grid-template-columns: 1fr 1fr; }
+      .signal-date-row {
+        grid-template-columns: 1fr;
+      }
+      .signal-date-side {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .signal-date-sub { margin-top: 0; }
+      .nav-back {
+        top: 16px;
+        right: 12px;
+        bottom: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="loading">불러오는 중…</div>
+  <div id="error"></div>
+  <div id="app">
+    <header id="stock-header"></header>
+    <div class="layout-b">
+      <aside class="left-panel">
+        <details class="section-group side-group" open>
+          <summary>
+            <span class="group-toggle"></span>
+            <span class="group-title">밸류에이션</span>
+            <span class="group-meta">S7</span>
+          </summary>
+          <div class="section-group-body">
+            <div id="s7-card"></div>
+          </div>
+        </details>
+
+        <details class="section-group side-group" open>
+          <summary>
+            <span class="group-toggle"></span>
+            <span class="group-title">테마분류</span>
+            <span class="group-meta">S2</span>
+          </summary>
+          <div class="section-group-body">
+            <div id="s2-card"></div>
+          </div>
+        </details>
+
+        <details class="section-group side-group">
+          <summary>
+            <span class="group-toggle"></span>
+            <span class="group-title">기업핵심</span>
+            <span class="group-meta">S1</span>
+          </summary>
+          <div class="section-group-body">
+            <div id="s1-card"></div>
+          </div>
+        </details>
+
+        <details class="section-group side-group">
+          <summary>
+            <span class="group-toggle"></span>
+            <span class="group-title">가격위치</span>
+            <span class="group-meta">S6</span>
+          </summary>
+          <div class="section-group-body">
+            <div id="s6-card"></div>
+          </div>
+        </details>
+      </aside>
+      <main class="right-panel">
+        <details class="section-group main-group" open>
+          <summary>
+            <span class="group-toggle"></span>
+            <span class="group-title">내러티브</span>
+            <span class="group-meta">S12</span>
+          </summary>
+          <div class="section-group-body">
+            <div id="s12-section"></div>
+          </div>
+        </details>
+
+        <details class="section-group main-group">
+          <summary>
+            <span class="group-toggle"></span>
+            <span class="group-title">날짜별 관측 로그</span>
+            <span class="group-meta" id="timeline-summary">S3 · S9 · S11</span>
+          </summary>
+          <div class="section-group-body">
+            <div id="timeline"></div>
+          </div>
+        </details>
+
+        <details class="section-group main-group">
+          <summary>
+            <span class="group-toggle"></span>
+            <span class="group-title">에이전트 브리핑</span>
+            <span class="group-meta">S0</span>
+          </summary>
+          <div class="section-group-body">
+            <div id="s0-section"></div>
+          </div>
+        </details>
+      </main>
+    </div>
+  </div>
+  <a href="index.html" class="nav-back">← 목록</a>
+
+<script>
+/* ── helpers ── */
+const INTENSITY_LABELS = ['편승/무관', '약 (1)', '중 (2)', '강 (3)'];
+
+function na(v) {
+  if (v === null || v === undefined) return '<span class="null-val" style="color:var(--text3)">—</span>';
+  return String(v);
+}
+function mono(v) {
+  if (v === null || v === undefined) return '<span class="null-val" style="color:var(--text3)">—</span>';
+  return `<span style="font-family:'JetBrains Mono','SF Mono',monospace">${v}</span>`;
+}
+function pctHtml(v, cls) {
+  if (v === null || v === undefined) return '<span style="color:var(--text3)">—</span>';
+  const sign = v > 0 ? '+' : '';
+  const c = cls || (v > 0 ? 'up' : v < 0 ? 'down' : '');
+  return `<span class="fin-pct ${c}">${sign}${v.toFixed(1)}%</span>`;
+}
+function buk(v) {
+  if (v === null || v === undefined) return '—';
+  const n = Math.round(v / 1e8);
+  return n.toLocaleString('ko-KR') + '억';
+}
+function bukFmt(v) {
+  if (v === null || v === undefined) return '<span style="color:var(--text3)">—</span>';
+  return buk(v);
+}
+
+function escapeHtml(v) {
+  return String(v ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function explainTerms(text) {
+  const pairs = [
+    [/HIDDEN MOMENTUM/gi, '숨은 흐름'],
+    [/EDGE QUESTION/gi, '확인할 질문'],
+    [/NEXT TRIGGER/gi, '다음 확인 이벤트'],
+    [/PATTERN SYNTHESIS/gi, '반복 패턴 요약'],
+    [/DATA ABSENT/gi, '데이터 부재'],
+    [/BULL CASE/gi, '낙관 시나리오'],
+    [/AI DIRECT CORE/gi, '인공지능 직접 수혜 핵심 여부'],
+    [/SELECTION CASCADE/gi, '선정 흐름'],
+    [/THEME TIER/gi, '테마 등급'],
+    [/PEER SET/gi, '비교 종목'],
+    [/PRICE LEVEL/gi, '가격 위치'],
+    [/NARRATIVE STAGE/gi, '기대감 단계'],
+    [/PER\s*\(?TTM\)?/gi, '최근 12개월 이익 대비 주가'],
+    [/PBR/g, '순자산 대비 주가'],
+    [/ROE/g, '자기자본이익률'],
+    [/OPM/g, '영업이익률'],
+    [/YoY/g, '전년 대비'],
+    [/리드프레임\(Lead Frame\)/gi, '리드프레임'],
+    [/Etched Lead Frame/gi, '에칭 리드프레임'],
+    [/Stamped/gi, '스탬핑 방식'],
+    [/Package Substrate/gi, '패키지 기판'],
+    [/서브스트레이트/g, '기판'],
+    [/substrate/gi, '기판'],
+    [/캐팩스미스프라이스엣지/g, '설비투자 평가오차 반복 신호'],
+    [/leaf/gi, '최종 종목'],
+    [/OSAT/g, '패키징 외주'],
+    [/HBM/g, '고대역폭메모리'],
+    [/ASP/g, '평균판매단가'],
+    [/EV/g, '전기차'],
+    [/ECU/g, '차량 제어장치'],
+    [/IDM/g, '종합 반도체 업체'],
+    [/canonical/gi, '기준'],
+    [/lazy-load/gi, '조건부 가동'],
+    [/no-rank/gi, '일반 수집일'],
+    [/capture=([^,\s·]+)/gi, '포착=$1'],
+    [/RANK/g, '특이 포착'],
+    [/ledger/gi, '원장'],
+    [/blow-?off/gi, '급등 후 바로 꺾임'],
+    [/crowded/gi, '매수세 과밀/쏠림'],
+    [/크라우디드/g, '매수세 과밀/쏠림'],
+    [/엣지/g, '반복 신호'],
+    [/트리거/g, '확인 이벤트'],
+    [/trigger/gi, '확인 이벤트'],
+    [/리레이팅/g, '평가 재상향'],
+    [/모멘텀/g, '추진력'],
+    [/컨센서스/g, '시장 전망치'],
+    [/컨센/g, '시장 전망치'],
+    [/Kill-switch/gi, '무효화 조건'],
+    [/follow[- ]?through/gi, '후속 반응'],
+    [/warm-up/gi, '데이터 축적 중'],
+    [/BIRTH\+DATA-FILL/gi, '초기 생성+데이터 보강'],
+    [/DATA-FILL/gi, '데이터 보강'],
+    [/delta mode/gi, '부분 갱신 모드'],
+    [/DEEP mode/gi, '정밀 분석 모드'],
+    [/DEEP/gi, '정밀 분석'],
+    [/AUTO/gi, '자동'],
+    [/BUY/gi, '매수 의견'],
+    [/Bull/gi, '상승 시나리오'],
+    [/Bear/gi, '하락 시나리오'],
+    [/CS/gi, '확신 점수'],
+    [/VETO/gi, '거부 조건'],
+    [/null/gi, '데이터 없음'],
+    [/confidence/gi, '신뢰도'],
+    [/post_reaction_pct/gi, '이벤트 후 반응률'],
+    [/value_traded/gi, '거래대금'],
+    [/value_mult/gi, '거래대금 배수'],
+    [/assoc_count/gi, '동반 종목 수'],
+    [/raw_close/gi, '원종가'],
+    [/chg_pct/gi, '등락률'],
+    [/foreign_net/gi, '외국인 순매수'],
+    [/inst_net/gi, '기관 순매수'],
+    [/fully materialized/gi, '전체 자료 반영'],
+    [/materialize/gi, '자료 반영'],
+    [/synthesis_min_count/gi, '반복 판정 최소 횟수'],
+    [/next-action/gi, '다음 행동'],
+    [/spine/gi, '중심 줄기'],
+    [/enum/gi, '허용값'],
+    [/DAG/g, '작업 순서 그래프'],
+    [/rename/gi, '파일명 변경'],
+    [/commit/gi, '커밋'],
+    [/ADV/g, '평균 거래대금'],
+    [/LLM/g, '대형언어모델'],
+    [/AI/g, '인공지능'],
+    [/DET/g, '결정론'],
+    [/LENS/g, '렌즈'],
+    [/\blow\b/gi, '낮음'],
+    [/\bmedium\b/gi, '중간'],
+    [/\bhigh\b/gi, '높음'],
+  ];
+
+  return pairs.reduce((acc, [pattern, replacement]) => acc.replace(pattern, replacement), String(text ?? ''));
+}
+function displayStatus(value) {
+  const v = String(value || '');
+  if (v === 'warm-up') return '데이터 축적 중';
+  if (v === 'EXTENDED') return '확장형';
+  if (v === 'MINIMAL') return '기본형';
+  if (v === 'BIRTH') return '초기 생성';
+  return explainTerms(v || '—');
+}
+
+function softenBreaks(text) {
+  return escapeHtml(explainTerms(text))
+    .replace(/([/·\-])/g, '$1<wbr>')
+    .replace(/([A-Za-z0-9])\(/g, '$1<wbr>(')
+    .replace(/\)([A-Za-z0-9가-힣])/g, ')<wbr>$1');
+}
+
+function smartLines(text) {
+  const normalized = String(text || '')
+    .replace(/\s+/g, ' ')
+    .replace(/\s+—\s+/g, '\n')
+    .replace(/\s+(?=[①②③④⑤⑥⑦⑧⑨])/g, '\n')
+    .replace(/\.\s+(?=제품[:：])/g, '.\n')
+    .replace(/\s+(?=제품[:：])/g, '\n')
+    .trim();
+
+  return normalized
+    .split('\n')
+    .map(line => line.trim())
+    .filter(Boolean);
+}
+
+function renderReadLines(text) {
+  const lines = smartLines(text);
+  if (lines.length === 0) return '';
+  return `<div class="read-lines">${lines.map(line => `<span class="read-line">${softenBreaks(line)}</span>`).join('')}</div>`;
+}
+
+/* ── HEADER ── */
+function renderHeader(data) {
+  const m = data.meta;
+  const maturity = m.level_maturity || '—';
+  const stockTypeClass = (m.stock_type === '순수테마주') ? 'warning' : 'normal';
+  const lastUpd = (data.S15 && data.S15.changelog && data.S15.changelog.length > 0)
+    ? data.S15.changelog[data.S15.changelog.length - 1].date : (m.last_updated || '—');
+  document.getElementById('stock-header').innerHTML = `
+    <div class="header-identity">
+      <div class="header-kicker">
+        <span class="header-code">${m.code}</span>
+        <span class="header-market">${m.market}</span>
+      </div>
+      <div class="header-name">${m.name}</div>
+    </div>
+    <div class="header-meta">
+      <span class="badge-stock-type ${stockTypeClass}">${m.stock_type || '—'}</span>
+      <span class="badge-maturity">${displayStatus(maturity)}</span>
+      <span class="badge-tier ${m.tier_profile || ''}">${displayStatus(m.tier_profile)}</span>
+      <span class="header-updated">${lastUpd}</span>
+    </div>
+  `;
+  document.title = `${m.code} ${m.name} — OREUN INVENTORY`;
+}
+
+/* ── S1 ── */
+function renderS1(s1) {
+  const el = document.getElementById('s1-card');
+  if (!s1) { el.innerHTML = ''; return; }
+
+  const negHtml = (s1.negative_anchor || []).map(n => {
+    let cls = '';
+    if (n.endsWith(' X')) cls = 'x-mark';
+    else if (n.endsWith(' O') || n.includes(' O (')) cls = 'o-mark';
+    else if (n.includes('리스크') || n.includes('적자') || n.includes('미확인')) cls = 'warn-mark';
+    return `<div class="neg-item ${cls}">${softenBreaks(n)}</div>`;
+  }).join('');
+
+  const tags = (s1.biz_tags || []).map(t => `<span class="biz-tag">${softenBreaks(t)}</span>`).join('');
+  const warn = s1.warning ? `<div class="warning-box">${softenBreaks(s1.warning)}</div>` : '';
+
+  el.innerHTML = `
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-label">S1 — 기업 핵심</span>
+        <span class="section-sub">기준 ${s1.as_of || '—'}</span>
+      </div>
+      <div class="section-body">
+        <div class="dna-core">${renderReadLines(s1.business_core)}</div>
+        ${negHtml ? `<div class="neg-anchor"><div class="neg-label">아닌 것 / 주의할 오해</div><div class="neg-list">${negHtml}</div></div>` : ''}
+        <div class="dna-row">
+          <div class="dna-row-label">밸류체인 노드</div>
+          <div class="dna-row-val">${softenBreaks(s1.value_chain_node || '—')}</div>
+        </div>
+        <div class="dna-row">
+          <div class="dna-row-label">단일 차별자</div>
+          <div class="dna-row-val highlight">${softenBreaks(s1.differentiator || '—')}${s1.differentiator_verified === false ? ' <span style="color:var(--text3);font-size:13px;">(추정)</span>' : ''}</div>
+        </div>
+        <div class="biz-tags">${tags}</div>
+        ${warn}
+      </div>
+    </div>
+  `;
+}
+
+/* ── S2 ── */
+function renderS2(s2) {
+  const el = document.getElementById('s2-card');
+  if (!s2) { el.innerHTML = ''; return; }
+
+  const intensityRaw = s2.intensity;
+  const intensityEntries = (intensityRaw && typeof intensityRaw === 'object')
+    ? Object.entries(intensityRaw).filter(([, v]) => typeof v === 'number')
+    : [];
+  const intensity = typeof intensityRaw === 'number'
+    ? Math.max(0, Math.min(3, intensityRaw))
+    : (intensityEntries.length ? Math.max(0, Math.min(3, Math.max(...intensityEntries.map(([, v]) => v)))) : 0);
+  const intensityText = intensityEntries.length
+    ? intensityEntries.map(([k, v]) => `${explainTerms(k)} ${v}`).join(' · ')
+    : (INTENSITY_LABELS[intensity] || '—');
+  const dots = [0,1,2,3].map(i =>
+    `<div class="intensity-dot ${i <= intensity ? 'active-' + intensity : ''}"></div>`
+  ).join('');
+
+  const tax = s2.taxonomy || {};
+  const taxHtml = [tax.L1, tax.L2, tax.L3].filter(Boolean)
+    .map(t => `<span>${softenBreaks(t)}</span>`).join('<span class="cascade-arrow"> › </span>');
+
+  const cascadeHtml = (s2.selection_cascade || '').split(' → ')
+    .map(p => `<span>${softenBreaks(p)}</span>`).join('<span class="cascade-arrow"> → </span>');
+
+  const secHtml = (s2.secondary_themes || []).map(t => `<span class="biz-tag">${softenBreaks(t)}</span>`).join('');
+  const peerHtml = (s2.peer_set || []).map(code =>
+    `<a href="stock.html?code=${code}" class="peer-chip">${code}</a>`
+  ).join('');
+  const caution = Boolean(s2.caution);
+
+  el.innerHTML = `
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-label">S2 — 테마 분류</span>
+        <span class="section-sub">기준 ${s2.as_of || '—'}</span>
+      </div>
+      <div class="section-body">
+        <div class="theme-primary">${softenBreaks(s2.primary_theme || '—')}</div>
+        ${taxHtml ? `<div class="cascade-text" style="margin-bottom:8px;color:var(--text3)">${taxHtml}</div>` : ''}
+        ${secHtml ? `<div class="biz-tags" style="margin-bottom:10px;">${secHtml}</div>` : ''}
+        ${cascadeHtml ? `<div class="theme-row">
+          <div class="theme-row-label">선정 흐름</div>
+          <div class="cascade-text">${cascadeHtml}</div>
+        </div>` : ''}
+        <div class="theme-row">
+          <div class="theme-row-label">테마 등급</div>
+          <div class="theme-row-val">${softenBreaks(s2.theme_tier || '—')}</div>
+        </div>
+        <div class="theme-row">
+          <div class="theme-row-label">테마 강도</div>
+          <div class="intensity-bar">
+            <div class="intensity-dots">${dots}</div>
+            <span class="intensity-label">${intensityText}</span>
+          </div>
+        </div>
+        ${s2.variant_bucket ? `<div class="theme-row"><div class="theme-row-label">세부 유형</div><div class="theme-row-val">${softenBreaks(s2.variant_bucket)}</div></div>` : ''}
+        ${peerHtml ? `<div class="theme-row"><div class="theme-row-label">비교 종목</div><div class="peer-set">${peerHtml}</div></div>` : ''}
+        ${s2.ai_direct_core !== undefined ? `<div class="theme-row"><div class="theme-row-label">인공지능 직접 수혜 핵심 여부</div><div class="theme-row-val" style="color:${s2.ai_direct_core ? 'var(--green)' : 'var(--text3)'}">${s2.ai_direct_core ? '예' : '아니오'}</div></div>` : ''}
+        ${caution ? `<div class="caution-box">${softenBreaks(s2.caution)}</div>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+/* ── S7 VALUATION ── */
+function renderS7(s7) {
+  const el = document.getElementById('s7-card');
+  if (!s7) { el.innerHTML = ''; return; }
+
+  const con = s7.consensus_2026 || {};
+  const q1 = s7.q1_2026_actual || {};
+  const bull = s7.consensus_2026_bull || {};
+  const tp = (s7.target_prices || [])[0] || {};
+
+  const tpHtml = tp.target_low && tp.target_high
+    ? `${tp.target_low.toLocaleString()}~${tp.target_high.toLocaleString()}원`
+    : (tp.target_low || tp.target_high || null);
+
+  el.innerHTML = `
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-label">S7 — 밸류에이션</span>
+        <span class="section-sub">기준 ${s7.as_of || '—'}</span>
+      </div>
+      <div class="section-body">
+        <div class="val-grid" style="margin-bottom:10px;">
+          <div>
+            <div class="val-item-label">시가총액</div>
+            <div class="val-item-val" style="font-size:15px;font-family:inherit;">${s7.market_cap || '—'}</div>
+          </div>
+          <div>
+            <div class="val-item-label">현재가</div>
+            <div class="val-item-val ${s7.close ? '' : 'null-val'}">${s7.close ? s7.close.toLocaleString() + '원' : '키움API 대기'}</div>
+          </div>
+          ${s7.per_ttm !== null && s7.per_ttm !== undefined ? `<div><div class="val-item-label">최근 12개월 이익 대비 주가</div><div class="val-item-val">${s7.per_ttm}x</div></div>` : ''}
+          ${s7.pbr !== null && s7.pbr !== undefined ? `<div><div class="val-item-label">순자산 대비 주가</div><div class="val-item-val">${s7.pbr}x</div></div>` : ''}
+        </div>
+
+        ${Object.keys(con).length > 0 ? `
+        <div class="val-block">
+          <div class="val-block-title">시장 전망치 2026E</div>
+          <div class="val-block-row">
+            <span class="val-block-key">매출</span>
+            <span class="val-block-val">${bukFmt(con.revenue)} ${con.revenue_yoy_pct !== undefined ? pctHtml(con.revenue_yoy_pct) : ''}</span>
+          </div>
+          <div class="val-block-row">
+            <span class="val-block-key">영업이익</span>
+            <span class="val-block-val">${bukFmt(con.op_profit)} ${con.op_yoy_pct !== undefined ? pctHtml(con.op_yoy_pct) : ''}</span>
+          </div>
+          <div class="val-block-row">
+            <span class="val-block-key">영업이익률</span>
+            <span class="val-block-val">${con.op_margin_pct !== undefined ? con.op_margin_pct + '%' : '—'}</span>
+          </div>
+          ${con.source ? `<div style="font-size:13px;color:var(--text3);margin-top:8px;line-height:1.55;">${softenBreaks(con.source)}</div>` : ''}
+        </div>` : ''}
+
+        ${Object.keys(q1).length > 0 ? `
+        <div class="val-block">
+          <div class="val-block-title">1Q26 확정실적</div>
+          <div class="val-block-row">
+            <span class="val-block-key">매출</span>
+            <span class="val-block-val">${bukFmt(q1.revenue)} ${q1.op_yoy_pct !== undefined ? `<span style="font-size:13px;color:var(--green)">전년 대비 ${q1.op_yoy_pct > 0 ? '+' : ''}${q1.op_yoy_pct}%</span>` : ''}</span>
+          </div>
+          <div class="val-block-row">
+            <span class="val-block-key">영업이익</span>
+            <span class="val-block-val">${bukFmt(q1.op_profit)}</span>
+          </div>
+          <div class="val-block-row">
+            <span class="val-block-key">영업이익률</span>
+            <span class="val-block-val" style="color:var(--accent)">${q1.op_margin_pct !== undefined ? q1.op_margin_pct + '%' : '—'}</span>
+          </div>
+        </div>` : ''}
+
+        ${Object.keys(bull).length > 0 ? `
+        <div class="val-block" style="border-color:#2A1F00;">
+          <div class="val-block-title" style="color:var(--yellow)">낙관 시나리오 — ${softenBreaks(bull.broker || '')}</div>
+          <div class="val-block-row">
+            <span class="val-block-key">매출</span>
+            <span class="val-block-val bull-tag">${bukFmt(bull.revenue)}</span>
+          </div>
+          <div class="val-block-row">
+            <span class="val-block-key">영업이익률</span>
+            <span class="val-block-val bull-tag">${bull.op_margin_pct !== undefined ? bull.op_margin_pct + '%' : '—'}</span>
+          </div>
+          ${bull.assumption ? `<div style="font-size:13px;color:var(--text3);margin-top:8px;line-height:1.55;">${softenBreaks(bull.assumption)}</div>` : ''}
+        </div>` : ''}
+
+        ${tpHtml ? `
+        <div style="margin-top:6px;">
+          <div class="val-item-label">목표주가 범위</div>
+          <div style="font-size:15px;color:var(--green);font-family:'JetBrains Mono','SF Mono',monospace;">${tpHtml}</div>
+          ${s7.broker_breadth ? `<div class="broker-tag" style="margin-top:3px;">${softenBreaks(s7.broker_breadth)}</div>` : ''}
+        </div>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+/* ── S8 FINANCIALS ── */
+function renderS8(s8) {
+  const el = document.getElementById('s8-card');
+  if (!el) return;
+  if (!s8) { el.innerHTML = ''; return; }
+
+  const annual = s8.annual || [];
+  const qtr = s8.quarterly || [];
+  if (annual.length === 0 && qtr.length === 0) { el.innerHTML = ''; return; }
+
+  const annualRows = annual.map(r => {
+    const isEst = String(r.year || '').includes('E');
+    const cls = isEst ? 'est-row' : '';
+    const rev = Math.round((r.revenue || 0) / 1e8);
+    const opm = r.op_margin_pct;
+    const yoy = r.yoy_rev_pct !== undefined ? r.yoy_rev_pct : r.revenue_yoy_pct;
+    return `<tr class="${cls}">
+      <td>${r.year || '—'}</td>
+      <td>${rev ? rev.toLocaleString() : '—'}</td>
+      <td>${opm !== undefined && opm !== null ? opm + '%' : '—'}</td>
+      <td>${yoy !== undefined && yoy !== null ? pctHtml(yoy) : '—'}</td>
+    </tr>`;
+  }).join('');
+
+  const qtrRows = qtr.map(r => {
+    const rev = Math.round((r.revenue || 0) / 1e8);
+    const opm = r.op_margin_pct;
+    return `<tr>
+      <td>${r.quarter || '—'}</td>
+      <td>${rev ? rev.toLocaleString() : '—'}</td>
+      <td>${opm !== undefined && opm !== null ? opm + '%' : '—'}</td>
+      <td>—</td>
+    </tr>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-label">S8 — 실적 흐름</span>
+        <span class="section-sub">억원</span>
+      </div>
+      <div class="section-body" style="padding:8px 10px;">
+        ${annualRows ? `
+        <div class="fin-section-label">연간</div>
+        <table class="fin-table">
+          <thead><tr>
+            <th>연도</th><th>매출(억)</th><th>영업이익률</th><th>전년 대비</th>
+          </tr></thead>
+          <tbody>${annualRows}</tbody>
+        </table>` : ''}
+        ${qtrRows ? `
+        <div class="fin-section-label">분기</div>
+        <table class="fin-table">
+          <thead><tr>
+            <th>분기</th><th>매출(억)</th><th>영업이익률</th><th>전년 대비</th>
+          </tr></thead>
+          <tbody>${qtrRows}</tbody>
+        </table>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+/* ── S6 PRICE LEVEL ── */
+function renderS6(s6) {
+  const el = document.getElementById('s6-card');
+  if (!s6) { el.innerHTML = ''; return; }
+
+  const n = (v, sfx) => (v === null || v === undefined)
+    ? '<span class="level-item-val null-val">—</span>'
+    : `<span class="level-item-val">${typeof v === 'number' ? v.toLocaleString() : v}${sfx||''}</span>`;
+
+  const maRow = [
+    { label: '5일선',  val: s6.ma5,  delta: s6.price_vs_ma5 },
+    { label: '20일선', val: s6.ma20, delta: s6.price_vs_ma20 },
+    { label: '60일선', val: s6.ma60, delta: s6.price_vs_ma60 },
+  ].map(m => `
+    <div class="level-ma-chip">
+      <div class="level-ma-label">${m.label}</div>
+      <div class="level-ma-val">${m.val ? m.val.toLocaleString() : '—'}</div>
+      ${m.delta !== null && m.delta !== undefined
+        ? `<div class="level-ma-delta ${m.delta > 0 ? 'up' : 'down'}">${m.delta > 0 ? '+' : ''}${m.delta}%</div>`
+        : `<div class="level-ma-delta" style="color:var(--text3)">—</div>`}
+    </div>
+  `).join('');
+
+  const candleHtml = (s6.candle_prints || []).map(c => `
+    <div class="candle-item">
+      <span class="candle-date">${c.date}</span>
+      <span class="candle-type">${c.type}</span>
+      <span class="candle-level">${(c.level || 0).toLocaleString()}</span>
+    </div>
+  `).join('');
+
+  el.innerHTML = `
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-label">S6 — 가격 위치</span>
+        <span class="section-sub">${displayStatus(s6.level_maturity || '—')}</span>
+      </div>
+      <div class="section-body">
+        <div class="level-grid">
+          <div><div class="level-item-label">현재가</div>${n(s6.current_price)}</div>
+          <div><div class="level-item-label">52주 위치</div>${n(s6.position_52w_pct, '%')}</div>
+          <div><div class="level-item-label">52주 고점</div>${n(s6.high_52w)}</div>
+          <div><div class="level-item-label">52주 저점</div>${n(s6.low_52w)}</div>
+        </div>
+        <div class="level-ma-row">${maRow}</div>
+        ${s6.range_note ? `<div style="font-size:13px;color:var(--text3);margin-bottom:10px;line-height:1.55;">${softenBreaks(s6.range_note)}</div>` : ''}
+        ${candleHtml ? `<div class="candle-prints">${candleHtml}</div>` : ''}
+      </div>
+    </div>
+  `;
+}
+
+/* ── S12 NARRATIVE ── */
+function renderS12(s12) {
+  const el = document.getElementById('s12-section');
+  if (!s12) { el.innerHTML = ''; return; }
+
+  const rows = s12.rows || [];
+  if (rows.length === 0) { el.innerHTML = ''; return; }
+
+  const STAGE_CLS = { '태동':'태동','확산':'확산','가속':'가속','피크':'피크','소멸':'소멸','후퇴':'후퇴' };
+
+  const items = rows.map((r, idx) => {
+    const sc = STAGE_CLS[r.expectation_stage] || '';
+    const hm = r.hidden_momentum || {};
+    const hmHtml = hm.signal ? `
+      <div class="s12-hm">
+        <div class="s12-hm-label">숨은 흐름 ${hm.layer ? `· ${softenBreaks(hm.layer)}` : ''} ${hm.confidence ? `· ${softenBreaks(hm.confidence)}` : ''}</div>
+        ${softenBreaks(hm.signal)}
+      </div>` : '';
+    const invHtml = r.invalidation_trigger ? `
+      <div class="s12-invalidation">
+        <span class="s12-invalidation-label">무효화 ▸</span> ${softenBreaks(r.invalidation_trigger)}
+      </div>` : '';
+    return `
+      <div class="s12-item stage-${sc}">
+        <div class="s12-rail">
+          <span class="s12-stage-badge stage-badge-${sc}">${softenBreaks(r.expectation_stage || '—')}</span>
+          <span class="s12-step">${idx + 1}단계</span>
+        </div>
+        <div class="s12-item-body">
+          <div class="s12-item-head">
+            <span class="s12-date">${softenBreaks(r.date || '')}</span>
+            ${r.transition_direction === 'forward' ? '<span style="font-size:14px;color:var(--text3)">→</span>' : ''}
+          </div>
+          <div class="s12-narrative">${softenBreaks(r.narrative || '')}</div>
+          ${r.stage_evidence ? `<div class="s12-evidence">${softenBreaks(r.stage_evidence)}</div>` : ''}
+          ${hmHtml}
+          ${invHtml}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="s12-section">
+      <div class="s12-header">
+        <div class="s12-title">S12 — 기대감 단계</div>
+      </div>
+      <div class="s12-list">${items}</div>
+      ${s12.default_stage_note ? `<div class="read-muted" style="margin-top:12px;">${softenBreaks(s12.default_stage_note)}</div>` : ''}
+    </div>
+  `;
+}
+
+/* ── TIMELINE ── */
+function buildTimelineItems(data) {
+  const items = [];
+  const s3  = (data.S3  && Array.isArray(data.S3.rows))  ? data.S3.rows  : (Array.isArray(data.S3)  ? data.S3  : []);
+  const s9  = Array.isArray(data.S9)  ? data.S9  : [];
+  const s11 = (data.S11 && Array.isArray(data.S11.edges)) ? data.S11.edges : (Array.isArray(data.S11) ? data.S11 : []);
+  const s14 = Array.isArray(data.S14) ? data.S14 : [];
+
+  s3.forEach(d  => items.push({ date: d.date, layer: 'S3',  data: d }));
+  s9.forEach(e  => items.push({ date: e.date, layer: 'S9',  data: e }));
+  s11.forEach(e => items.push({ date: e.event_date || e.date, layer: 'S11', data: e }));
+  s14.forEach(e => items.push({ date: e.date, layer: 'S14', data: e }));
+
+  const priority = { S11: 0, S9: 1, S3: 2, S14: 3 };
+  items.sort((a, b) => {
+    if (b.date > a.date) return 1;
+    if (b.date < a.date) return -1;
+    return priority[a.layer] - priority[b.layer];
+  });
+  return items;
+}
+
+function renderTlItemS11(item) {
+  const d = item.data;
+  const ftEntries = [
+    { k: 'T+1',  v: d.t1_chg_pct  },
+    { k: 'T+3',  v: d.t3_chg_pct  },
+    { k: 'T+5',  v: d.t5_chg_pct  },
+    { k: 'T+10', v: d.t10_chg_pct },
+  ];
+  const hasFt = ftEntries.some(e => e.v !== null && e.v !== undefined);
+  const ftHtml = hasFt ? ftEntries.map(({ k, v }) => {
+    const val = v === null || v === undefined
+      ? '<span class="tl-ft-val" style="color:var(--text3)">—</span>'
+      : `<span class="tl-ft-val ${v > 0 ? 'pos' : v < 0 ? 'neg' : ''}">${v > 0 ? '+' : ''}${v}%</span>`;
+    return `<div class="tl-ft-item"><div class="tl-ft-label">${k}</div>${val}</div>`;
+  }).join('') : '';
+
+  return `
+    <div class="tl-item layer-S11">
+      <div class="tl-item-header">
+        <span class="tl-layer-badge layer-badge-S11">S11 반복 신호</span>
+        <span class="tl-type">${softenBreaks(d.type || '')}</span>
+        <span class="tl-confidence">${softenBreaks(d.confidence || '')}</span>
+      </div>
+      <div class="tl-pattern">${softenBreaks(d.pattern_label || d.pattern || '')}</div>
+      ${d.catalyst ? `<div class="tl-note">↳ ${softenBreaks(d.catalyst)}</div>` : ''}
+      ${d.edge_question ? `<div class="tl-edge-q"><div class="tl-edge-q-label">확인할 질문</div>${softenBreaks(d.edge_question)}</div>` : ''}
+      ${ftHtml ? `<div class="tl-follow">${ftHtml}</div>` : ''}
+      ${d.note ? `<div class="tl-note" style="margin-top:4px;">${softenBreaks(d.note)}</div>` : ''}
+    </div>
+  `;
+}
+
+function renderTlItemS9(item) {
+  const d = item.data;
+  return `
+    <div class="tl-item layer-S9">
+      <div class="tl-item-header">
+        <span class="tl-layer-badge layer-badge-S9">S9 사건</span>
+        <span class="tl-type">${softenBreaks(d.type || '')}</span>
+        <span class="tl-confidence">${softenBreaks(d.intensity || '')}</span>
+      </div>
+      <div class="tl-headline">${softenBreaks(d.headline || '')}</div>
+      ${d.detail ? `<div style="font-size:14px;color:var(--text2);margin-top:8px;line-height:1.6;">${softenBreaks(d.detail)}</div>` : ''}
+      ${d.source ? `<div class="tl-source">출처: ${softenBreaks(d.source)}</div>` : ''}
+      ${d.next_trigger ? `
+        <div class="tl-next-trigger">
+          <div class="tl-next-label">다음 확인 이벤트</div>
+          ${softenBreaks(d.next_trigger)}
+        </div>` : ''}
+    </div>
+  `;
+}
+
+function renderTlItemS14(item) {
+  const d = item.data;
+  return `
+    <div class="tl-item layer-S14">
+      <div class="tl-item-header">
+        <span class="tl-layer-badge layer-badge-S14">S14 판단</span>
+        <span class="tl-type">${softenBreaks(d.type || d.status || '')}</span>
+        <span class="tl-confidence">${softenBreaks(d.confidence || d.result || '')}</span>
+      </div>
+      <div class="tl-headline">${softenBreaks(d.headline || d.call || d.forecast || '')}</div>
+      ${d.note ? `<div class="tl-note">${softenBreaks(d.note)}</div>` : ''}
+      ${d.source ? `<div class="tl-source">출처: ${softenBreaks(d.source)}</div>` : ''}
+    </div>
+  `;
+}
+
+function renderTlItemS3(item) {
+  const d = item.data;
+  const fields = [
+    { label: '종가',    val: d.raw_close ?? d.close,  mono: true },
+    { label: '등락',    val: d.chg_pct   ?? d.change_pct, pct: true },
+    { label: '거래량',  val: d.volume },
+    { label: '거래대금(억)', val: d.value_traded },
+    { label: '외국인(억)', val: d.foreign_net },
+    { label: '기관(억)',   val: d.inst_net },
+  ];
+  const priceHtml = fields.map(f => {
+    let v;
+    if (f.val === null || f.val === undefined) {
+      v = '<span class="price-cell-val null-val">—</span>';
+    } else if (f.pct) {
+      const sign = f.val > 0 ? '+' : '';
+      const cls = f.val > 0 ? 'pos' : f.val < 0 ? 'neg' : '';
+      v = `<span class="price-cell-val ${cls}">${sign}${f.val}%</span>`;
+    } else {
+      v = `<span class="price-cell-val">${f.val}</span>`;
+    }
+    return `<div class="price-cell"><div class="price-cell-label">${f.label}</div>${v}</div>`;
+  }).join('');
+
+  const isRank = (d.capture === 'RANK') || (d.capture_flag === true);
+  return `
+    <div class="tl-item layer-S3">
+      <div class="tl-item-header">
+        <span class="tl-layer-badge layer-badge-S3">S3 가격·수급</span>
+        <span class="tl-type">${isRank ? '특이 거래 포착' : '일반 수집'}</span>
+      </div>
+      <div class="price-row">${priceHtml}</div>
+      ${d.note ? `<div class="tl-note">${softenBreaks(d.note)}</div>` : ''}
+    </div>
+  `;
+}
+
+function renderTimelineItems(items) {
+  if (items.length === 0) {
+    return '<div class="empty-timeline">데이터 없음</div>';
+  }
+
+  let html = '';
+  let lastDate = null;
+  items.forEach(item => {
+    if (item.date !== lastDate) {
+      html += `
+        <div class="tl-date-sep">
+          <span class="tl-date-chip">${item.date}</span>
+          <div class="tl-date-line"></div>
+        </div>`;
+      lastDate = item.date;
+    }
+    html += renderTimelineItem(item);
+  });
+  return html;
+}
+
+function renderTimelineItem(item) {
+  if (item.layer === 'S11') return renderTlItemS11(item);
+  if (item.layer === 'S9') return renderTlItemS9(item);
+  if (item.layer === 'S14') return renderTlItemS14(item);
+  if (item.layer === 'S3') return renderTlItemS3(item);
+  return '';
+}
+
+function renderSignalDateRows(edgeItems, eventItems, priceItems) {
+  const priceByDate = new Map(priceItems.map(item => [item.date, item]));
+  const signalDates = [...new Set([...edgeItems, ...eventItems].map(item => item.date).filter(Boolean))]
+    .sort((a, b) => b.localeCompare(a));
+
+  if (signalDates.length === 0) {
+    return '<div class="empty-timeline">관측 날짜 없음</div>';
+  }
+
+  const priority = { S9: 0, S14: 1, S11: 2, S3: 3 };
+
+  return `
+    <div class="signal-date-list">
+      ${signalDates.map(date => {
+        const events = eventItems.filter(item => item.date === date);
+        const edges = edgeItems.filter(item => item.date === date);
+        const price = priceByDate.get(date);
+        const rows = [...events, ...edges, ...(price ? [price] : [])]
+          .sort((a, b) => (priority[a.layer] ?? 9) - (priority[b.layer] ?? 9));
+
+        const bits = [];
+        if (events.length) bits.push(`이벤트 ${events.length}`);
+        if (edges.length) bits.push(`반복 신호 ${edges.length}`);
+        if (price) bits.push('가격');
+
+        return `
+          <div class="signal-date-row">
+            <div class="signal-date-side">
+              <div class="signal-date">${date}</div>
+              <div class="signal-date-sub">${bits.join(' · ') || '기록'}</div>
+            </div>
+            <div class="signal-date-body">
+              ${rows.map(renderTimelineItem).join('')}
+            </div>
+          </div>`;
+      }).join('')}
+    </div>`;
+}
+
+function renderTimelineGroup(layer, title, meta, items, open, extraHtml) {
+  return `
+    <details class="timeline-group layer-${layer}" ${open ? 'open' : ''}>
+      <summary>
+        <span class="group-toggle"></span>
+        <span class="timeline-group-title">${title}</span>
+        <span class="timeline-group-count">${meta}</span>
+      </summary>
+      <div class="timeline-group-body">
+        ${renderTimelineItems(items)}
+        ${extraHtml || ''}
+      </div>
+    </details>`;
+}
+
+function renderTimeline(data) {
+  const items = buildTimelineItems(data);
+  const container = document.getElementById('timeline');
+
+  const edgeItems = items.filter(item => item.layer === 'S11');
+  const eventItems = items.filter(item => item.layer === 'S9' || item.layer === 'S14');
+  const priceItems = items.filter(item => item.layer === 'S3');
+  const signalDates = new Set([...edgeItems, ...eventItems].map(item => item.date).filter(Boolean));
+
+  const summary = document.getElementById('timeline-summary');
+  if (summary) {
+    summary.textContent = `관측일 ${signalDates.size}일 · 반복 신호 ${edgeItems.length} · 사건 ${eventItems.length}`;
+  }
+
+  const s11obj = data.S11;
+  const edgeExtra = (s11obj && s11obj.synth_narrative && !s11obj.synth_narrative.startsWith('S3 데이터 없음'))
+    ? `
+      <div class="s11-synth">
+        <div class="s11-synth-label">S11 반복 패턴 요약</div>
+        <div class="s11-synth-text">${softenBreaks(s11obj.synth_narrative)}</div>
+      </div>`
+    : '';
+
+  let html = '';
+  html += `
+    <details class="timeline-group layer-SIGNAL">
+      <summary>
+        <span class="group-toggle"></span>
+        <span class="timeline-group-title">날짜별 사건·반응 로그</span>
+        <span class="timeline-group-count">${signalDates.size}일 · 사건 ${eventItems.length} · 반복 신호 ${edgeItems.length}</span>
+      </summary>
+      <div class="timeline-group-body">
+        <div class="term-help">
+          반복 신호 = 과거에도 반복된 가격·수급 패턴입니다. 매수세 과밀/쏠림 = 이미 많은 매수 기대가 몰려 작은 악재에도 급락하기 쉬운 상태입니다. 급등 후 바로 꺾임 = 강하게 오른 다음 거래일에 바로 크게 밀리는 위험 신호입니다.
+        </div>
+        ${renderSignalDateRows(edgeItems, eventItems, priceItems)}
+        ${edgeExtra}
+      </div>
+    </details>`;
+  html += renderTimelineGroup('S3', '전체 가격 원장', `S3 · ${priceItems.length}`, priceItems, false);
+
+  if (data.S15 && Array.isArray(data.S15.absence_log) && data.S15.absence_log.length > 0) {
+    const daHtml = data.S15.absence_log.map(a => {
+      if (typeof a === 'string') return `<div class="da-item">${softenBreaks(a)}</div>`;
+      return `<div class="da-item"><span class="da-field">${softenBreaks(a.field || '')}</span>${a.reason ? ' — ' + softenBreaks(a.reason) : ''}</div>`;
+    }).join('');
+    html += `
+      <details class="timeline-group layer-S15">
+        <summary>
+          <span class="group-toggle"></span>
+          <span class="timeline-group-title">데이터 부재</span>
+          <span class="timeline-group-count">S15 · ${data.S15.absence_log.length}</span>
+        </summary>
+        <div class="timeline-group-body">
+          <div class="data-absent-bar">${daHtml}</div>
+        </div>
+      </details>`;
+  }
+
+  container.innerHTML = html;
+}
+
+/* ── S0 AGENT BRIEFING ── */
+const GRP_META = {
+  O: { name: '오케스트레이션', cls: 'grp-O' },
+  A: { name: '스카우트',       cls: 'grp-A' },
+  M: { name: '매크로',         cls: 'grp-M' },
+  B: { name: '팩트베이스',     cls: 'grp-B' },
+  C: { name: '알파',           cls: 'grp-C' },
+  D: { name: '관점대결',       cls: 'grp-D' },
+  E: { name: '레드팀',         cls: 'grp-E' },
+  F: { name: '편집',           cls: 'grp-F' },
+};
+
+function tierCls(tier) {
+  if (!tier || tier === 'det') return 'tier-det';
+  if (tier.includes('Opus'))   return 'tier-Opus';
+  if (tier.includes('Sonnet')) return 'tier-Sonnet';
+  if (tier.includes('Haiku'))  return 'tier-Haiku';
+  if (tier === '결정론')       return 'tier-det';
+  return 'tier-det';
+}
+
+function isStandby(brief) {
+  return brief && (brief.includes('대기') || brief.includes('미가동') || brief.includes('결정론 봇'));
+}
+
+function renderS0(s0) {
+  const el = document.getElementById('s0-section');
+  if (!s0) { el.innerHTML = ''; return; }
+
+  const briefs = s0.briefs || [];
+  if (briefs.length === 0) { el.innerHTML = ''; return; }
+
+  // 군별 그룹화
+  const groups = {};
+  const ORDER = ['O','A','M','B','C','D','E','F'];
+  ORDER.forEach(k => { groups[k] = []; });
+  briefs.forEach(b => {
+    const grp = b.agent ? b.agent[0] : 'O';
+    if (groups[grp]) groups[grp].push(b);
+  });
+
+  const ac = s0.agent_count || {};
+  const trigger = s0.session_trigger || '';
+
+  const groupsHtml = ORDER.map(grp => {
+    const agents = groups[grp];
+    if (!agents || agents.length === 0) return '';
+    const meta = GRP_META[grp] || { name: grp, cls: '' };
+
+    const agentsHtml = agents.map(b => {
+      const standby = isStandby(b.brief);
+      const tc = tierCls(b.tier);
+      const tierLabel = (b.tier || 'det').replace('결정론+', '').replace('O3계산read+', '');
+      return `
+        <div class="s0-agent${standby ? ' standby' : ''}">
+          <span class="s0-agent-id">${b.agent || ''}</span>
+          <span class="s0-agent-role">${softenBreaks(b.role || '')}</span>
+          <span class="s0-tier-badge ${tc}">${softenBreaks(tierLabel)}</span>
+          <span class="s0-brief${standby ? ' standby-text' : ''}">${softenBreaks(b.brief || '')}</span>
+        </div>`;
+    }).join('');
+
+    const activeCount = agents.filter(b => !isStandby(b.brief)).length;
+    return `
+      <div class="s0-group ${meta.cls}" id="s0-grp-${grp}">
+        <div class="s0-group-header" onclick="toggleGrp('${grp}')">
+          <span class="s0-group-label">${grp}군</span>
+          <span class="s0-group-name">${meta.name}</span>
+          <span class="s0-group-count">${activeCount}/${agents.length} 가동</span>
+        </div>
+        <div class="s0-group-body">${agentsHtml}</div>
+      </div>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div class="s0-section">
+      <div class="s0-header">
+        <span class="s0-title">S0 — 에이전트 브리핑</span>
+        <span class="s0-meta">${ac.llm || 0} 인공지능 · ${ac.deterministic || 0} 결정론 · 총 ${ac.total || 0}봇</span>
+        <span class="s0-meta" style="margin-left:auto;">${softenBreaks(trigger)}</span>
+      </div>
+      ${groupsHtml}
+    </div>`;
+}
+
+function toggleGrp(grp) {
+  const el = document.getElementById('s0-grp-' + grp);
+  if (el) el.classList.toggle('open');
+}
+
+/* ── MAIN ── */
+async function main() {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
+  const cacheBust = params.get('v') || Date.now();
+  if (!code) {
+    document.getElementById('loading').style.display = 'none';
+    const err = document.getElementById('error');
+    err.style.display = 'flex';
+    err.innerHTML = 'URL에 <code>?code=XXXXXX</code> 파라미터 필요';
+    return;
+  }
+
+  try {
+    const idxRes = await fetch(`../stocks/_index.json?v=${cacheBust}`, { cache: 'no-store' });
+    if (!idxRes.ok) throw new Error('인덱스 로드 실패');
+    const idx = await idxRes.json();
+
+    const filename = idx[code];
+    if (!filename) throw new Error(`코드 ${code} 를 인덱스에서 찾을 수 없음`);
+
+    const stockRes = await fetch(`../stocks/${encodeURIComponent(filename)}.json?v=${cacheBust}`, { cache: 'no-store' });
+    if (!stockRes.ok) throw new Error(`${filename}.json 로드 실패`);
+    const data = await stockRes.json();
+
+    document.getElementById('loading').style.display = 'none';
+    const app = document.getElementById('app');
+    app.style.display = 'flex';
+
+    renderHeader(data);
+    renderS1(data.S1);
+    renderS2(data.S2);
+    renderS7(data.S7);
+    renderS8(data.S8);
+    renderS6(data.S6);
+    renderS12(data.S12);
+    renderTimeline(data);
+    renderS0(data.S0);
+
+  } catch (e) {
+    document.getElementById('loading').style.display = 'none';
+    const err = document.getElementById('error');
+    err.style.display = 'flex';
+    err.textContent = `오류: ${e.message}`;
+  }
+}
+
+main();
+</script>
+</body>
+</html>

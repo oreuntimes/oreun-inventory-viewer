@@ -1,0 +1,183 @@
+{
+  "meta": {
+    "code": "002990",
+    "name": "금호건설",
+    "market": "KOSPI",
+    "security_type": "보통주",
+    "lifecycle_status": "상장",
+    "schema_version": "v2",
+    "stock_type": "순수테마주",
+    "valuation_basis": "PBR",
+    "fiscal_year_end": "12",
+    "market_cap_band": "소형",
+    "listed_date": null,
+    "tier_profile": "MINIMAL",
+    "level_maturity": "warm-up",
+    "ledger_created": "2026-06-30",
+    "last_updated": "2026-06-30",
+    "last_lens_run": null,
+    "tags_lens": [],
+    "data_absent_fields": [
+      "종목별_7주체잔여 — 시장레벨만 존재",
+      "반도체 팹 EPC 시공 실적·계약 — 공시 없음",
+      "삼성물산·SK에코플랜트 계열 우선 발주 가능성 — 미검증"
+    ],
+    "aliases": [],
+    "sector_wics": "데이터부재—미수집",
+    "sector_gics": "데이터부재—미수집",
+    "market_cap_value": "데이터부재—미수집",
+    "shares_outstanding": "데이터부재—미수집",
+    "isin": "데이터부재—미수집",
+    "adjustment_events": [],
+    "archive_pointers": []
+  },
+  "S1": {
+    "as_of": "2026-06-30",
+    "business_core": "종합건설업 / 광주광역시 기반 / 토목·건축·주택 (아파트·상업시설·산업단지 시공)",
+    "negative_anchor": [
+      "반도체 소부장 X",
+      "반도체 팹 전문 EPC 경험 미확인",
+      "삼성물산·SK에코플랜트 자체 계열사 우선 발주 가능성 (리스크)"
+    ],
+    "value_chain_node": "인프라 (EPC 종합건설)",
+    "differentiator": "광주광역시 태생 1군 종합건설사 — 호남권 대형 산업단지 공사 시공 이력 및 역량",
+    "differentiator_verified": false,
+    "biz_tags": [
+      "#건설",
+      "#종합건설",
+      "#광주기반",
+      "#산업단지",
+      "#정책테마"
+    ],
+    "revenue_mix": null,
+    "key_customers": null
+  },
+  "S2": {
+    "as_of": "2026-06-30",
+    "primary_theme": "POLICY-SEMICONDUCTOR-CLUSTER",
+    "secondary_themes": [
+      "INDUST-CONST-INFRASTR"
+    ],
+    "selection_cascade": "정책발표 → 호남 팹 건설 수혜 → 광주 기반 1군 건설사 → 산업단지 시공 역량",
+    "theme_tier": "건설토목",
+    "intensity": 2,
+    "variant_bucket": "정책취약",
+    "peer_set": [
+      "005620",
+      "228340"
+    ],
+    "theme_change_log": []
+  },
+  "S3": [
+    {
+      "date": "2026-06-29",
+      "close": null,
+      "change_pct": null,
+      "volume": null,
+      "value_traded": null,
+      "vs_20d_avg": null,
+      "foreign_net": null,
+      "inst_net": null,
+      "capture_flag": false,
+      "note": "금호건설·금호건설우 상한가 기록 (KRX 발표 — 수치 미수집)",
+      "row_status": "정상",
+      "capture": "no-rank",
+      "adj_factor": 1.0
+    },
+    {
+      "date": "2026-06-30",
+      "close": null,
+      "change_pct": null,
+      "volume": null,
+      "value_traded": null,
+      "vs_20d_avg": null,
+      "foreign_net": null,
+      "inst_net": null,
+      "capture_flag": false,
+      "note": "LEDGER 생성일",
+      "row_status": "정상",
+      "capture": "no-rank",
+      "adj_factor": 1.0
+    }
+  ],
+  "S4": null,
+  "S5": null,
+  "S6": {
+    "as_of": "2026-06-30",
+    "high_52w": null,
+    "low_52w": null,
+    "position_52w_pct": null,
+    "ledger_high": null,
+    "ledger_low": null,
+    "ma5": null,
+    "ma20": null,
+    "ma60": null,
+    "level_maturity": "warm-up",
+    "invalidation": "삼성·SK 계열사 우선 발주 확정 or 호남 팹 계획 축소",
+    "candle_prints": []
+  },
+  "S7": null,
+  "S8": null,
+  "S9": [
+    {
+      "date": "2026-06-29",
+      "type": "정책발표",
+      "headline": "2000조 호남 반도체 클러스터 국민보고회 — 광주 기반 건설주 상한가",
+      "source": "KRX·언론",
+      "relevance": "직접(수주 가능)",
+      "intensity": "🟡",
+      "status": "완료",
+      "next_trigger": "호남 팹 EPC 발주 공고 / 금호건설 수주 공시"
+    }
+  ],
+  "S10": null,
+  "S11": [
+    {
+      "event_id": "E001",
+      "date": "2026-06-29",
+      "type": "테마급등",
+      "pattern": "정책발표 → 광주 기반 1군 건설주 상한가",
+      "catalyst": "2000조 호남 반도체 클러스터 발표",
+      "confidence": "🟡",
+      "edge_question": "삼성물산·SK에코플랜트 자체 계열사 우선 발주 시 금호건설 수주 기회 제한 — 핵심 네거티브 앵커 후보",
+      "follow_through": {
+        "t1": null,
+        "t3": null,
+        "t5": null,
+        "t10": null
+      },
+      "note": "금호건설우 동시 상한가 확인"
+    }
+  ],
+  "S12": null,
+  "S13": null,
+  "S14": null,
+  "S15": {
+    "birth_date": "2026-06-30",
+    "birth_trigger": "2000조 클러스터 N1 배치 #3",
+    "data_absent": [
+      {
+        "field": "S3 가격 수치",
+        "reason": "AUTO-CRAWL 미연결",
+        "resolve": "O2 연결 시 자동"
+      },
+      {
+        "field": "반도체 팹 EPC 경험",
+        "reason": "공시·보도 없음",
+        "resolve": "수주 or 관계자 언급"
+      }
+    ],
+    "changelog": [
+      {
+        "date": "2026-06-30",
+        "action": "BIRTH",
+        "note": "schema v2, N1 배치 #3"
+      },
+      {
+        "date": "2026-06-30",
+        "action": "backport_v2",
+        "note": "schema v2 정합화 — meta 필드 추가: aliases, sector_wics, sector_gics, market_cap_value, shares_outstanding, isin, adjustment_events, archive_pointers"
+      }
+    ]
+  }
+}
