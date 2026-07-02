@@ -1,0 +1,1363 @@
+{
+  "S0": {
+    "section": "에이전트 브리핑 레이어",
+    "protocol": "DEEP-MANUAL 초도 생성. 공개 웹·공시·IR·시세 스냅샷 기반. 자동 O2/Kiwoom 수급 원장은 아직 미연결.",
+    "as_of": "2026-07-03",
+    "session_trigger": "DEEP-MANUAL — 한솔테크닉스 최고품질 생성 요청",
+    "agent_count": {
+      "llm": 24,
+      "deterministic": 8,
+      "total": 32
+    },
+    "briefs": [
+      {
+        "agent": "O1",
+        "role": "런 컨덕터",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "수동 DEEP 생성. 신규 파일 004710_한솔테크닉스.json 생성 및 _index 등록 대상으로 라우팅."
+      },
+      {
+        "agent": "O2",
+        "role": "일별 크롤 봇",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "자동 TICK 미가동. S3는 공개 시세로 2026-06-17~2026-07-02 핵심 변동 구간만 기록. 외인·기관 net은 종목귀속 원천 미확보로 null."
+      },
+      {
+        "agent": "O3",
+        "role": "계산층 봇",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "S3 표본 부족으로 MA·z-score·RS 정량 산출은 보류. 52주 위치와 급등 이후 낙폭만 공개 가격으로 단순 계산."
+      },
+      {
+        "agent": "A1",
+        "role": "수급 파서",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "외인·기관 순매수 미수집. 대주주·자산운용사 보유 공시는 별도 지분 이벤트로만 기록하고 일별 수급으로 변환하지 않음."
+      },
+      {
+        "agent": "A2",
+        "role": "공시 파서",
+        "class": "LLM",
+        "tier": "Haiku",
+        "brief": "2026Q1 잠정실적, 유상증자, 윌테크놀러지 인수, 오창공장 매각, 주요주주 보유 변동을 S8·S9·S15에 반영."
+      },
+      {
+        "agent": "A3",
+        "role": "시세 파서",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "2026-06-17 상한가 15,340원, 2026-06-22 52주 고점 16,430원, 2026-07-02 종가 9,890원까지 가격 반응을 기록."
+      },
+      {
+        "agent": "A4",
+        "role": "테마·뉴스 파서",
+        "class": "LLM",
+        "tier": "Haiku",
+        "brief": "정본 테마는 전자부품·EMS에서 반도체 부품/프로브카드로 이동 중. 태양광은 보조 테마, AI/HBM 직접수혜 단정은 금지."
+      },
+      {
+        "agent": "A5",
+        "role": "웹 정보 수집가",
+        "class": "LLM",
+        "tier": "Sonnet",
+        "brief": "회사 공식 제품·재무·주식정보, KRX/DART 공시, 연합뉴스, 메리츠 리포트 요약, 시세 페이지를 교차 확인."
+      },
+      {
+        "agent": "A6",
+        "role": "데이터 통합관",
+        "class": "결정론+Sonnet",
+        "tier": "core",
+        "brief": "본업 수익성, 대규모 M&A, 유상증자 희석, 오창공장 매각, 윌테크놀러지 성장 옵션을 하나의 spine으로 통합. 불확실한 항목은 데이터부재로 남김."
+      },
+      {
+        "agent": "A7",
+        "role": "기업 스파이",
+        "class": "LLM",
+        "tier": "Sonnet",
+        "brief": "공개출처 기반 히든 인텔 후보: 오창공장 매각으로 유동성 확보, 윌테크놀러지의 메모리 프로브카드 확장, 한솔오리온텍 온기 반영."
+      },
+      {
+        "agent": "M1",
+        "role": "매크로 분석가",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "전방은 TV·가전 경기, 스마트폰/태블릿 EMS, 반도체 설비투자와 파운드리·CIS/AP 검사 수요에 동시 노출."
+      },
+      {
+        "agent": "M2",
+        "role": "시장 지위 분석가",
+        "class": "LLM",
+        "tier": "Sonnet",
+        "brief": "단순 전자부품 저마진주에서 반도체 장비부품·프로브카드 포트폴리오 재평가 후보로 시장 분류가 바뀌는 구간."
+      },
+      {
+        "agent": "B1",
+        "role": "기업조사관",
+        "class": "LLM",
+        "tier": "Sonnet",
+        "brief": "한솔테크닉스는 디스플레이/가전 파워보드, 스마트폰 EMS, 태양광 모듈, 전장, 반도체 부품을 영위하는 한솔그룹 전기전자부품 기업."
+      },
+      {
+        "agent": "B2",
+        "role": "수급원장 키퍼",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "S3 canonical shape 준수. 가격·거래량·거래대금은 공개 시세 기반, 외인·기관 net은 null."
+      },
+      {
+        "agent": "B3",
+        "role": "차트 분석가",
+        "class": "LLM",
+        "tier": "Haiku",
+        "brief": "6/17 상한가 이후 6/22 52주 고점까지 재급등했으나 7/02 종가 기준 52주 고점 대비 -39.8% 후퇴. MA는 미산출."
+      },
+      {
+        "agent": "B4",
+        "role": "가치평가 애널리스트",
+        "class": "LLM",
+        "tier": "Sonnet",
+        "brief": "2025년 순이익 급감으로 PER은 의미가 약하다. 핵심은 2026E 영업이익 회복과 윌테크놀러지 연결·프로브카드 가치 반영 여부."
+      },
+      {
+        "agent": "B5",
+        "role": "이벤트 기록관",
+        "class": "LLM",
+        "tier": "Haiku",
+        "brief": "주요 이벤트: 2025 오리온텍·SI Materials 인수, 2026 유상증자, 2026Q1 흑자 회복, 오창공장 매각, 윌테크놀러지 인수 완료."
+      },
+      {
+        "agent": "C1",
+        "role": "테마 흐름 추적자",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "반도체 검사부품·프로브카드 테마가 6월 가격 급등을 주도. 태양광·전장·EMS는 보조 테마로 유지."
+      },
+      {
+        "agent": "C2",
+        "role": "유동성 퀀트",
+        "class": "LLM",
+        "tier": "Haiku",
+        "brief": "6/22 거래대금 1,896.8억원, 6/18 1,077.7억원으로 테마 급등 구간 유동성 과열 확인. 주체별 수급은 부재."
+      },
+      {
+        "agent": "C3",
+        "role": "수급 탐정",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "세력·작전 단정 금지. 공개 데이터로는 'M&A 재평가 유동성 쏠림 후 빠른 냉각'까지만 말할 수 있음."
+      },
+      {
+        "agent": "C4",
+        "role": "내러티브 분석가",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "내러티브는 '저마진 전자부품주 → 반도체 소부장 지주형 포트폴리오' 전환. 현재는 과열 후 실적·증자 마무리 검증 구간."
+      },
+      {
+        "agent": "C5",
+        "role": "패턴 발굴가",
+        "class": "LLM",
+        "tier": "Sonnet",
+        "brief": "급등 후 바로 꺾임 패턴 후보 2건: 6/17 상한가 후 6/18 -10.37%, 6/22 +18.20% 후 6/23 -16.75%. 표본 부족으로 가설 단계."
+      },
+      {
+        "agent": "C6",
+        "role": "섹터 전문가",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "프로브카드는 반도체 테스트 공정 소모성 핵심 부품. 윌테크놀러지는 비메모리 중심이며 메모리 진입은 아직 시나리오다."
+      },
+      {
+        "agent": "D1",
+        "role": "강세론자",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "강세 명제: 윌테크놀러지·아이원스·오리온텍 편입으로 전자부품 저마진 구조에서 고부가 포트폴리오로 이동. 본업 효율화와 자산 매각도 재무 방어."
+      },
+      {
+        "agent": "D2",
+        "role": "약세론자",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "약세 명제: 2025 순이익 급감, 유상증자 희석, 인수·증설 부담, 6월 급등 후 -40% 냉각이 단기 매수세 과밀을 드러냄."
+      },
+      {
+        "agent": "D3",
+        "role": "컨빅션 심판",
+        "class": "LLM",
+        "tier": "Sonnet",
+        "brief": "정성 CS +0.4. 중기 포트폴리오 전환은 흥미롭지만, 단기 가격은 과열 후 검증 전이다. 판정: 관망-조건부 관심."
+      },
+      {
+        "agent": "E1",
+        "role": "팩트체커",
+        "class": "LLM",
+        "tier": "core",
+        "brief": "AI/HBM 직접수혜, 세력 매집, 윌테크놀러지 메모리 진입 성공은 모두 추정으로 분리. 확인된 사실과 시나리오를 구분."
+      },
+      {
+        "agent": "E2",
+        "role": "구조 검증관",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "JSON canonical contract 기준으로 생성. S3 필드는 schemas/s3_row_fieldmap.json 준수."
+      },
+      {
+        "agent": "E3",
+        "role": "가격연속성 검증관",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "주가조정 이벤트 미확인. adj_factor=1.0으로 임시 기록. 장기 시계열 확보 전 연속성 판정 보류."
+      },
+      {
+        "agent": "F1",
+        "role": "수석편집장",
+        "class": "LLM",
+        "tier": "Opus",
+        "brief": "S1~S19 DEEP 초도 조립. 사실·해석·추정·데이터부재를 분리."
+      },
+      {
+        "agent": "F2",
+        "role": "콜 채점관",
+        "class": "LLM",
+        "tier": "Haiku",
+        "brief": "S14는 공식 매매콜이 아니라 관찰 forecast. 다음 검증일은 2026-08-06 실적 발표 예정일과 2026-07-08 유증 최종가 확정 이벤트."
+      },
+      {
+        "agent": "F3",
+        "role": "출판 봇",
+        "class": "결정론",
+        "tier": "det",
+        "brief": "004710_한솔테크닉스.json 신규 직렬화 및 stocks/_index.json 등록."
+      }
+    ]
+  },
+  "meta": {
+    "schema_version": "v2",
+    "code": "004710",
+    "name": "한솔테크닉스",
+    "aliases": [
+      "Hansol Technics",
+      "HansolTechnics"
+    ],
+    "market": "KOSPI",
+    "security_type": "보통주",
+    "lifecycle_status": "상장",
+    "sector_wics": "전자장비와기기/전자부품",
+    "sector_krx": "제조업",
+    "stock_type": "반도체사업재편주",
+    "valuation_basis": "턴어라운드+PBR+사업가치재평가",
+    "fiscal_year_end": "12",
+    "themes": [
+      "반도체검사부품",
+      "프로브카드",
+      "반도체장비부품",
+      "전자부품",
+      "EMS",
+      "태양광모듈",
+      "전장부품"
+    ],
+    "market_cap_value": "약 4,018억원(2026-07-02 종가 9,890원 × 상장주식수 40,629,517주)",
+    "market_cap_band": "중소형",
+    "shares_outstanding": "40,629,517주(한솔테크닉스 주식정보/대량보유보고서 2026-05-20 기준)",
+    "free_float_pct": null,
+    "listed_date": "1988-07-06",
+    "founded": "1966-08-20",
+    "isin": "KR7004710000",
+    "headquarters": "서울시 중구 을지로 100 파인애비뉴 B동 5층",
+    "ceo": "유경준",
+    "major_shareholders": [
+      {
+        "name": "한솔홀딩스",
+        "shares": 15718088,
+        "pct": 38.69,
+        "as_of": "2026-05-20",
+        "note": "제3자배정 유상증자 참여 후 대량보유보고 기준"
+      },
+      {
+        "name": "미래에셋자산운용",
+        "shares": 1583498,
+        "pct": 5.04,
+        "as_of": "2026-05-21",
+        "note": "약식 대량보유보고 기준, 단순투자"
+      }
+    ],
+    "foreign_ownership_pct": "약 3.82%(매일경제 마켓 2026-07-02 화면 기준)",
+    "ledger_created": "2026-07-03",
+    "created": "2026-07-03",
+    "last_updated": "2026-07-03",
+    "last_lens_run": "2026-07-03",
+    "level_maturity": "deep-manual",
+    "tier_profile": "DEEP",
+    "tags_lens": [
+      "DEEP",
+      "프로브카드",
+      "반도체소부장",
+      "유상증자",
+      "사업재편",
+      "급등후냉각"
+    ],
+    "adjustment_events": [],
+    "data_absent_fields": [
+      "외인·기관 일별 순매수 — 자동 수급 원장 미연결",
+      "MA5·MA20·MA60 — S3 시계열 부족",
+      "2026년 유상증자 최종 완료 후 총 발행주식수·주주구성 — 후속 공시 확인 필요",
+      "윌테크놀러지 연결 후 2026E 전사 실적 — 편입 시점과 회계처리 확인 필요",
+      "윌테크놀러지 메모리 프로브카드 진입 성공 여부 — 리포트 시나리오, 확정 공시 아님",
+      "고객사별 매출 비중 — 공개자료 제한",
+      "반도체 부문별 정확한 2026 매출 믹스 — 최신 사업보고서 세부표 미파싱"
+    ],
+    "archive_pointers": []
+  },
+  "S1": {
+    "as_of": "2026-07-03",
+    "business_core": "한솔테크닉스는 한솔그룹 계열 전기·전자부품 기업이다. 공식 제품군은 디스플레이용 PD보드·3 in 1 보드, 생활가전 인버터 제어보드/파워보드, 스마트폰 무선충전 모듈·스마트폰/태블릿 EMS, 태양광 모듈, 자동차 전장, 반도체 정밀가공·세정·특수코팅 부품이다. 2021년 한솔아이원스 인수로 반도체 장비부품에 진입했고, 2025년 오리온텍·SI Materials, 2026년 윌테크놀러지 편입으로 반도체 소재·부품·검사 포트폴리오를 확대했다.",
+    "negative_anchor": [
+      "반도체 칩 제조사 X — 부품·검사 소모품·정밀가공/세정/코팅 공급자",
+      "HBM 직접 제조 X — 프로브카드/부품 밸류체인 가능성만 존재",
+      "윌테크놀러지 메모리 프로브카드 진입은 확정 실적이 아니라 성장 시나리오",
+      "2026년 급등은 M&A 재평가와 수급 쏠림이 섞인 구간. 실적 검증 전 주가만으로 체질 개선 확정 금지",
+      "태양광은 사업군 중 하나지만 현재 주가 내러티브의 주축은 반도체 사업재편"
+    ],
+    "value_chain_node": "전자부품 제조/EMS + 반도체 장비부품·검사부품 포트폴리오",
+    "differentiator": "전자부품 제조 기반 위에 한솔아이원스(정밀가공·세정·코팅), SI Materials(실리콘 부산물 재활용), 한솔오리온텍(선박 발전용 엔진 제어시스템), 윌테크놀러지(비메모리 프로브카드)를 붙여 고부가 사업 비중을 키우는 사업재편 스토리",
+    "differentiator_verified": true,
+    "biz_tags": [
+      "#전자부품",
+      "#파워보드",
+      "#스마트폰EMS",
+      "#태양광모듈",
+      "#전장부품",
+      "#반도체부품",
+      "#프로브카드",
+      "#사업재편"
+    ],
+    "revenue_mix": {
+      "전자부품": "약 50%(2024 기준 리포트)",
+      "EMS": "약 28%(2024 기준 리포트)",
+      "반도체": "약 13%(2024 기준 리포트, 윌테크놀러지 편입 전)",
+      "전장부품": "약 5%(2024 기준 리포트)",
+      "태양광모듈": "약 4%(2024 기준 리포트)"
+    },
+    "revenue_mix_note": "2024 기준 사업부문별 매출 비중. 2025~2026 M&A 이후 실제 믹스는 한솔오리온텍·윌테크놀러지 연결 반영 후 재계산 필요.",
+    "key_customers": {
+      "display_home_appliance": [
+        "대형 TV/가전 고객사(상세 비공개)"
+      ],
+      "smartphone_ems": [
+        "스마트폰·태블릿 고객사(상세 비공개)"
+      ],
+      "semiconductor_parts": [
+        "반도체 제조·장비 고객사(한솔아이원스 경유, 상세 비공개)"
+      ],
+      "probe_card": [
+        "AP/CIS 고객사(윌테크놀러지 경유, 상세 비공개)"
+      ]
+    },
+    "warning": "이 종목의 본질은 '저마진 전자부품 본업의 효율화 + 반도체 부품 M&A의 실적화'다. 단기 차트는 이미 과열과 냉각을 모두 보여줬으므로, 다음 판단은 윌테크놀러지 연결 효과와 2Q26 실적 확인이 우선이다."
+  },
+  "S2": {
+    "as_of": "2026-07-03",
+    "primary_theme": "반도체검사부품·프로브카드",
+    "secondary_themes": [
+      "반도체장비부품",
+      "전자부품",
+      "스마트폰EMS",
+      "태양광모듈",
+      "전장부품",
+      "사업재편"
+    ],
+    "selection_cascade": "전자부품 → 파워보드/EMS → 반도체 장비부품 → 프로브카드 → 사업 포트폴리오 재평가",
+    "theme_tier": "사업재편+반도체소부장",
+    "intensity": {
+      "테마직접": 3,
+      "실적가시성": 2,
+      "재무희석": 3,
+      "쏠림위험": 4
+    },
+    "variant_bucket": "M&A재평가+급등후냉각",
+    "peer_set": [
+      "114810",
+      "131290",
+      "064760",
+      "089030"
+    ],
+    "ai_direct_core": false,
+    "caution": "프로브카드·반도체 검사부품 테마는 직접성이 있으나, AI/HBM 직접 수혜주는 아니다. 메모리 프로브카드 확장은 리포트상 옵션으로만 기록.",
+    "taxonomy": {
+      "L1": "반도체",
+      "L2": "검사부품/장비부품",
+      "L3": "프로브카드·정밀부품"
+    },
+    "theme_change_log": [
+      {
+        "date": "20260703",
+        "prev": null,
+        "next": "반도체검사부품·프로브카드",
+        "reason": "ledger 최초 생성 — 윌테크놀러지 인수 완료와 6월 가격 반응 반영"
+      }
+    ],
+    "intensity_evidence": {
+      "테마직접": "윌테크놀러지 인수 완료로 프로브카드 사업 직접 편입",
+      "실적가시성": "2026Q1 흑자 회복과 메리츠의 2026E 영업이익 회복 전망은 있으나, 윌테크 연결 효과는 후속 확인 필요",
+      "재무희석": "약 900억원 이상 유상증자와 인수자금 부담이 존재",
+      "쏠림위험": "6/17 상한가, 6/22 52주 고점, 7/02 9,890원까지 빠른 냉각"
+    }
+  },
+  "S3": {
+    "unit_note": "raw_close=원·chg_pct=등락률(%)·volume=주·value_traded=백만원·foreign_net/inst_net=주 | 공개 시세 수동 스냅샷. 외인·기관 net은 종목귀속 원천 미확보로 null.",
+    "rows": [
+      {
+        "date": "20260617",
+        "row_status": "부분수집",
+        "capture": "RANK",
+        "raw_close": 15340,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": 30.0,
+        "volume": null,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "상한가. EBN/한국거래소 보도 기준 종가 15,340원, +30.00%. 거래량·거래대금은 미수집."
+      },
+      {
+        "date": "20260618",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 13750,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": -10.37,
+        "volume": 7625616,
+        "value_traded": 107772,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "회사 공식 주식정보 일자별 시세. 거래대금 원 단위 원문을 백만원으로 환산."
+      },
+      {
+        "date": "20260619",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 13080,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": -4.87,
+        "volume": 2208114,
+        "value_traded": 29364,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "회사 공식 주식정보 일자별 시세."
+      },
+      {
+        "date": "20260622",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 15460,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": 18.2,
+        "volume": 12431044,
+        "value_traded": 189680,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "회사 공식 주식정보 일자별 시세. 장중 52주 고점 16,430원."
+      },
+      {
+        "date": "20260623",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 12870,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": -16.75,
+        "volume": 2936059,
+        "value_traded": 40268,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "회사 공식 주식정보 일자별 시세. 급등 익일 반전."
+      },
+      {
+        "date": "20260624",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 11770,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": -8.55,
+        "volume": 2157729,
+        "value_traded": 25840,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "회사 공식 주식정보 일자별 시세."
+      },
+      {
+        "date": "20260625",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 11240,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": -4.5,
+        "volume": 1446741,
+        "value_traded": 16652,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "회사 공식 주식정보 일자별 시세."
+      },
+      {
+        "date": "20260626",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 10310,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": -8.27,
+        "volume": 1151833,
+        "value_traded": 12244,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "회사 공식 주식정보 일자별 시세."
+      },
+      {
+        "date": "20260629",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 10570,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": 2.52,
+        "volume": 918655,
+        "value_traded": 9687,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "회사 공식 주식정보 일자별 시세."
+      },
+      {
+        "date": "20260630",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 11260,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": 6.53,
+        "volume": 790470,
+        "value_traded": 8685,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "회사 공식 주식정보 일자별 시세."
+      },
+      {
+        "date": "20260701",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 10820,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": -3.91,
+        "volume": 946819,
+        "value_traded": 10274,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "회사 공식 주식정보 일자별 시세."
+      },
+      {
+        "date": "20260702",
+        "row_status": "정상",
+        "capture": "RANK",
+        "raw_close": 9890,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": -8.6,
+        "volume": 1381655,
+        "value_traded": 13740,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "매일경제 마켓 2026-07-02 15:32 기준. 외인·기관 net은 미수집."
+      }
+    ]
+  },
+  "S4": {
+    "as_of": "2026-07-03",
+    "coverage": {
+      "s3_rows": 12,
+      "price_coverage": "2026-06-17~2026-07-02 핵심 이벤트 구간",
+      "supply_coverage": "데이터부재"
+    },
+    "liquidity_rollup": [
+      {
+        "period": "2026-06-17~2026-06-23",
+        "observation": "윌테크놀러지 인수 완료 이후 상한가와 52주 고점이 이어졌고, 6/18·6/22 거래대금이 각각 1,000억원을 넘었다.",
+        "confidence": "medium",
+        "limitation": "6/17 거래량·거래대금 및 주체별 순매수 미수집"
+      },
+      {
+        "period": "2026-06-24~2026-07-02",
+        "observation": "거래대금은 빠르게 축소됐고 종가는 9,890원으로 후퇴했다. 6/22 장중 고점 16,430원 대비 -39.8%.",
+        "confidence": "medium",
+        "limitation": "20거래일 이상 시계열 미확보로 회전율 z-score 미산출"
+      }
+    ],
+    "turnover_note": "정량 회전율·ADV·z-score는 S3 장기 시계열 축적 후 O3 산출."
+  },
+  "S5": {
+    "as_of": "2026-07-03",
+    "foreign_pattern": "데이터부재",
+    "inst_pattern": "데이터부재",
+    "interpretation": "6월 M&A 테마 가격 급등과 냉각은 확인되지만, 외인·기관·개인 어느 주체가 주도했는지는 종목귀속 수급 원장 없이는 단정 금지.",
+    "data_absence": [
+      "foreign_net",
+      "inst_net",
+      "개인·기타법인 종목귀속 순매수",
+      "프로그램·차익거래 종목귀속"
+    ],
+    "risk_label": "매수세 과밀/쏠림 경계"
+  },
+  "S6": {
+    "as_of": "2026-07-02",
+    "current_price": 9890,
+    "position_52w_pct": 46.4,
+    "high_52w": 16430,
+    "low_52w": 4229,
+    "ma5": null,
+    "ma20": null,
+    "ma60": null,
+    "price_vs_ma5": null,
+    "price_vs_ma20": null,
+    "price_vs_ma60": null,
+    "level_maturity": "event-snapshot",
+    "range_note": "2026-07-02 종가는 52주 범위 중간권이지만, 2026-06-22 장중 52주 고점 16,430원 대비 -39.8% 하락했다. 이동평균은 시계열 부족으로 미산출.",
+    "candle_prints": [
+      {
+        "date": "20260617",
+        "type": "상한가",
+        "level": 15340,
+        "note": "윌테크놀러지 인수 완료 뉴스와 반도체 검사부품 재평가"
+      },
+      {
+        "date": "20260622",
+        "type": "52주 고점",
+        "level": 16430,
+        "note": "장중 고점. 종가 15,460원, 거래대금 1,896.8억원"
+      },
+      {
+        "date": "20260702",
+        "type": "급등 후 냉각",
+        "level": 9890,
+        "note": "종가 -8.60%, 6/17 종가 대비 -35.5%"
+      }
+    ]
+  },
+  "S7": {
+    "as_of": "2026-07-02",
+    "market_cap": "약 4,018억원",
+    "close": 9890,
+    "valuation_basis": "적자 TTM 이후 턴어라운드·PBR·사업가치재평가",
+    "per_ttm": null,
+    "pbr": "약 0.94~1.03배(주가·BPS 산정시점 차이)",
+    "eps_ttm": "데이터충돌: -412원(MK) ~ -509원(Investing)",
+    "bps": "10,514원(WiseReport 2025/12 기준)",
+    "valuation_snapshot": [
+      {
+        "metric": "PER",
+        "current": null,
+        "basis": "2025년 순이익 급감 및 EPS 음수",
+        "judgement": "PER 기반 판단 부적합"
+      },
+      {
+        "metric": "PBR",
+        "current": "0.94~1.03",
+        "basis": "BPS 10,514원과 2026-07-02 종가 9,890원/전일 주가 기준",
+        "judgement": "순자산 대비 1배 안팎"
+      },
+      {
+        "metric": "시가총액/2026E OP",
+        "current": "약 4.5배",
+        "basis": "시가총액 4,018억원 / 메리츠 2026E 영업이익 886억원(윌테크놀러지 연결 제외 전망)",
+        "judgement": "턴어라운드 전망이 실현될 경우 낮아 보이나 추정 의존"
+      }
+    ],
+    "consensus_2026": {
+      "revenue": 1363700000000,
+      "revenue_yoy_pct": 8.9,
+      "op_profit": 88600000000,
+      "op_yoy_pct": 334.2,
+      "op_margin_pct": 6.5,
+      "source": "메리츠증권 탐방노트 요약, 윌테크놀러지 연결 반영 제외"
+    },
+    "willtech_2025_reference": {
+      "revenue": 67400000000,
+      "op_profit": 9600000000,
+      "op_margin_pct": 14.2,
+      "source": "메리츠증권 윌테크놀러지 인수완료 코멘트"
+    },
+    "q1_2026_actual": {
+      "revenue": 315955000000,
+      "op_profit": 14107000000,
+      "op_margin_pct": 4.5,
+      "net_profit": 11723000000,
+      "revenue_yoy_pct": -6.5,
+      "op_yoy_pct": -26.9,
+      "net_yoy_pct": -28.2,
+      "note": "2025Q4 적자 후 흑자전환했지만 전년 동기 대비는 감익"
+    },
+    "target_prices": [],
+    "broker_breadth": "WiseReport 기준 최근 3개월 내 공식 투자의견/목표주가 없음. 메리츠 리포트는 목표주가 없이 사업 코멘트 중심.",
+    "valuation_note": "이 종목의 밸류 판단은 2025년 실적 기준 PER이 아니라 2026E 영업이익 회복, 윌테크놀러지 연결, 유상증자 후 주식수, 차입/자산매각 효과를 같이 봐야 한다."
+  },
+  "S8": {
+    "as_of": "2026-07-03",
+    "annual": [
+      {
+        "year": "2023",
+        "revenue": 1302679000000,
+        "op_profit": 48937000000,
+        "op_margin_pct": 3.8,
+        "net_profit": 38973000000,
+        "source": "한솔테크닉스 공식 재무정보"
+      },
+      {
+        "year": "2024",
+        "revenue": 1199483000000,
+        "op_profit": 33355000000,
+        "op_margin_pct": 2.8,
+        "net_profit": 23177000000,
+        "source": "한솔테크닉스 공식 재무정보"
+      },
+      {
+        "year": "2025",
+        "revenue": 1252425000000,
+        "op_profit": 20416000000,
+        "op_margin_pct": 1.6,
+        "net_profit": 554000000,
+        "source": "한솔테크닉스 공식 재무정보/2025 손익구조 변경 공시"
+      },
+      {
+        "year": "2026E",
+        "revenue": 1363700000000,
+        "op_profit": 88600000000,
+        "op_margin_pct": 6.5,
+        "net_profit": null,
+        "source": "메리츠증권 탐방노트 요약, 윌테크놀러지 연결 제외 전망"
+      }
+    ],
+    "quarterly": [
+      {
+        "quarter": "2025Q1",
+        "revenue": 337800000000,
+        "op_profit": 19300000000,
+        "net_profit": 16300000000,
+        "source": "2026Q1 공시 전년동기"
+      },
+      {
+        "quarter": "2025Q2",
+        "revenue": 293600000000,
+        "op_profit": 12800000000,
+        "net_profit": 8500000000,
+        "source": "AWAKEPLUS 분기보고서 요약"
+      },
+      {
+        "quarter": "2025Q3",
+        "revenue": 331600000000,
+        "op_profit": 17700000000,
+        "net_profit": 12800000000,
+        "source": "AWAKEPLUS 분기보고서 요약"
+      },
+      {
+        "quarter": "2025Q4",
+        "revenue": 289500000000,
+        "op_profit": -29300000000,
+        "net_profit": -37100000000,
+        "source": "AWAKEPLUS 분기보고서 요약"
+      },
+      {
+        "quarter": "2026Q1",
+        "revenue": 316000000000,
+        "op_profit": 14100000000,
+        "net_profit": 11700000000,
+        "source": "AWAKEPLUS/공시 요약"
+      }
+    ],
+    "financial_quality": {
+      "profitability": "2025년 OPM 1.6%까지 하락했으나 2026Q1 OPM 4.5%로 흑자 회복",
+      "balance_sheet_watch": "윌테크놀러지 1,772억원 인수, 유상증자, 오창공장 640억원 매각이 동시에 진행",
+      "margin_watch": "전자부품/EMS 저마진 구조를 반도체 부품·프로브카드 고마진 사업으로 얼마나 전환하는지가 핵심"
+    }
+  },
+  "S9": [
+    {
+      "event_id": "004710-20250801-001",
+      "date": "20250801",
+      "type": "M&A",
+      "headline": "오리온텍 및 SI Materials 인수",
+      "detail": "회사 공식 연혁 기준 2025년 8월 오리온텍 및 SI Materials 인수. 선박 발전용 엔진 제어시스템·실리콘 부산물 재활용 포트폴리오 확대.",
+      "intensity": "medium",
+      "source": "한솔테크닉스 공식 연혁",
+      "next_trigger": "연결 실적 온기 반영과 시너지 확인"
+    },
+    {
+      "event_id": "004710-20260204-001",
+      "date": "20260204",
+      "type": "실적발표",
+      "headline": "2025년 연결 매출 1조2524억원(+4.4%), 영업이익 204억원(-38.8%), 순이익 5.5억원(-97.6%)",
+      "detail": "사업구조 재편에 따른 충당금 등 비경상적 비용 발생으로 이익 급감.",
+      "intensity": "high",
+      "source": "DART/디지털투데이",
+      "next_trigger": "2026년 턴어라운드 실현 여부"
+    },
+    {
+      "event_id": "004710-20260413-001",
+      "date": "20260413",
+      "type": "유상증자·타법인취득",
+      "headline": "윌테크놀러지 인수 재원 마련을 위한 유상증자와 타법인 주식 취득 결정",
+      "detail": "최대주주 제3자배정 및 주주배정 후 실권주 일반공모 구조. 희석 부담과 반도체 사업재편 기대가 동시 발생.",
+      "intensity": "high",
+      "source": "DART/InvestChosun/공시 요약",
+      "next_trigger": "최종 발행가액·청약 결과·인수 완료"
+    },
+    {
+      "event_id": "004710-20260427-001",
+      "date": "20260427",
+      "type": "실적공시",
+      "headline": "2026Q1 잠정실적: 매출 3,159.55억원, 영업이익 141.07억원, 순이익 117.23억원",
+      "detail": "전분기 적자에서 흑자전환했으나 전년동기 대비 매출 -6.5%, 영업이익 -26.9%. OPM 4.5%.",
+      "intensity": "high",
+      "source": "KRX/DART/디지털투데이",
+      "next_trigger": "2026Q2 실적과 윌테크놀러지 연결 반영"
+    },
+    {
+      "event_id": "004710-20260520-001",
+      "date": "20260520",
+      "type": "지분공시",
+      "headline": "한솔홀딩스, 제3자배정 유상증자로 보유주식 15,718,088주·38.69% 확보",
+      "detail": "최대주주가 신사업 투자 재원 확보와 지배력 유지를 위해 유상증자에 참여.",
+      "intensity": "medium",
+      "source": "대량보유보고서/디지털투데이",
+      "next_trigger": "주주배정 유증 완료 후 최종 지분율"
+    },
+    {
+      "event_id": "004710-20260605-001",
+      "date": "20260605",
+      "type": "자산매각",
+      "headline": "충북 오창공장 토지·건물 일체를 640억원에 처분 결정",
+      "detail": "거래상대 코스메카코리아. 처분 목적은 경영효율화 및 재무구조 개선. 예정일 2026-12-24.",
+      "intensity": "medium",
+      "source": "KRX/공시 요약",
+      "next_trigger": "처분 완료와 처분손익·현금흐름 반영"
+    },
+    {
+      "event_id": "004710-20260617-001",
+      "date": "20260617",
+      "type": "M&A완료·가격반응",
+      "headline": "윌테크놀러지 인수 완료. 지분 83.37%, 총 투자금 1,772억원. 주가 상한가 15,340원",
+      "detail": "윌테크놀러지는 비메모리 시스템 반도체 검사 공정의 프로브카드 설계·제조 기업. 인수 완료로 반도체 검사부품 포트폴리오 편입.",
+      "intensity": "high",
+      "source": "연합뉴스/EBN/한국거래소",
+      "next_trigger": "윌테크놀러지 연결 실적과 메모리 프로브카드 확장 여부"
+    },
+    {
+      "event_id": "004710-20260618-001",
+      "date": "20260618",
+      "type": "리서치",
+      "headline": "메리츠증권, 윌테크놀러지 인수완료 코멘트 발행",
+      "detail": "윌테크놀러지 2025년 매출 674억원, 영업이익 96억원(OPM 14.2%) 언급. 비메모리향 성장과 메모리향 프로브카드 진입 가능성 제시.",
+      "intensity": "medium",
+      "source": "메리츠증권 리포트/뉴스핌 요약",
+      "next_trigger": "증설·메모리 시장 진입의 실제 수주 확인"
+    },
+    {
+      "event_id": "004710-20260622-001",
+      "date": "20260622",
+      "type": "가격반응",
+      "headline": "장중 52주 고점 16,430원, 종가 15,460원(+18.20%)",
+      "detail": "6/17 상한가 이후 두 번째 급등. 거래대금 약 1,896.8억원.",
+      "intensity": "high",
+      "source": "한솔테크닉스 공식 주식정보",
+      "next_trigger": "급등 지속 여부와 익일 가격 반응"
+    },
+    {
+      "event_id": "004710-20260702-001",
+      "date": "20260702",
+      "type": "가격반응",
+      "headline": "종가 9,890원, 6/22 52주 고점 대비 -39.8% 후퇴",
+      "detail": "6월 M&A 테마 급등분 상당 부분 반납. 단기 매수세 과밀/쏠림 해소 확인 필요.",
+      "intensity": "high",
+      "source": "매일경제 마켓/공식 주식정보",
+      "next_trigger": "유증 최종가, 2Q26 실적, 9천원대 지지 여부"
+    }
+  ],
+  "S10": {
+    "as_of": "2026-07-03",
+    "theme_reactions": [
+      {
+        "date": "20260617",
+        "theme_event": "윌테크놀러지 인수 완료",
+        "stock_reaction_pct": 30.0,
+        "role": "프로브카드 편입 재평가",
+        "supply": "주체별 데이터부재",
+        "quality": "직접성 높음"
+      },
+      {
+        "date": "20260622",
+        "theme_event": "반도체 검사부품 재평가 지속",
+        "stock_reaction_pct": 18.2,
+        "role": "M&A 재평가 2차 급등",
+        "supply": "주체별 데이터부재",
+        "quality": "과열 위험 높음"
+      },
+      {
+        "date": "20260702",
+        "theme_event": "급등 후 냉각",
+        "stock_reaction_pct": -8.6,
+        "role": "테마 과열 해소",
+        "supply": "주체별 데이터부재",
+        "quality": "검증 대기"
+      }
+    ]
+  },
+  "S11": {
+    "edges": [
+      {
+        "event_id": "004710-EDGE-20260617-001",
+        "event_date": "20260617",
+        "type": "M&A 상한가",
+        "pattern_label": "인수완료 뉴스 상한가 후 익일 급락",
+        "confidence": "medium",
+        "catalyst": "윌테크놀러지 인수 완료",
+        "chg_pct_adj": 30.0,
+        "event_dominant": "데이터부재",
+        "foreign_net": null,
+        "inst_net": null,
+        "t1_chg_pct": -10.37,
+        "t3_chg_pct": 0.78,
+        "t5_chg_pct": -23.27,
+        "t10_chg_pct": -29.47,
+        "edge_question": "M&A 상한가 이후 10거래일 내 가격이 급등분을 얼마나 방어하는가?",
+        "note": "6/17 종가 15,340원 기준. 7/01 종가 10,820원까지 -29.5%."
+      },
+      {
+        "event_id": "004710-EDGE-20260622-001",
+        "event_date": "20260622",
+        "type": "52주 고점 급등",
+        "pattern_label": "2차 급등 후 바로 꺾임",
+        "confidence": "medium",
+        "catalyst": "반도체 검사부품 재평가 지속",
+        "chg_pct_adj": 18.2,
+        "event_dominant": "데이터부재",
+        "foreign_net": null,
+        "inst_net": null,
+        "t1_chg_pct": -16.75,
+        "t3_chg_pct": -27.23,
+        "t5_chg_pct": -31.63,
+        "t10_chg_pct": null,
+        "edge_question": "두 번째 급등이 재상승 발판이 아니라 분배성 피크였는가?",
+        "note": "6/22 장중 52주 고점 16,430원. 종가 기준 7/02까지 -36.0%."
+      }
+    ],
+    "pattern_synthesis": [
+      {
+        "pattern_label": "M&A 재평가 급등 후 바로 꺾임",
+        "count": 2,
+        "avg_t1_chg_pct": -13.56,
+        "avg_t5_chg_pct": -27.45,
+        "success_rate": null,
+        "note": "N=2로 통계 확정 금지. 다만 6월 두 번의 급등 모두 익일 큰 반락."
+      }
+    ],
+    "synth_narrative": "반도체 검사부품 M&A라는 촉매는 직접성이 높지만, 가격은 이미 상한가와 52주 고점 이후 빠르게 냉각됐다. 반복 신호의 핵심은 '좋은 재료가 나와도 단기 추격은 급락 리스크가 크다'는 점이며, 통계 확정은 장기 S3 축적 후 가능하다."
+  },
+  "S12": {
+    "rows": [
+      {
+        "date": "20211201",
+        "expectation_stage": "태동",
+        "transition_direction": "forward",
+        "narrative": "한솔아이원스 인수로 반도체 장비부품 영역에 진입. 기존 전자부품·EMS 구조에서 반도체 부품 포트폴리오로 첫 이동.",
+        "stage_evidence": "회사 공식 연혁의 아이원스 인수와 반도체 정밀가공·세정·코팅 제품군",
+        "hidden_momentum": {
+          "layer": "L2",
+          "signal": "저마진 전자부품 사업의 이익률 한계를 반도체 부품 고부가 사업으로 보완하려는 구조 전환",
+          "confidence": "medium"
+        },
+        "invalidation_trigger": "반도체 부품 매출이 전사 이익 개선으로 연결되지 않을 경우"
+      },
+      {
+        "date": "20250801",
+        "expectation_stage": "확산",
+        "transition_direction": "forward",
+        "narrative": "오리온텍·SI Materials 편입으로 선박/로봇 전장, 실리콘 부산물 재활용까지 확장. 포트폴리오 기업 성격이 강화된 구간.",
+        "stage_evidence": "회사 공식 연혁과 신사업 투자 보도",
+        "hidden_momentum": {
+          "layer": "L2",
+          "signal": "전자부품 단일 사이클 의존도를 낮추고 여러 고부가 부품/소재 자회사를 묶는 구조",
+          "confidence": "medium"
+        },
+        "invalidation_trigger": "인수 자회사 실적이 부진하거나 주식매수청구권·차입 부담이 커질 경우"
+      },
+      {
+        "date": "20260413",
+        "expectation_stage": "긴장",
+        "transition_direction": "mixed",
+        "narrative": "윌테크놀러지 인수와 대규모 유상증자가 동시에 등장. 성장 스토리와 희석 부담이 충돌한 구간.",
+        "stage_evidence": "타법인 주식 취득과 유상증자 공시, 최대주주 책임투자 구조",
+        "hidden_momentum": {
+          "layer": "L3",
+          "signal": "최대주주가 제3자배정으로 자금을 넣으면서 지배력 유지와 신사업 투자를 동시에 추진",
+          "confidence": "medium"
+        },
+        "invalidation_trigger": "유상증자 청약 부진 또는 인수 후 실적 기여 지연"
+      },
+      {
+        "date": "20260617",
+        "expectation_stage": "피크",
+        "transition_direction": "forward",
+        "narrative": "윌테크놀러지 인수 완료로 프로브카드 스토리가 시장에 직접 반영. 상한가와 52주 고점으로 기대감이 피크에 도달.",
+        "stage_evidence": "6/17 +30.00%, 6/22 장중 16,430원",
+        "hidden_momentum": {
+          "layer": "L3/L4",
+          "signal": "프로브카드는 반복 소모품 성격이 있어 실적화되면 전자부품 본업보다 높은 멀티플을 받을 가능성",
+          "confidence": "medium"
+        },
+        "invalidation_trigger": "윌테크놀러지 연결 실적과 메모리 확장 시나리오가 확인되지 않을 경우"
+      },
+      {
+        "date": "20260702",
+        "expectation_stage": "후퇴",
+        "transition_direction": "backward",
+        "narrative": "급등 이후 종가 9,890원까지 냉각. 이제 주가는 테마가 아니라 2Q26 실적, 유증 마무리, 인수 후 실적 연결을 검증해야 하는 구간.",
+        "stage_evidence": "6/22 장중 고점 대비 -39.8%, 6/17 종가 대비 -35.5%",
+        "hidden_momentum": {
+          "layer": "L1",
+          "signal": "좋은 M&A 재료는 남았지만 추격 수급은 상당 부분 이탈. 실적 확인 전 재상승은 변동성 높음",
+          "confidence": "high"
+        },
+        "invalidation_trigger": "2Q26 실적 부진, 유증 최종 조건 악화, 윌테크놀러지 실적 기여 불투명"
+      }
+    ],
+    "default_stage_note": "현재 내러티브는 '프로브카드 M&A 피크 후 후퇴, 실적·증자 검증 대기'로 본다."
+  },
+  "S13": {
+    "plan_updated": "20260703",
+    "stance": "관망-조건부 관심",
+    "entry_level": null,
+    "entry_condition": "레옹 확인 필요: 유증 최종가·청약 결과 확인 후에도 9천원대 가격 방어가 유지되고, 2Q26 실적에서 본업 흑자와 윌테크놀러지 연결 방향이 확인될 때 재검토",
+    "entry_confirm_pair": [
+      "2026-07-08 유상증자 최종 발행가액 및 후속 청약 결과 확인",
+      "2026Q2 영업이익률이 2026Q1 4.5%를 훼손하지 않는지 확인",
+      "윌테크놀러지 연결 후 매출·영업이익 기여와 추가 증설/메모리 시장 진입 공시"
+    ],
+    "target_range": {
+      "min": null,
+      "max": null
+    },
+    "partial_exit_rule": [],
+    "decision_log": [
+      {
+        "date": "20260703",
+        "decision": "DEEP 초도 생성. 공식 매매 결정은 보류.",
+        "reason": "단기 급등 후 급락, 수급원장 부재, 유상증자와 실적 검증 이벤트 대기"
+      }
+    ]
+  },
+  "S14": [
+    {
+      "date": "20260703",
+      "type": "forecast_watch",
+      "headline": "유상증자와 2Q26 실적 전까지 프로브카드 M&A 재평가가 가격에 다시 붙는지 관찰",
+      "forecast": "2026-08-06 전후 실적 발표 전까지 9천원대 방어와 거래대금 정상화 여부가 핵심이다.",
+      "confidence": "low",
+      "review_date": "20260806",
+      "kill_switch": "유증 청약 부진, 2Q26 OPM 급락, 윌테크놀러지 연결 효과 지연 공시",
+      "note": "공식 매매콜 아님. S3·수급 데이터 부족으로 관찰 forecast만 기록."
+    }
+  ],
+  "S15": {
+    "as_of": "2026-07-03",
+    "birth_date": "2026-07-03",
+    "birth_trigger": "한솔테크닉스 최고품질 DEEP 생성 요청",
+    "data_absent": [
+      "일별 외인·기관 순매수",
+      "60거래일 이상 S3 시계열",
+      "O3 산출 MA·z-score·RS",
+      "유상증자 최종 완료 후 총 발행주식수와 주주구성",
+      "윌테크놀러지 연결 실적 반영분",
+      "고객사별 매출 비중",
+      "메모리 프로브카드 진입의 확정 수주"
+    ],
+    "absence_log": [
+      {
+        "field": "foreign_net",
+        "reason": "종목귀속 수급 원천 미수집. 공개 가격/거래대금만 확보."
+      },
+      {
+        "field": "inst_net",
+        "reason": "종목귀속 수급 원천 미수집. 기관 매수/매도 단정 금지."
+      },
+      {
+        "field": "MA5/MA20/MA60",
+        "reason": "S3 핵심 이벤트 구간 12행만 생성. 장기 O3 산출 불가."
+      },
+      {
+        "field": "유상증자 후 최종 주식수",
+        "reason": "2026년 7월 초 기준 후속 발행가·청약·상장 절차 확인 필요."
+      },
+      {
+        "field": "윌테크놀러지 메모리 진입",
+        "reason": "증권사 리포트의 성장 옵션. 확정 수주·양산 공시 미확인."
+      }
+    ],
+    "source_notes": [
+      {
+        "source": "한솔테크닉스 공식 회사소개",
+        "url": "https://hansoltechnics.com/company/hansoltechnics.jsp",
+        "fact": "디스플레이, 생활가전, 스마트폰, 태양광 모듈, 자동차 전장, 반도체 부품 사업군"
+      },
+      {
+        "source": "한솔테크닉스 공식 반도체 부품 페이지",
+        "url": "https://hansoltechnics.com/product/semiconductor.jsp",
+        "fact": "정밀가공, 정밀세정, 특수코팅 제품군과 반도체 부품 적용 분야"
+      },
+      {
+        "source": "한솔테크닉스 공식 재무정보",
+        "url": "https://www.hansoltechnics.com/fund/fianace.jsp",
+        "fact": "2023~2025 연결 매출액·영업이익·순이익"
+      },
+      {
+        "source": "한솔테크닉스 공식 주식정보",
+        "url": "https://www.hansoltechnics.com/fund/stock.jsp",
+        "fact": "2026-06-18~2026-07-01 일자별 시세, 52주 고저, 상장주식수"
+      },
+      {
+        "source": "매일경제 마켓",
+        "url": "https://stock.mk.co.kr/price/home/KR7004710000",
+        "fact": "2026-07-02 종가 9,890원, 거래량 1,381,655주, 거래대금 13,740백만원, 외국인보유비중 3.82%"
+      },
+      {
+        "source": "WiseReport 기업모니터",
+        "url": "https://comp.wisereport.co.kr/company/c1010001.aspx?cmp_cd=004710",
+        "fact": "2026-06-09 기업개요, 2026Q1 실적 코멘트, 2025 BPS 10,514원, 최근 3개월 공식 투자의견 없음"
+      },
+      {
+        "source": "Investing.com",
+        "url": "https://kr.investing.com/equities/hansol-technics",
+        "fact": "2026-07-02 가격·52주 범위 보조 확인, EPS(TTM) -509원, 다음 실적 발표 예정일 2026-08-06"
+      },
+      {
+        "source": "AWAKEPLUS 분기보고서 요약",
+        "url": "https://www.awakeplus.co.kr/data/view/20260513000689",
+        "fact": "2025Q1~2026Q1 최근 분기 매출·영업이익·순이익 추이"
+      },
+      {
+        "source": "디지털투데이 2026Q1 잠정실적 기사",
+        "url": "https://www.digitaltoday.co.kr/news/articleView.html?idxno=660391",
+        "fact": "2026Q1 매출 3159.55억원, 영업이익 141.07억원, 순이익 117.23억원"
+      },
+      {
+        "source": "디지털투데이 2025 손익구조 변경 기사",
+        "url": "https://www.digitaltoday.co.kr/news/articleView.html?idxno=627109",
+        "fact": "2025년 매출 1조2524억원, 영업이익 204억원, 순이익 5.5억원"
+      },
+      {
+        "source": "연합뉴스",
+        "url": "https://www.yna.co.kr/view/AKR20260617099400003",
+        "fact": "윌테크놀러지 인수 완료, 지분 83.37%, 총 투자금 1,772억원"
+      },
+      {
+        "source": "메리츠증권 리포트 PDF",
+        "url": "https://file.alphasquare.co.kr/media/pdfs/company-report/20260618073015931K_02.pdf",
+        "fact": "윌테크놀러지 2025년 매출 674억원, 영업이익 96억원, OPM 14.2%, 메모리 시장 진입 가능성"
+      },
+      {
+        "source": "뉴스핌 메리츠 탐방노트 요약",
+        "url": "https://www.newspim.com/news/view/20260511000256",
+        "fact": "2026E 매출 1조3637억원, 영업이익 886억원 전망(윌테크놀러지 연결 제외)"
+      },
+      {
+        "source": "디지털투데이 주요주주 공시 기사",
+        "url": "https://www.digitaltoday.co.kr/news/articleView.html?idxno=668112",
+        "fact": "한솔홀딩스 15,718,088주, 38.69%, 발행주식 총수 40,629,517주"
+      },
+      {
+        "source": "KRX/공시 요약",
+        "url": "https://kind.krx.co.kr/common/disclsviewer.do?acptno=20260605000335&docno=&method=search&viewerhost=",
+        "fact": "오창공장 토지·건물 640억원 처분 결정"
+      }
+    ],
+    "changelog": [
+      {
+        "date": "20260703",
+        "change_type": "create_deep",
+        "detail": "한솔테크닉스 DEEP-MANUAL S1~S19 풀버전 초도 생성",
+        "old_value": null,
+        "new_value": "004710_한솔테크닉스.json"
+      }
+    ]
+  },
+  "S16": {
+    "as_of": "2026-07-03",
+    "roundtable": {
+      "bull": {
+        "thesis": "기존 전자부품 저마진 구조가 반도체 부품·프로브카드 포트폴리오로 재평가될 수 있는 구간.",
+        "evidence": [
+          "윌테크놀러지 지분 83.37% 인수 완료",
+          "윌테크놀러지 2025년 OPM 14.2%로 전사 2025 OPM 1.6% 대비 고수익",
+          "오창공장 640억원 매각과 유상증자로 인수자금·재무구조 방어 시도",
+          "메리츠 2026E 영업이익 886억원 전망(윌테크놀러지 연결 제외)"
+        ],
+        "kill_switch": "윌테크놀러지 연결 효과가 작거나 2Q26 본업 마진이 다시 훼손될 경우",
+        "weight": 3.4
+      },
+      "bear": {
+        "thesis": "가격은 이미 M&A 재료를 급하게 반영한 뒤 빠르게 무너졌고, 유상증자 희석과 인수 후 재무부담이 남아 있다.",
+        "evidence": [
+          "2025년 순이익 5.5억원으로 급감",
+          "6/22 52주 고점 대비 7/02 -39.8%",
+          "유상증자와 인수자금 조달로 주식수·차입 부담 확인 필요",
+          "메모리 프로브카드 진입은 아직 확정 실적이 아닌 옵션"
+        ],
+        "kill_switch": "유증 성공, 윌테크놀러지 연결 실적 호조, 2Q26 OPM 개선이 동시에 확인될 경우",
+        "weight": 3.0
+      },
+      "judge": {
+        "conviction_score": 0.4,
+        "verdict": "관망-조건부 관심",
+        "reason": "사업재편의 질은 좋지만 가격·수급은 과열 후 냉각됐고, 유증·실적·연결 반영이라는 검증 이벤트가 아직 남아 있다.",
+        "next_check": [
+          "2026-07-08 유상증자 최종 발행가액",
+          "2026Q2 실적",
+          "윌테크놀러지 연결 매출·영업이익",
+          "오창공장 처분 완료"
+        ]
+      }
+    }
+  },
+  "S17": {
+    "scenario_label": "추정",
+    "scenarios": [
+      {
+        "name": "반도체 부품 포트폴리오 재평가",
+        "probability": "중",
+        "trigger": "윌테크놀러지 연결 실적과 2026Q2 본업 흑자 유지 확인",
+        "path": "전자부품 저마진주 할인 완화 → 프로브카드·아이원스 고부가 사업 가치 반영 → 6월 고점 일부 회복",
+        "forecast_date": "20260806",
+        "review_date": "20260810",
+        "kill_switch": "연결 효과 미미 또는 영업이익률 둔화"
+      },
+      {
+        "name": "유상증자 희석 부담 재부각",
+        "probability": "중",
+        "trigger": "최종 발행가액·청약 결과가 시장 기대보다 약하거나 신주 상장 물량 부담이 커질 때",
+        "path": "단기 수급 부담 → 9천원대 지지 약화 → 실적 확인 전 변동성 확대",
+        "forecast_date": "20260708",
+        "review_date": "20260731",
+        "kill_switch": "청약 흥행과 대주주 추가 책임투자 확인"
+      },
+      {
+        "name": "M&A 피로감 후 장기 정상화",
+        "probability": "중",
+        "trigger": "프로브카드 기대는 유지되지만 단기 수급이 빠져 거래대금이 정상화되는 구간",
+        "path": "급등분 반납 → 2Q/3Q 실적까지 박스권 → 연결 실적 확인 시 재평가 재개",
+        "forecast_date": null,
+        "review_date": "20261115",
+        "kill_switch": "새 대형 수주 또는 메모리 프로브카드 진입 공시"
+      }
+    ]
+  },
+  "S18": {
+    "as_of": "2026-07-03",
+    "verified_hidden_facts": [
+      {
+        "fact": "오창공장 640억원 매각은 단순 부동산 처분이 아니라 윌테크놀러지 인수·증자와 함께 보는 유동성 방어 장치",
+        "source": "KRX 공시 및 언론 보도",
+        "verification_status": "company_disclosed",
+        "why_hidden": "가격 급등 뉴스에서는 프로브카드가 부각됐지만, 재무 리스크 완충 여부가 밸류에이션 지속성을 좌우"
+      },
+      {
+        "fact": "윌테크놀러지는 2025년 OPM 14.2%로 한솔테크닉스 전사 OPM보다 훨씬 높은 수익성을 보였다",
+        "source": "메리츠증권 리포트",
+        "verification_status": "broker_reported",
+        "why_hidden": "인수금액만 보면 부담이지만, 고마진 사업 편입이면 전사 믹스 개선 가능성이 있음"
+      },
+      {
+        "fact": "한솔홀딩스는 제3자배정 유상증자 참여로 지분율을 38.69%까지 높였다",
+        "source": "대량보유보고서",
+        "verification_status": "disclosed",
+        "why_hidden": "희석 악재와 동시에 최대주주 책임투자·지배력 유지 신호로 해석될 수 있음"
+      }
+    ],
+    "rejected_rumors": [
+      {
+        "claim": "한솔테크닉스는 HBM 직접 대장주다",
+        "reason": "윌테크놀러지의 메모리 프로브카드 진입은 가능성으로 제시됐을 뿐 확정 수주·양산 공시가 없다.",
+        "status": "unsupported"
+      },
+      {
+        "claim": "6월 급락은 특정 주체의 매도 때문이라고 단정할 수 있다",
+        "reason": "외인·기관·개인 일별 순매수 원장이 없으므로 수급 주체 단정 금지.",
+        "status": "unsupported"
+      },
+      {
+        "claim": "오창공장 매각은 핵심 생산능력 훼손이다",
+        "reason": "공시상 목적은 경영효율화·재무구조 개선. 실제 생산 영향은 후속 공시와 사업보고서 확인 필요.",
+        "status": "unverified"
+      }
+    ]
+  },
+  "S19": {
+    "as_of": "2026-07-03",
+    "next_action_predictions": [
+      {
+        "actor": "단기 테마자금",
+        "expected_action": "유증 최종가와 2Q 실적 전후로 빠른 재진입·차익실현을 반복할 가능성",
+        "direction": "중립~약매도",
+        "confidence": "low",
+        "basis": "6/17~6/22 급등 후 7/02까지 빠른 냉각",
+        "review_date": "20260731",
+        "kill_switch": "윌테크놀러지 추가 수주 또는 메모리 진입 공시"
+      },
+      {
+        "actor": "펀더멘털 투자자",
+        "expected_action": "2026Q2 실적과 윌테크놀러지 연결 가시성이 나오기 전까지 관망",
+        "direction": "관망",
+        "confidence": "medium",
+        "basis": "2025 순이익 급감 이후 2026E 턴어라운드 추정 의존도가 높음",
+        "review_date": "20260806",
+        "kill_switch": "Q2 본업 흑자 유지와 윌테크놀러지 고마진 편입 확인"
+      },
+      {
+        "actor": "최대주주/그룹",
+        "expected_action": "유상증자·자산매각·인수 통합을 통해 반도체 사업재편을 계속 밀 가능성",
+        "direction": "우호",
+        "confidence": "medium",
+        "basis": "한솔홀딩스 제3자배정 참여와 신사업 투자 목적 공시",
+        "review_date": "20261224",
+        "kill_switch": "오창공장 처분 지연 또는 추가 재무부담 확대"
+      },
+      {
+        "actor": "외인·기관",
+        "expected_action": "데이터부재",
+        "direction": "판정불가",
+        "confidence": "none",
+        "basis": "종목귀속 외인·기관 순매수 원장 미확보",
+        "review_date": null,
+        "kill_switch": "키움/O2 수급원장 연결 후 재분석"
+      }
+    ]
+  }
+}
