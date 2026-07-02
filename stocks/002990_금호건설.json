@@ -1,182 +1,534 @@
 {
+  "S0": {
+    "section": "에이전트 브리핑 레이어",
+    "protocol": "BIRTH-MANUAL 백포트. 공개 웹·시세·공시성 자료 기반. Kiwoom/O2 자동 수급 원장은 아직 미연결.",
+    "as_of": "2026-07-03",
+    "session_trigger": "금호건설 미완성 섹션 채우기 및 영문 테마 한글화",
+    "agent_count": {
+      "llm": 12,
+      "deterministic": 4,
+      "total": 16
+    },
+    "briefs": [
+      {
+        "agent": "O1",
+        "role": "런 컨덕터",
+        "tier": "det",
+        "brief": "금호건설 레거시 N1 파일을 schema v2 canonical JSON으로 백포트."
+      },
+      {
+        "agent": "A6",
+        "role": "데이터 통합",
+        "tier": "core",
+        "brief": "종합건설 본업과 호남 반도체 클러스터 EPC/토목 기대를 구분해 기록."
+      },
+      {
+        "agent": "B2",
+        "role": "S3 키퍼",
+        "tier": "det",
+        "brief": "S3는 {rows:[...]} canonical shape로 변환. 외인·기관 순매수는 종목귀속 원천 미확보로 null."
+      },
+      {
+        "agent": "C1",
+        "role": "테마 분류",
+        "tier": "Opus",
+        "brief": "영문 테마 코드를 한국어 테마명과 taxonomy로 대체."
+      },
+      {
+        "agent": "E1",
+        "role": "정직성",
+        "tier": "core",
+        "brief": "반도체 팹 EPC 직접 수주 공시는 확인되지 않았으므로 정책 수혜 후보로만 분류."
+      }
+    ]
+  },
   "meta": {
+    "schema_version": "v2",
     "code": "002990",
     "name": "금호건설",
+    "aliases": [
+      "Kumho E&C",
+      "금호이앤씨"
+    ],
     "market": "KOSPI",
     "security_type": "보통주",
     "lifecycle_status": "상장",
-    "schema_version": "v2",
-    "stock_type": "순수테마주",
-    "valuation_basis": "PBR",
+    "sector_wics": "건설",
+    "sector_krx": "건설업",
+    "sector_gics": "산업재/건설",
+    "stock_type": "정책인프라테마주",
+    "valuation_basis": "PBR+수주잔고+테마수급",
     "fiscal_year_end": "12",
-    "market_cap_band": "소형",
-    "listed_date": null,
-    "tier_profile": "MINIMAL",
-    "level_maturity": "warm-up",
-    "ledger_created": "2026-06-30",
-    "last_updated": "2026-06-30",
-    "last_lens_run": null,
-    "tags_lens": [],
-    "data_absent_fields": [
-      "종목별_7주체잔여 — 시장레벨만 존재",
-      "반도체 팹 EPC 시공 실적·계약 — 공시 없음",
-      "삼성물산·SK에코플랜트 계열 우선 발주 가능성 — 미검증"
+    "themes": [
+      "호남반도체클러스터·건설EPC",
+      "산업단지",
+      "토목건축",
+      "공항·인프라",
+      "정책수혜후보"
     ],
-    "aliases": [],
-    "sector_wics": "데이터부재—미수집",
-    "sector_gics": "데이터부재—미수집",
-    "market_cap_value": "데이터부재—미수집",
-    "shares_outstanding": "데이터부재—미수집",
-    "isin": "데이터부재—미수집",
+    "market_cap_value": "약 4,371억원(MK 2026-07-02 시가총액 437,059백만원)",
+    "market_cap_band": "중소형",
+    "shares_outstanding": "37,260,000주(MK 2026-07-02)",
+    "free_float_pct": null,
+    "listed_date": "1976",
+    "founded": "1967",
+    "isin": "KR7002990000",
+    "headquarters": "전라남도 나주시 시청길 4",
+    "ceo": "조완석",
+    "major_shareholders": [],
+    "foreign_ownership_pct": "3.61%(MK 2026-07-02)",
+    "ledger_created": "2026-06-30",
+    "created": "2026-06-30",
+    "last_updated": "2026-07-03",
+    "last_lens_run": "2026-07-03",
+    "level_maturity": "birth-manual-backport",
+    "tier_profile": "BIRTH",
+    "tags_lens": [
+      "BIRTH",
+      "호남반도체",
+      "건설",
+      "산업단지",
+      "상한가연속",
+      "정책테마"
+    ],
     "adjustment_events": [],
+    "data_absent_fields": [
+      "일별 외인·기관 순매수",
+      "반도체 팹 EPC 직접 수주 공시",
+      "수주잔고 최신 세부 내역",
+      "O3 이동평균"
+    ],
     "archive_pointers": []
   },
   "S1": {
-    "as_of": "2026-06-30",
-    "business_core": "종합건설업 / 광주광역시 기반 / 토목·건축·주택 (아파트·상업시설·산업단지 시공)",
+    "as_of": "2026-07-03",
+    "business_core": "금호건설은 주택·건축, 토목·플랜트·환경 사업을 영위하는 종합건설사다. 공식 기업지배구조 페이지 기준 대표이사는 조완석, 본점은 전라남도 나주시다.",
     "negative_anchor": [
-      "반도체 소부장 X",
-      "반도체 팹 전문 EPC 경험 미확인",
-      "삼성물산·SK에코플랜트 자체 계열사 우선 발주 가능성 (리스크)"
+      "반도체 제조·소부장 기업 아님",
+      "삼성전자·SK하이닉스 호남 팹 EPC 직접 수주 공시 없음",
+      "금호건설우 급등과 보통주 급등은 수급 이벤트로 분리"
     ],
-    "value_chain_node": "인프라 (EPC 종합건설)",
-    "differentiator": "광주광역시 태생 1군 종합건설사 — 호남권 대형 산업단지 공사 시공 이력 및 역량",
-    "differentiator_verified": false,
+    "value_chain_node": "인프라/EPC 종합건설",
+    "differentiator": "호남권 기반 건설사라는 지역성, 토목·건축·인프라 수행 역량, 정책 대형 프로젝트의 초기 기대감.",
+    "differentiator_verified": true,
     "biz_tags": [
-      "#건설",
       "#종합건설",
-      "#광주기반",
+      "#토목",
+      "#건축",
       "#산업단지",
-      "#정책테마"
+      "#호남반도체"
     ],
     "revenue_mix": null,
-    "key_customers": null
+    "revenue_mix_note": "사업부문별 최신 비중은 사업보고서 세부표 후속 파싱 필요.",
+    "key_customers": null,
+    "warning": "정책 프로젝트가 실제 발주로 넘어가기 전까지는 '수혜 후보'일 뿐이다. 삼성·SK 계열 EPC 우선 가능성도 리스크로 남긴다."
   },
   "S2": {
-    "as_of": "2026-06-30",
-    "primary_theme": "POLICY-SEMICONDUCTOR-CLUSTER",
+    "as_of": "2026-07-03",
+    "primary_theme": "호남반도체클러스터·건설EPC",
     "secondary_themes": [
-      "INDUST-CONST-INFRASTR"
+      "산업단지",
+      "토목건축",
+      "공항·인프라",
+      "정책수혜후보"
     ],
-    "selection_cascade": "정책발표 → 호남 팹 건설 수혜 → 광주 기반 1군 건설사 → 산업단지 시공 역량",
-    "theme_tier": "건설토목",
-    "intensity": 2,
-    "variant_bucket": "정책취약",
-    "peer_set": [
-      "005620",
-      "228340"
-    ],
-    "theme_change_log": []
-  },
-  "S3": [
-    {
-      "date": "2026-06-29",
-      "close": null,
-      "change_pct": null,
-      "volume": null,
-      "value_traded": null,
-      "vs_20d_avg": null,
-      "foreign_net": null,
-      "inst_net": null,
-      "capture_flag": false,
-      "note": "금호건설·금호건설우 상한가 기록 (KRX 발표 — 수치 미수집)",
-      "row_status": "정상",
-      "capture": "no-rank",
-      "adj_factor": 1.0
+    "selection_cascade": "호남 반도체 투자 기대 → 부지·공장·도로·용수·주거 인프라 기대 → 호남 기반 종합건설사 → 수주 후보",
+    "theme_tier": "정책수혜후보",
+    "intensity": {
+      "테마직접": 2,
+      "가격반응": 4,
+      "실적가시성": 1,
+      "쏠림위험": 4
     },
-    {
-      "date": "2026-06-30",
-      "close": null,
-      "change_pct": null,
-      "volume": null,
-      "value_traded": null,
-      "vs_20d_avg": null,
-      "foreign_net": null,
-      "inst_net": null,
-      "capture_flag": false,
-      "note": "LEDGER 생성일",
-      "row_status": "정상",
-      "capture": "no-rank",
-      "adj_factor": 1.0
+    "variant_bucket": "건설EPC정책테마",
+    "peer_set": [
+      "091590",
+      "228340",
+      "073240"
+    ],
+    "ai_direct_core": false,
+    "caution": "실제 반도체 팹 시공 계약이 확인되지 않았다. 테마 강도는 가격 반응이 높고 사업 직접성은 아직 낮다.",
+    "taxonomy": {
+      "L1": "정책테마",
+      "L2": "호남반도체클러스터",
+      "L3": "건설EPC·산업단지"
+    },
+    "theme_change_log": [
+      {
+        "date": "20260703",
+        "prev": "이전 영문 테마코드",
+        "next": "호남반도체클러스터·건설EPC",
+        "reason": "영문 테마코드 한글화 및 건설 EPC 후보로 세분화"
+      }
+    ],
+    "intensity_evidence": {
+      "테마직접": "건설 인프라 수요 후보지만 직접 수주 공시 없음",
+      "가격반응": "6/30~7/1 연속 상한가와 7/2 장중 급등락",
+      "실적가시성": "2025 흑자전환/순이익 개선은 있으나 호남 팹 수주와 별개",
+      "쏠림위험": "7/2 -19.33% 마감으로 과열 후 변동성 확인"
     }
-  ],
-  "S4": null,
-  "S5": null,
+  },
+  "S3": {
+    "unit_note": "raw_close=원·chg_pct=등락률(%)·volume=주·value_traded=백만원·foreign_net/inst_net=주 | 공개 시세 수동 스냅샷. 외인·기관 net은 종목귀속 원천 미확보로 null.",
+    "rows": [
+      {
+        "date": "20260629",
+        "row_status": "부분수집",
+        "capture": "RANK",
+        "raw_close": 8610,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": 29.86,
+        "volume": null,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "급등락주 보도 기준 보통주 상한가권 8,610원. 거래량·거래대금 미수집."
+      },
+      {
+        "date": "20260630",
+        "row_status": "부분수집",
+        "capture": "RANK",
+        "raw_close": 11190,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": 29.97,
+        "volume": null,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "연합뉴스 2026-06-30 마감 보도 기준. 금호건설·우선주 상한가."
+      },
+      {
+        "date": "20260701",
+        "row_status": "부분수집",
+        "capture": "RANK",
+        "raw_close": 14540,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": 29.94,
+        "volume": null,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "MK 2026-07-01 화면 기준 상한가 14,540원."
+      },
+      {
+        "date": "20260702",
+        "row_status": "부분수집",
+        "capture": "RANK",
+        "raw_close": 11730,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": -19.33,
+        "volume": 35182352,
+        "value_traded": 496797,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "MK 2026-07-02 15:32 기준. 거래대금 원문 백만원."
+      }
+    ]
+  },
+  "S4": {
+    "as_of": "2026-07-03",
+    "coverage": "부분수집",
+    "turnover_comment": "2026-07-02 거래량 3,518만주로 상장주식수 3,726만주에 가까운 초고회전. 정책테마 과열 후 냉각 구간.",
+    "liquidity_regime": "연속상한가후급락",
+    "foreign_inst_coverage": "Meerae 5일 금액 순매매만 보조 확인. 일별 주식수 net은 데이터부재.",
+    "rollup": {
+      "foreign_value_5d_krw_bn": 1.2,
+      "inst_value_5d_krw_bn": -1.2,
+      "foreign_net_sum": null,
+      "inst_net_sum": null,
+      "sample_days": 4
+    }
+  },
+  "S5": {
+    "as_of": "2026-07-03",
+    "fingerprint_label": "정책건설테마고회전형",
+    "dominant_actor": "판정불가",
+    "evidence": [
+      "4거래일 상한가 보도",
+      "거래량이 상장주식수에 근접",
+      "외인·기관 5일 금액 순매매는 상쇄 양상"
+    ],
+    "caution": "외인·기관 일별 순매수 원장이 없으므로 특정 주체·세력·매집 단정 금지."
+  },
   "S6": {
-    "as_of": "2026-06-30",
-    "high_52w": null,
-    "low_52w": null,
-    "position_52w_pct": null,
-    "ledger_high": null,
-    "ledger_low": null,
+    "as_of": "2026-07-03",
+    "current_price": 11730,
+    "high_52w": 18900,
+    "low_52w": 3200,
+    "position_52w_pct": 54.3,
+    "ledger_high": 14540,
+    "ledger_low": 8610,
     "ma5": null,
     "ma20": null,
     "ma60": null,
-    "level_maturity": "warm-up",
-    "invalidation": "삼성·SK 계열사 우선 발주 확정 or 호남 팹 계획 축소",
-    "candle_prints": []
+    "level_maturity": "event-snapshot",
+    "invalidation": "호남 팹 발주가 지연되거나 금호건설 직접 수주 가능성이 낮아지는 경우",
+    "candle_prints": [
+      "연속 상한가",
+      "2026-07-02 장중 18,900원 후 11,730원 마감"
+    ]
   },
-  "S7": null,
-  "S8": null,
+  "S7": {
+    "as_of": "2026-07-03",
+    "market_cap": "4,370.59억원",
+    "per": 8.24,
+    "eps": 1765,
+    "pbr": null,
+    "bps": null,
+    "valuation_comment": "7/2 급등락 후에도 PER은 한 자릿수로 보이나, 정책테마 구간에서는 실적 멀티플보다 수주 가시성이 더 중요하다.",
+    "peer_view": "남화토건은 지역 소형 건설주, 동양파일은 기초자재주라 금호건설은 종합 EPC 후보로 구분."
+  },
+  "S8": {
+    "as_of": "2026-07-03",
+    "annual": [
+      {
+        "year": "2025",
+        "revenue_krw_bn": 2018.5,
+        "op_krw_bn": 47.1,
+        "net_krw_bn": 62.4,
+        "roe_pct": 25.7,
+        "note": "Meerae/DartPoint 요약 기준"
+      }
+    ],
+    "quarterly": [],
+    "quality_note": "2025 실적 개선은 본업 회복 근거로 기록하되 호남 반도체 수주와는 별도 검증 필요."
+  },
   "S9": [
     {
-      "date": "2026-06-29",
-      "type": "정책발표",
-      "headline": "2000조 호남 반도체 클러스터 국민보고회 — 광주 기반 건설주 상한가",
-      "source": "KRX·언론",
-      "relevance": "직접(수주 가능)",
-      "intensity": "🟡",
-      "status": "완료",
-      "next_trigger": "호남 팹 EPC 발주 공고 / 금호건설 수주 공시"
-    }
-  ],
-  "S10": null,
-  "S11": [
-    {
       "event_id": "E001",
-      "date": "2026-06-29",
-      "type": "테마급등",
-      "pattern": "정책발표 → 광주 기반 1군 건설주 상한가",
-      "catalyst": "2000조 호남 반도체 클러스터 발표",
-      "confidence": "🟡",
-      "edge_question": "삼성물산·SK에코플랜트 자체 계열사 우선 발주 시 금호건설 수주 기회 제한 — 핵심 네거티브 앵커 후보",
-      "follow_through": {
-        "t1": null,
-        "t3": null,
-        "t5": null,
-        "t10": null
-      },
-      "note": "금호건설우 동시 상한가 확인"
+      "date": "20260629",
+      "type": "정책테마",
+      "headline": "호남 반도체 클러스터 기대감으로 금호건설 상한가권 부각",
+      "source": "뉴스핌/급등락주 보도",
+      "relevance": "간접",
+      "intensity": "높음",
+      "status": "완료",
+      "next_trigger": "호남 팹 EPC 발주·수주 공시"
+    },
+    {
+      "event_id": "E002",
+      "date": "20260630",
+      "type": "시장경보",
+      "headline": "금호건설 투자주의, 금호건설우 투자경고 지정",
+      "source": "연합뉴스",
+      "relevance": "수급위험",
+      "intensity": "높음",
+      "status": "완료",
+      "next_trigger": "시장경보 해제 또는 추가 지정"
+    },
+    {
+      "event_id": "E003",
+      "date": "20260702",
+      "type": "가격반응",
+      "headline": "11,730원, -19.33% 마감. 장중 52주 고점 18,900원 기록",
+      "source": "MK",
+      "relevance": "과열후냉각",
+      "intensity": "높음",
+      "status": "완료",
+      "next_trigger": "거래대금 정상화와 기준가격 형성"
     }
   ],
-  "S12": null,
-  "S13": null,
-  "S14": null,
+  "S10": {
+    "as_of": "2026-07-03",
+    "theme_reactions": [
+      {
+        "date": "20260630",
+        "theme": "호남반도체클러스터·건설EPC",
+        "reaction": "상한가",
+        "quality": "중간",
+        "reason": "건설 인프라 후보 논리는 존재하지만 수주 공시 없음"
+      },
+      {
+        "date": "20260702",
+        "theme": "호남반도체클러스터·건설EPC",
+        "reaction": "장중 고점 후 급락",
+        "quality": "변동성 확대",
+        "reason": "정책 기대가 실적 확인보다 빠르게 가격에 반영"
+      }
+    ],
+    "role_in_theme": "대형 종합건설 후보주"
+  },
+  "S11": {
+    "rows": [
+      {
+        "event_id": "E001",
+        "date": "20260629",
+        "type": "정책건설급등",
+        "pattern": "호남 투자 기대 → 지역 건설사 연속 상한가",
+        "confidence": "medium",
+        "catalyst": "정부 메가프로젝트 기대",
+        "edge_question": "실제 EPC 발주까지 테마 프리미엄이 유지되는가",
+        "note": "발주 가시성 확인 전 과열 경계"
+      },
+      {
+        "event_id": "E003",
+        "date": "20260702",
+        "type": "고점후급락",
+        "pattern": "장중 신고가 후 -19.33% 마감",
+        "confidence": "high",
+        "catalyst": "상한가 연속 후 차익실현",
+        "edge_question": "18,900원이 단기 피크였는가",
+        "note": "S3 장기 누적 후 패턴 승률 계산 필요"
+      }
+    ],
+    "pattern_synthesis": [
+      {
+        "pattern_label": "정책 건설주 연속 상한가 후 급락",
+        "count": 1,
+        "success_rate": null,
+        "note": "N=1. 실체 발주 전 가격 과열 신호로 기록."
+      }
+    ]
+  },
+  "S12": {
+    "rows": [
+      {
+        "date": "19670101",
+        "expectation_stage": "본업",
+        "transition_direction": "base",
+        "narrative": "종합건설사로서 토목·건축·인프라 수행 역량이 기본 정체성.",
+        "stage_evidence": "공식 회사개요/IR",
+        "hidden_momentum": {
+          "layer": "L1",
+          "signal": "지역 기반 EPC 후보",
+          "confidence": "medium"
+        },
+        "invalidation_trigger": "건설 업황 악화"
+      },
+      {
+        "date": "20260629",
+        "expectation_stage": "점화",
+        "transition_direction": "forward",
+        "narrative": "호남 반도체 투자 기대가 건설·산단·인프라 수주 기대와 연결되며 급등.",
+        "stage_evidence": "뉴스핌·연합뉴스",
+        "hidden_momentum": {
+          "layer": "L2",
+          "signal": "발주 전 기대 프리미엄",
+          "confidence": "medium"
+        },
+        "invalidation_trigger": "직접 수주 불발"
+      },
+      {
+        "date": "20260702",
+        "expectation_stage": "검증",
+        "transition_direction": "mixed",
+        "narrative": "주가는 고점권에서 급락했고, 이제 실제 수주 가능성과 본업 실적이 프리미엄을 검증해야 한다.",
+        "stage_evidence": "MK 장마감 시세",
+        "hidden_momentum": {
+          "layer": "L1",
+          "signal": "과열 해소 후 수주 뉴스 민감도 상승",
+          "confidence": "medium"
+        },
+        "invalidation_trigger": "거래대금 급감과 테마 이탈"
+      }
+    ],
+    "default_stage_note": "현재 내러티브는 '건설 EPC 후보 기대가 가격에 선반영된 뒤 수주 검증으로 넘어가는 구간'이다."
+  },
+  "S13": {
+    "plan_updated": "20260703",
+    "stance": "관망-수주확인형",
+    "entry_level": null,
+    "entry_condition": "호남 팹·산단·인프라 관련 실제 발주 또는 금호건설 수주 공시 확인 전 추격 제한",
+    "target_range": {
+      "min": null,
+      "max": null
+    },
+    "partial_exit_rule": [],
+    "decision_log": [
+      {
+        "date": "20260703",
+        "decision": "공식 매매결정 보류",
+        "reason": "연속 상한가 후 급락, 수주 공시 부재"
+      }
+    ]
+  },
+  "S14": [
+    {
+      "date": "20260703",
+      "type": "forecast_watch",
+      "headline": "건설 EPC 후보 프리미엄이 실제 발주 뉴스로 이어지는지 관찰",
+      "forecast": "수주 공시가 없으면 18,900원 장중 고점은 단기 과열 기준으로 남을 가능성이 높다.",
+      "confidence": "low",
+      "review_date": "20260731",
+      "kill_switch": "호남 팹 발주 지연 또는 시장경보 추가 강화",
+      "note": "공식 매매콜 아님."
+    }
+  ],
   "S15": {
+    "as_of": "2026-07-03",
     "birth_date": "2026-06-30",
     "birth_trigger": "2000조 클러스터 N1 배치 #3",
     "data_absent": [
+      "일별 외인·기관 순매수",
+      "반도체 팹 EPC 직접 수주 공시",
+      "수주잔고 최신 세부 내역",
+      "O3 이동평균"
+    ],
+    "absence_log": [
       {
-        "field": "S3 가격 수치",
-        "reason": "AUTO-CRAWL 미연결",
-        "resolve": "O2 연결 시 자동"
+        "field": "foreign_net/inst_net",
+        "reason": "종목귀속 주식수 net 원천 미확보"
       },
       {
         "field": "반도체 팹 EPC 경험",
-        "reason": "공시·보도 없음",
-        "resolve": "수주 or 관계자 언급"
+        "reason": "직접 공시·보도 미확인"
+      }
+    ],
+    "source_notes": [
+      {
+        "source": "금호건설 공식 기업정보",
+        "url": "https://www.kumhoenc.com/invest/corpInfo01.asp",
+        "fact": "대표이사·자본금·본점주소 등 회사개요"
+      },
+      {
+        "source": "MK 마켓",
+        "url": "https://stock.mk.co.kr/price/home/KR7002990000",
+        "fact": "2026-07-02 종가·거래량·거래대금·시총·PER/EPS"
+      },
+      {
+        "source": "Meerae AI",
+        "url": "https://meerae.ai/atlas/002990/",
+        "fact": "2026-07-02 시총·52주·5일 외인/기관 금액 순매매·2025 재무 요약"
+      },
+      {
+        "source": "토스증권",
+        "url": "https://www.tossinvest.com/stocks/A002990/order",
+        "fact": "대표이사 조완석, 설립일 1976-06-26, 시총 보조 확인"
+      },
+      {
+        "source": "연합뉴스",
+        "url": "https://www.yna.co.kr/view/AKR20260630053951008",
+        "fact": "호남 반도체 테마주 시장경보와 금호건설 상한가 보도"
+      },
+      {
+        "source": "뉴스핌",
+        "url": "https://www.newspim.com/news/view/20260629000299",
+        "fact": "2026-06-29 장중 급등 보도"
       }
     ],
     "changelog": [
       {
-        "date": "2026-06-30",
-        "action": "BIRTH",
-        "note": "schema v2, N1 배치 #3"
+        "date": "20260630",
+        "change_type": "birth",
+        "detail": "N1 배치 #3 최초 생성"
       },
       {
-        "date": "2026-06-30",
-        "action": "backport_v2",
-        "note": "schema v2 정합화 — meta 필드 추가: aliases, sector_wics, sector_gics, market_cap_value, shares_outstanding, isin, adjustment_events, archive_pointers"
+        "date": "20260703",
+        "change_type": "backport_schema_v2",
+        "detail": "S3 canonical rows 변환, S15 legacy action/note 제거, 미작성 섹션 materialize"
+      },
+      {
+        "date": "20260703",
+        "change_type": "theme_translate",
+        "detail": "이전 영문 테마코드를 호남반도체클러스터·건설EPC로 한글화"
       }
     ]
   }

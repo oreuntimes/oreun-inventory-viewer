@@ -1,184 +1,561 @@
 {
+  "S0": {
+    "section": "에이전트 브리핑 레이어",
+    "protocol": "BIRTH-MANUAL 백포트. 공개 웹·시세·공시성 자료 기반. Kiwoom/O2 자동 수급 원장은 아직 미연결.",
+    "as_of": "2026-07-03",
+    "session_trigger": "동양파일 미완성 섹션 채우기 및 영문 테마 한글화",
+    "agent_count": {
+      "llm": 12,
+      "deterministic": 4,
+      "total": 16
+    },
+    "briefs": [
+      {
+        "agent": "O1",
+        "role": "런 컨덕터",
+        "tier": "det",
+        "brief": "동양파일 레거시 N1 파일을 schema v2 canonical JSON으로 백포트."
+      },
+      {
+        "agent": "A6",
+        "role": "데이터 통합",
+        "tier": "core",
+        "brief": "PHC파일 기초자재 본업과 호남 반도체 팹 기초공사 기대를 분리해 기록."
+      },
+      {
+        "agent": "B2",
+        "role": "S3 키퍼",
+        "tier": "det",
+        "brief": "S3는 {rows:[...]} canonical shape로 변환. 외인·기관 순매수는 종목귀속 원천 미확보로 null."
+      },
+      {
+        "agent": "C1",
+        "role": "테마 분류",
+        "tier": "Opus",
+        "brief": "영문 테마 코드를 한국어 테마명과 taxonomy로 대체."
+      },
+      {
+        "agent": "E1",
+        "role": "정직성",
+        "tier": "core",
+        "brief": "반도체 제조·장비주가 아니라 건설 기초자재주다. 착공·수주 공시가 없으므로 기대감 단계로만 분류."
+      }
+    ]
+  },
   "meta": {
+    "schema_version": "v2",
     "code": "228340",
     "name": "동양파일",
+    "aliases": [
+      "Tongyang Pile",
+      "Dongyang Pile"
+    ],
     "market": "KOSDAQ",
     "security_type": "보통주",
     "lifecycle_status": "상장",
-    "schema_version": "v2",
-    "stock_type": "순수테마주",
-    "valuation_basis": "PBR",
+    "sector_wics": "건축자재/비금속광물",
+    "sector_krx": "제조",
+    "sector_gics": "소재/건설자재",
+    "stock_type": "정책건자재테마주",
+    "valuation_basis": "PBR+시클리컬+테마수급",
     "fiscal_year_end": "12",
-    "market_cap_band": "소형",
-    "listed_date": null,
-    "tier_profile": "MINIMAL",
-    "level_maturity": "warm-up",
-    "ledger_created": "2026-06-30",
-    "last_updated": "2026-06-30",
-    "last_lens_run": null,
-    "tags_lens": [],
-    "data_absent_fields": [
-      "종목별_7주체잔여 — 시장레벨만 존재",
-      "반도체 팹 기초 공사 납품 계약 — 공시 없음",
-      "2025·2026 영업이익 — DART 미확인 (적자 보도)"
+    "themes": [
+      "호남반도체클러스터·기초건자재",
+      "PHC파일",
+      "건설자재",
+      "산업단지기초공사",
+      "익산생산기반"
     ],
-    "aliases": [],
-    "sector_wics": "데이터부재—미수집",
-    "sector_gics": "데이터부재—미수집",
-    "market_cap_value": "데이터부재—미수집",
-    "shares_outstanding": "데이터부재—미수집",
-    "isin": "데이터부재—미수집",
+    "market_cap_value": "약 874억원(2026-07-02 종가 4,370원 × 20,000,000주)",
+    "market_cap_band": "소형",
+    "shares_outstanding": "20,000,000주(MK 2026-07-02)",
+    "free_float_pct": null,
+    "listed_date": "2016-04-06",
+    "founded": "2013-06",
+    "isin": "KR7228340006",
+    "headquarters": "충청남도 아산시/공장 및 사업장 세부는 후속 확인",
+    "ceo": "김근수",
+    "major_shareholders": [],
+    "foreign_ownership_pct": "약 1.5%대(MK/Meerae 2026-07-02 보조 확인)",
+    "ledger_created": "2026-06-30",
+    "created": "2026-06-30",
+    "last_updated": "2026-07-03",
+    "last_lens_run": "2026-07-03",
+    "level_maturity": "birth-manual-backport",
+    "tier_profile": "BIRTH",
+    "tags_lens": [
+      "BIRTH",
+      "호남반도체",
+      "PHC파일",
+      "건설자재",
+      "급등후하한가",
+      "실적리스크"
+    ],
     "adjustment_events": [],
+    "data_absent_fields": [
+      "일별 외인·기관 순매수",
+      "반도체 팹 기초공사 납품 계약",
+      "O3 이동평균",
+      "고객사별 매출"
+    ],
     "archive_pointers": []
   },
   "S1": {
-    "as_of": "2026-06-30",
-    "business_core": "PHC파일(고강도 프리스트레스트 콘크리트 말뚝) 전문 제조·판매 / 기초 건축 자재 / 대형 공장·산업단지 기초 공사 투입",
+    "as_of": "2026-07-03",
+    "business_core": "동양파일은 콘크리트 파일, 특히 PHC파일 제조·판매를 영위하는 건설 기초자재 기업이다. PHC파일은 구조물 건축 시 지반 지지력을 높이는 기초보강 자재로, 대형 공장·산업단지 착공 기대와 연결될 수 있다.",
     "negative_anchor": [
-      "반도체 제조·장비·소부장 X",
-      "건물 시공 X",
-      "기초 자재(파일) 공급 O",
-      "2025년 영업손실 47억 — 재무 리스크"
+      "반도체 제조·장비·소부장 아님",
+      "건설 시공사가 아니라 기초자재 제조사",
+      "호남 팹 기초공사 납품 계약 공시 없음",
+      "2025년 적자 지속 리스크"
     ],
-    "value_chain_node": "소재 (건축 기초 자재 — B2B 납품)",
-    "differentiator": "전북 익산 대규모 생산 공장 — 호남 반도체 팹 기초 공사 파일 지리적 최단 납품 거리",
-    "differentiator_verified": false,
+    "value_chain_node": "건설자재/PHC파일",
+    "differentiator": "PHC파일 전문 제조사로 대형 산업단지·공장 기초공사 기대에 연결된다. 다만 실제 수혜는 착공 시점과 납품 계약 확인이 필요하다.",
+    "differentiator_verified": true,
     "biz_tags": [
       "#PHC파일",
-      "#기초건축자재",
-      "#전북익산",
-      "#호남기반",
-      "#정책테마"
+      "#건설자재",
+      "#비금속광물",
+      "#기초공사",
+      "#호남반도체"
     ],
-    "revenue_mix": null,
+    "revenue_mix": {
+      "PHC파일": "주력 제품군, 세부 비중 후속 파싱 필요"
+    },
+    "revenue_mix_note": "제품별 최신 비중은 사업보고서 세부표 후속 파싱 필요.",
     "key_customers": null,
-    "warning": "2025년 영업적자 47억 확인됨. 재무 불안정 + 테마 편승 이중 구조."
+    "warning": "테마 논리는 공장 기초자재 수요 기대지만 실제 착공·납품까지 시간이 길 수 있다. 2025년 영업손실과 순손실을 함께 봐야 한다."
   },
   "S2": {
-    "as_of": "2026-06-30",
-    "primary_theme": "POLICY-SEMICONDUCTOR-CLUSTER",
+    "as_of": "2026-07-03",
+    "primary_theme": "호남반도체클러스터·기초건자재",
     "secondary_themes": [
-      "INDUST-CONST-MATERIAL"
+      "PHC파일",
+      "건설자재",
+      "산업단지기초공사",
+      "익산생산기반"
     ],
-    "selection_cascade": "정책발표 → 팹 건설 기초 공사 → PHC파일 수요 → 익산 생산 → 물류 최근접",
-    "theme_tier": "건설토목",
-    "intensity": 1,
-    "variant_bucket": "정책취약",
-    "peer_set": [
-      "005620",
-      "002990"
-    ],
-    "theme_change_log": []
-  },
-  "S3": [
-    {
-      "date": "2026-06-29",
-      "close": null,
-      "change_pct": null,
-      "volume": null,
-      "value_traded": null,
-      "vs_20d_avg": null,
-      "foreign_net": null,
-      "inst_net": null,
-      "capture_flag": false,
-      "note": "호남 클러스터 발표일 — 관련주 급등",
-      "row_status": "정상",
-      "capture": "no-rank",
-      "adj_factor": 1.0
+    "selection_cascade": "호남 반도체 투자 기대 → 공장·산단 착공 기대 → 기초공사 PHC파일 수요 → 동양파일 수급 집중",
+    "theme_tier": "건설자재수혜후보",
+    "intensity": {
+      "테마직접": 1,
+      "가격반응": 4,
+      "실적가시성": 1,
+      "쏠림위험": 4
     },
-    {
-      "date": "2026-06-30",
-      "close": null,
-      "change_pct": null,
-      "volume": null,
-      "value_traded": null,
-      "vs_20d_avg": null,
-      "foreign_net": null,
-      "inst_net": null,
-      "capture_flag": false,
-      "note": "LEDGER 생성일",
-      "row_status": "정상",
-      "capture": "no-rank",
-      "adj_factor": 1.0
+    "variant_bucket": "기초건자재정책테마",
+    "peer_set": [
+      "091590",
+      "002990",
+      "073240"
+    ],
+    "ai_direct_core": false,
+    "caution": "착공 전 기대 단계다. 반도체 공장 발주가 실제 PHC파일 납품으로 이어졌다는 공시는 없다.",
+    "taxonomy": {
+      "L1": "정책테마",
+      "L2": "호남반도체클러스터",
+      "L3": "기초건자재·PHC파일"
+    },
+    "theme_change_log": [
+      {
+        "date": "20260703",
+        "prev": "이전 영문 테마코드",
+        "next": "호남반도체클러스터·기초건자재",
+        "reason": "영문 테마코드 한글화 및 건설자재 하위테마로 세분화"
+      }
+    ],
+    "intensity_evidence": {
+      "테마직접": "기초공사 자재 논리는 있으나 납품 공시 없음",
+      "가격반응": "7/1 52주 신고가 후 7/2 하한가",
+      "실적가시성": "2025 적자 지속으로 실적 기반 약함",
+      "쏠림위험": "상한가 이후 -29.97% 급락"
     }
-  ],
-  "S4": null,
-  "S5": null,
+  },
+  "S3": {
+    "unit_note": "raw_close=원·chg_pct=등락률(%)·volume=주·value_traded=백만원·foreign_net/inst_net=주 | 공개 시세 수동 스냅샷. 외인·기관 net은 종목귀속 원천 미확보로 null.",
+    "rows": [
+      {
+        "date": "20260629",
+        "row_status": "확인필요",
+        "capture": "RANK",
+        "raw_close": null,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": null,
+        "volume": null,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "뉴스핌 기준 장중 +29.88% 상한가권 보도. 종가 OHLCV 미확정으로 수치 미기재."
+      },
+      {
+        "date": "20260630",
+        "row_status": "확인필요",
+        "capture": "RANK",
+        "raw_close": null,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": null,
+        "volume": null,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "연합뉴스 기준 상한가 마감 보도. 종가 원천 미확정으로 수치 미기재."
+      },
+      {
+        "date": "20260701",
+        "row_status": "부분수집",
+        "capture": "RANK",
+        "raw_close": 6240,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": null,
+        "volume": null,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Alpha/Investing 2026-07-02 전일종가 기준. 등락률·거래량은 미수집."
+      },
+      {
+        "date": "20260702",
+        "row_status": "부분수집",
+        "capture": "RANK",
+        "raw_close": 4370,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": -29.97,
+        "volume": 9819009,
+        "value_traded": 54361,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "AlphaSquare/한국경제 2026-07-02 장마감 기준. 거래대금 원문 원 단위를 백만원으로 환산."
+      }
+    ]
+  },
+  "S4": {
+    "as_of": "2026-07-03",
+    "coverage": "부분수집",
+    "turnover_comment": "2026-07-02 거래량 981.9만주로 상장주식수 2,000만주의 약 49.1% 회전. 7/1 신고가 후 하한가로 테마 과열이 급격히 식었다.",
+    "liquidity_regime": "신고가후하한가",
+    "foreign_inst_coverage": "Meerae 5일 금액 순매매만 보조 확인. 일별 주식수 net은 데이터부재.",
+    "rollup": {
+      "foreign_value_5d_krw_bn": 0.3,
+      "inst_value_5d_krw_bn": 0.1,
+      "foreign_net_sum": null,
+      "inst_net_sum": null,
+      "sample_days": 4
+    }
+  },
+  "S5": {
+    "as_of": "2026-07-03",
+    "fingerprint_label": "기초자재테마급등후하한가형",
+    "dominant_actor": "판정불가",
+    "evidence": [
+      "7/1 52주 신고가 종목 언급",
+      "7/2 -29.97%",
+      "거래량/상장주식수 약 49%"
+    ],
+    "caution": "외인·기관 일별 순매수 원장이 없으므로 특정 주체·세력·매집 단정 금지."
+  },
   "S6": {
-    "as_of": "2026-06-30",
-    "high_52w": null,
-    "low_52w": null,
-    "position_52w_pct": null,
-    "ledger_high": null,
-    "ledger_low": null,
+    "as_of": "2026-07-03",
+    "current_price": 4370,
+    "high_52w": 7300,
+    "low_52w": 1550,
+    "position_52w_pct": 49.0,
+    "ledger_high": 6240,
+    "ledger_low": 4370,
     "ma5": null,
     "ma20": null,
     "ma60": null,
-    "level_maturity": "warm-up",
-    "invalidation": "팹 착공 지연 공식화 or 2026년 영업적자 지속",
-    "candle_prints": []
+    "level_maturity": "event-snapshot",
+    "invalidation": "호남 팹 착공 지연, PHC파일 납품 공시 부재, 적자 지속",
+    "candle_prints": [
+      "2026-07-01 52주 신고가",
+      "2026-07-02 가격제한폭 하락"
+    ]
   },
-  "S7": null,
-  "S8": null,
+  "S7": {
+    "as_of": "2026-07-03",
+    "market_cap": "약 874억원",
+    "per": null,
+    "eps": -363,
+    "pbr": null,
+    "bps": null,
+    "valuation_comment": "적자 상태라 PER은 의미가 낮다. 가격은 건설자재 테마와 착공 기대에 더 민감하다.",
+    "peer_view": "금호건설·남화토건은 시공/EPC 후보, 동양파일은 기초자재 하위 노드로 직접성은 한 단계 낮다."
+  },
+  "S8": {
+    "as_of": "2026-07-03",
+    "annual": [
+      {
+        "year": "2025",
+        "revenue_krw_bn": 55.93,
+        "op_krw_bn": -4.75,
+        "net_krw_bn": -7.27,
+        "note": "AlphaSquare/DeepSearch 연간 재무 요약 기준"
+      },
+      {
+        "year": "2024",
+        "revenue_krw_bn": 56.56,
+        "op_krw_bn": -4.42,
+        "net_krw_bn": -5.27,
+        "note": "AlphaSquare 연간 재무 요약 기준"
+      }
+    ],
+    "quarterly": [
+      {
+        "period": "2026Q1",
+        "revenue_krw_bn": 15.72,
+        "op_krw_bn": null,
+        "net_krw_bn": null,
+        "eps": 70.0,
+        "note": "Investing 실적 표의 2026-03 매출/EPS 스냅샷. 세부 영업이익은 후속 확인 필요"
+      }
+    ],
+    "quality_note": "2025 적자 지속이 테마 프리미엄의 약한 고리다."
+  },
   "S9": [
     {
-      "date": "2026-06-29",
-      "type": "정책발표",
-      "headline": "2000조 호남 반도체 클러스터 발표 — 팹 기초 공사 파일 수요 기대감",
-      "source": "언론·인포스탁",
-      "relevance": "간접",
-      "intensity": "🟡",
-      "status": "완료",
-      "next_trigger": "팹 착공 일정 확정 / 동양파일 수주 공시 / 2026 실적 회복"
-    }
-  ],
-  "S10": null,
-  "S11": [
-    {
       "event_id": "E001",
-      "date": "2026-06-29",
-      "type": "테마급등",
-      "pattern": "정책발표 → 건설자재 서브테마 급등",
-      "catalyst": "2000조 호남 반도체 클러스터 발표",
-      "confidence": "🟡",
-      "edge_question": "착공(수년 후)까지 선반영 기대감 유지 가능한가 vs 영업적자 지속 시 이중 압박",
-      "follow_through": {
-        "t1": null,
-        "t3": null,
-        "t5": null,
-        "t10": null
-      },
-      "note": "익산 생산 → 물류 최근접 논리 실재, 재무 리스크 병기 필수"
+      "date": "20260629",
+      "type": "정책테마",
+      "headline": "호남 반도체 클러스터 기대감으로 동양파일 장중 상한가권 부각",
+      "source": "뉴스핌",
+      "relevance": "간접",
+      "intensity": "높음",
+      "status": "완료",
+      "next_trigger": "팹 착공·PHC파일 납품 공시"
+    },
+    {
+      "event_id": "E002",
+      "date": "20260630",
+      "type": "시장경보",
+      "headline": "동양파일 투자주의종목 지정",
+      "source": "연합뉴스",
+      "relevance": "수급위험",
+      "intensity": "높음",
+      "status": "완료",
+      "next_trigger": "추가 경보 또는 거래대금 정상화"
+    },
+    {
+      "event_id": "E003",
+      "date": "20260702",
+      "type": "가격반응",
+      "headline": "4,370원, -29.97% 가격제한폭 하락",
+      "source": "AlphaSquare/한국경제",
+      "relevance": "테마냉각",
+      "intensity": "높음",
+      "status": "완료",
+      "next_trigger": "하한가 이후 반등 지속성"
     }
   ],
-  "S12": null,
-  "S13": null,
-  "S14": null,
+  "S10": {
+    "as_of": "2026-07-03",
+    "theme_reactions": [
+      {
+        "date": "20260629",
+        "theme": "호남반도체클러스터·기초건자재",
+        "reaction": "상한가권",
+        "quality": "낮음~중간",
+        "reason": "기초공사 자재 논리는 있으나 착공 전"
+      },
+      {
+        "date": "20260702",
+        "theme": "호남반도체클러스터·기초건자재",
+        "reaction": "하한가",
+        "quality": "테마 피로",
+        "reason": "신고가 후 수급 이탈"
+      }
+    ],
+    "role_in_theme": "건설자재 하위 노드"
+  },
+  "S11": {
+    "rows": [
+      {
+        "event_id": "E001",
+        "date": "20260629",
+        "type": "건자재테마급등",
+        "pattern": "정책 발표 → PHC파일 수요 기대 → 상한가권",
+        "confidence": "medium",
+        "catalyst": "호남 반도체 클러스터 기대",
+        "edge_question": "착공 전 기대가 실제 납품으로 이어지는가",
+        "note": "건설자재는 시차가 길다."
+      },
+      {
+        "event_id": "E003",
+        "date": "20260702",
+        "type": "신고가후하한가",
+        "pattern": "52주 신고가 직후 가격제한폭 하락",
+        "confidence": "high",
+        "catalyst": "테마 과열 해소",
+        "edge_question": "하한가 이후 거래대금이 재확대되는가",
+        "note": "적자기업의 테마 프리미엄 축소 신호"
+      }
+    ],
+    "pattern_synthesis": [
+      {
+        "pattern_label": "기초자재 테마 신고가 후 하한가",
+        "count": 1,
+        "success_rate": null,
+        "note": "N=1. 향후 동종 건자재주와 비교 필요."
+      }
+    ]
+  },
+  "S12": {
+    "rows": [
+      {
+        "date": "20130601",
+        "expectation_stage": "본업",
+        "transition_direction": "base",
+        "narrative": "PHC파일 제조·판매 기업으로 건설 경기와 착공 사이클에 민감한 구조.",
+        "stage_evidence": "KIRS 리포트·사업보고서",
+        "hidden_momentum": {
+          "layer": "L1",
+          "signal": "건설 경기 회복 민감도",
+          "confidence": "medium"
+        },
+        "invalidation_trigger": "건설 착공 부진"
+      },
+      {
+        "date": "20260629",
+        "expectation_stage": "점화",
+        "transition_direction": "forward",
+        "narrative": "호남 반도체 클러스터 기대가 공장 기초공사와 PHC파일 수요로 연결되며 급등.",
+        "stage_evidence": "뉴스핌·연합뉴스",
+        "hidden_momentum": {
+          "layer": "L2",
+          "signal": "기초자재 하위테마 순환매",
+          "confidence": "medium"
+        },
+        "invalidation_trigger": "착공 일정 지연"
+      },
+      {
+        "date": "20260702",
+        "expectation_stage": "후퇴",
+        "transition_direction": "backward",
+        "narrative": "신고가 이후 하한가로 테마 프리미엄이 빠르게 훼손. 이제 적자 개선과 실제 납품 근거가 필요하다.",
+        "stage_evidence": "AlphaSquare/한국경제 시세",
+        "hidden_momentum": {
+          "layer": "L1",
+          "signal": "기준가격 재설정",
+          "confidence": "high"
+        },
+        "invalidation_trigger": "PHC파일 대형 수주 공시"
+      }
+    ],
+    "default_stage_note": "현재 내러티브는 'PHC파일 수요 기대가 급등을 만들었지만, 착공 전 기대와 적자 리스크가 하한가로 드러난 구간'이다."
+  },
+  "S13": {
+    "plan_updated": "20260703",
+    "stance": "관망-착공확인형",
+    "entry_level": null,
+    "entry_condition": "하한가 이후 거래대금 안정, 적자 개선, PHC파일 납품/착공 관련 공시 확인 전 추격 제한",
+    "target_range": {
+      "min": null,
+      "max": null
+    },
+    "partial_exit_rule": [],
+    "decision_log": [
+      {
+        "date": "20260703",
+        "decision": "공식 매매결정 보류",
+        "reason": "신고가 후 하한가, 실적 적자, 직접 납품 공시 부재"
+      }
+    ]
+  },
+  "S14": [
+    {
+      "date": "20260703",
+      "type": "forecast_watch",
+      "headline": "기초건자재 테마가 하한가 후 재점화되는지 관찰",
+      "forecast": "착공 뉴스 없이 단기 반등만 나오면 재차 변동성 확대 가능성이 높다.",
+      "confidence": "low",
+      "review_date": "20260731",
+      "kill_switch": "거래대금 급감 또는 2026 실적 적자 지속",
+      "note": "공식 매매콜 아님."
+    }
+  ],
   "S15": {
+    "as_of": "2026-07-03",
     "birth_date": "2026-06-30",
     "birth_trigger": "2000조 클러스터 N1 배치 #4",
     "data_absent": [
+      "일별 외인·기관 순매수",
+      "반도체 팹 기초공사 납품 계약",
+      "O3 이동평균",
+      "고객사별 매출"
+    ],
+    "absence_log": [
       {
-        "field": "S3 가격 수치",
-        "reason": "AUTO-CRAWL 미연결",
-        "resolve": "O2 연결 시 자동"
+        "field": "foreign_net/inst_net",
+        "reason": "종목귀속 주식수 net 원천 미확보"
       },
       {
-        "field": "2025·2026 재무",
-        "reason": "DART 미확인",
-        "resolve": "분기보고서 확인 → S8 materialize"
+        "field": "PHC파일 납품 계약",
+        "reason": "공시 없음"
+      },
+      {
+        "field": "2026 영업이익",
+        "reason": "분기 세부 실적 후속 파싱 필요"
+      }
+    ],
+    "source_notes": [
+      {
+        "source": "동양파일 공식 연혁",
+        "url": "https://tongyangphc.com/about/about_history.html",
+        "fact": "2016년 코스닥 상장 등 회사 연혁"
+      },
+      {
+        "source": "KIND 사업보고서",
+        "url": "https://kind.krx.co.kr/common/disclsviewer.do?acptNo=20240315000371&docno=&method=searchInitInfo",
+        "fact": "콘크리트파일 제조·판매 사업 영위"
+      },
+      {
+        "source": "AlphaSquare",
+        "url": "https://alphasquare.co.kr/home/stock-summary?code=228340",
+        "fact": "2026-07-02 종가·거래량·거래대금 및 연간 재무 요약"
+      },
+      {
+        "source": "Meerae AI",
+        "url": "https://meerae.ai/atlas/228340/",
+        "fact": "2026-07-02 종가·시총·52주·5일 수급 금액 보조 확인"
+      },
+      {
+        "source": "한국경제",
+        "url": "https://markets.hankyung.com/stock/228340",
+        "fact": "2026-07-02 장마감 시세 보조 확인"
+      },
+      {
+        "source": "연합뉴스",
+        "url": "https://www.yna.co.kr/view/AKR20260630053951008",
+        "fact": "호남 반도체 테마주 시장경보와 동양파일 상한가 보도"
+      },
+      {
+        "source": "뉴스핌",
+        "url": "https://www.newspim.com/news/view/20260629000299",
+        "fact": "2026-06-29 장중 상한가권 보도"
       }
     ],
     "changelog": [
       {
-        "date": "2026-06-30",
-        "action": "BIRTH",
-        "note": "schema v2, N1 배치 #4, 재무 리스크 병기"
+        "date": "20260630",
+        "change_type": "birth",
+        "detail": "N1 배치 #4 최초 생성"
       },
       {
-        "date": "2026-06-30",
-        "action": "backport_v2",
-        "note": "schema v2 정합화 — meta 필드 추가: aliases, sector_wics, sector_gics, market_cap_value, shares_outstanding, isin, adjustment_events, archive_pointers"
+        "date": "20260703",
+        "change_type": "backport_schema_v2",
+        "detail": "S3 canonical rows 변환, S15 legacy action/note 제거, 미작성 섹션 materialize"
+      },
+      {
+        "date": "20260703",
+        "change_type": "theme_translate",
+        "detail": "이전 영문 테마코드와 건설자재 영문 코드를 호남반도체클러스터·기초건자재로 한글화"
       }
     ]
   }

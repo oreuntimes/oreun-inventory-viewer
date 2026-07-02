@@ -1,193 +1,552 @@
 {
+  "S0": {
+    "section": "에이전트 브리핑 레이어",
+    "protocol": "BIRTH-MANUAL 백포트. 공개 웹·시세·공시성 자료 기반. Kiwoom/O2 자동 수급 원장은 아직 미연결.",
+    "as_of": "2026-07-03",
+    "session_trigger": "금호전기 미완성 섹션 채우기 및 영문 테마 한글화",
+    "agent_count": {
+      "llm": 12,
+      "deterministic": 4,
+      "total": 16
+    },
+    "briefs": [
+      {
+        "agent": "O1",
+        "role": "런 컨덕터",
+        "tier": "det",
+        "brief": "금호전기 레거시 N1 파일을 schema v2 canonical JSON으로 백포트."
+      },
+      {
+        "agent": "A6",
+        "role": "데이터 통합",
+        "tier": "core",
+        "brief": "LED 조명·스마트조명 본업과 호남 반도체 클러스터 지역/브랜드 연상 테마를 분리해 기록."
+      },
+      {
+        "agent": "B2",
+        "role": "S3 키퍼",
+        "tier": "det",
+        "brief": "S3는 {rows:[...]} canonical shape로 변환. 외인·기관 순매수는 종목귀속 원천 미확보로 null."
+      },
+      {
+        "agent": "C1",
+        "role": "테마 분류",
+        "tier": "Opus",
+        "brief": "영문 테마 코드를 한국어 테마명과 taxonomy로 대체."
+      },
+      {
+        "agent": "E1",
+        "role": "정직성",
+        "tier": "core",
+        "brief": "반도체 제조·소부장·전력 인프라 직접 수혜로 단정하지 않음. 가격 급등락은 정책 테마 수급으로만 기록."
+      }
+    ]
+  },
   "meta": {
+    "schema_version": "v2",
     "code": "001210",
     "name": "금호전기",
+    "aliases": [
+      "Kumho Electric",
+      "번개표",
+      "KHE"
+    ],
     "market": "KOSPI",
     "security_type": "보통주",
     "lifecycle_status": "상장",
-    "schema_version": "v2",
-    "stock_type": "순수테마주",
-    "valuation_basis": "PER",
+    "sector_wics": "전기제품/조명기기",
+    "sector_krx": "제조업",
+    "sector_gics": "데이터부재—국내 WICS 우선",
+    "stock_type": "정책연상테마주",
+    "valuation_basis": "적자기업+PBR+테마수급",
     "fiscal_year_end": "12",
-    "market_cap_band": "소형",
-    "listed_date": null,
-    "tier_profile": "MINIMAL",
-    "level_maturity": "warm-up",
-    "ledger_created": "2026-06-30",
-    "last_updated": "2026-06-30",
-    "last_lens_run": null,
-    "tags_lens": [],
-    "data_absent_fields": [
-      "종목별_7주체잔여 — 시장레벨만 존재",
-      "반도체 클러스터 직접 수주 — 사업 무관"
+    "themes": [
+      "호남반도체정책연상",
+      "LED조명",
+      "스마트조명",
+      "금호브랜드연상",
+      "테마편승"
     ],
-    "aliases": [],
-    "sector_wics": "데이터부재—미수집",
-    "sector_gics": "데이터부재—미수집",
-    "market_cap_value": "데이터부재—미수집",
-    "shares_outstanding": "데이터부재—미수집",
+    "market_cap_value": "약 608억원(토스증권 2026-07-02 현재가 983원 기준)",
+    "market_cap_band": "초소형",
+    "shares_outstanding": "61,880,083주(중앙이코노미뉴스 2026-07-02 기사 기준)",
+    "free_float_pct": null,
+    "listed_date": "1973-11-15",
+    "founded": "1935-05-25",
     "isin": "데이터부재—미수집",
+    "headquarters": "서울특별시 구로구 디지털로33길 48, 17층",
+    "ceo": "이홍민",
+    "major_shareholders": [],
+    "foreign_ownership_pct": "약 13.6%대(2026-07-02 보도 기준)",
+    "ledger_created": "2026-06-30",
+    "created": "2026-06-30",
+    "last_updated": "2026-07-03",
+    "last_lens_run": "2026-07-03",
+    "level_maturity": "birth-manual-backport",
+    "tier_profile": "BIRTH",
+    "tags_lens": [
+      "BIRTH",
+      "호남반도체",
+      "정책연상",
+      "LED조명",
+      "급등후급락",
+      "투자경고"
+    ],
     "adjustment_events": [],
+    "data_absent_fields": [
+      "일별 외인·기관 순매수",
+      "O3 산출 이동평균",
+      "반도체 클러스터 직접 수주·납품",
+      "최신 사업부문별 매출 믹스"
+    ],
     "archive_pointers": []
   },
   "S1": {
-    "as_of": "2026-06-30",
-    "business_core": "LED 조명 제조·판매 (직관·환형·전구식형광램프, LED조명, 유도등, 무전극등) + 소프트웨어 개발",
+    "as_of": "2026-07-03",
+    "business_core": "금호전기는 번개표 브랜드로 알려진 조명기기 기업이다. 공식 회사개요 기준 전기기구·전기설계·수출입·인터넷 쇼핑몰·바이오 사업을 업종으로 두고, LED 조명과 스마트 메쉬 조명 시스템을 핵심 사업 축으로 본다.",
     "negative_anchor": [
-      "전력 인프라 X",
-      "반도체 소부장 X",
-      "반도체 직접 제조 X",
-      "LED 조명 제조사 O",
-      "테마 편승 수혜 (광주 기반 + '금호' 브랜드 연상)"
+      "반도체 제조사 아님",
+      "반도체 장비·소부장 본업 아님",
+      "전력 인프라 EPC 기업 아님",
+      "호남 반도체 테마는 광주/금호 브랜드 연상 중심의 테마 편승"
     ],
-    "value_chain_node": "소재/제조 (조명 기기) — 반도체 클러스터 밸류체인 외부",
-    "differentiator": "광주광역시 기반 + '금호' 브랜드 → 호남 반도체 클러스터 테마 이름 연상 편승 (실제 사업 수혜 아님)",
+    "value_chain_node": "조명기기 제조/스마트조명",
+    "differentiator": "1935년 설립된 장수 조명 브랜드와 LED 조명 전환 이력. 호남 반도체 테마에서는 사업 직접성보다 지역·브랜드 연상이 더 크다.",
     "differentiator_verified": true,
     "biz_tags": [
       "#LED조명",
-      "#광주기반",
-      "#금호브랜드",
-      "#테마편승"
+      "#번개표",
+      "#스마트조명",
+      "#광주연상",
+      "#정책테마"
     ],
     "revenue_mix": null,
+    "revenue_mix_note": "최신 사업부문별 매출 믹스는 사업보고서 세부표 파싱 후 보강 필요.",
     "key_customers": null,
-    "warning": "이 종목의 테마 편입 근거는 지리·브랜드 연상에 국한. 반도체 클러스터 사업 수혜 없음."
+    "warning": "이 종목의 핵심 리스크는 본업 체력보다 테마 수급이 먼저 가격을 끌어올렸다는 점이다. 반도체 직접수혜로 분류하면 안 된다."
   },
   "S2": {
-    "as_of": "2026-06-30",
-    "primary_theme": "POLICY-SEMICONDUCTOR-CLUSTER",
-    "secondary_themes": [],
-    "selection_cascade": "광주 기반 기업 → '금호' 브랜드 연상 → 호남 반도체 테마 편승",
-    "theme_tier": "편승(무관)",
-    "intensity": 0,
-    "variant_bucket": "정책취약",
-    "peer_set": [
-      "005620",
-      "002990",
-      "228340"
+    "as_of": "2026-07-03",
+    "primary_theme": "호남반도체정책연상",
+    "secondary_themes": [
+      "LED조명",
+      "스마트조명",
+      "금호브랜드연상",
+      "테마편승"
     ],
-    "theme_change_log": [],
-    "caution": "테마 직접 수혜 없음. 관찰 목적으로만 편입."
-  },
-  "S3": [
-    {
-      "date": "2026-06-28",
-      "close": null,
-      "change_pct": null,
-      "volume": null,
-      "value_traded": null,
-      "vs_20d_avg": null,
-      "foreign_net": null,
-      "inst_net": null,
-      "capture_flag": false,
-      "note": "2000조 발표 전일",
-      "row_status": "정상",
-      "capture": "no-rank",
-      "adj_factor": 1.0
+    "selection_cascade": "호남 반도체 클러스터 기대 → 광주·전남 기반 기업군 순환매 → 금호 브랜드 연상 → LED 조명주 단기 편승",
+    "theme_tier": "편승/고위험",
+    "intensity": {
+      "테마직접": 0,
+      "가격반응": 4,
+      "실적가시성": 1,
+      "쏠림위험": 4
     },
-    {
-      "date": "2026-06-29",
-      "close": null,
-      "change_pct": null,
-      "volume": null,
-      "value_traded": null,
-      "vs_20d_avg": null,
-      "foreign_net": null,
-      "inst_net": null,
-      "capture_flag": false,
-      "note": "3거래일 연속 상한가 보도 (수치 미수집)",
-      "row_status": "정상",
-      "capture": "no-rank",
-      "adj_factor": 1.0
+    "variant_bucket": "정책연상+급등후급락",
+    "peer_set": [
+      "091590",
+      "002990",
+      "228340",
+      "073240"
+    ],
+    "ai_direct_core": false,
+    "caution": "반도체 공장 투자와 금호전기 본업 사이의 직접 계약·납품 근거는 확인되지 않았다.",
+    "taxonomy": {
+      "L1": "정책테마",
+      "L2": "호남반도체클러스터",
+      "L3": "지역·브랜드 연상"
     },
-    {
-      "date": "2026-06-30",
-      "close": null,
-      "change_pct": null,
-      "volume": null,
-      "value_traded": null,
-      "vs_20d_avg": null,
-      "foreign_net": null,
-      "inst_net": null,
-      "capture_flag": false,
-      "note": "LEDGER 생성일",
-      "row_status": "정상",
-      "capture": "no-rank",
-      "adj_factor": 1.0
+    "theme_change_log": [
+      {
+        "date": "20260703",
+        "prev": "이전 영문 테마코드",
+        "next": "호남반도체정책연상",
+        "reason": "영문 테마코드 한글화 및 직접성 낮은 편승 테마로 재분류"
+      }
+    ],
+    "intensity_evidence": {
+      "테마직접": "반도체 직접 매출·수주 근거 없음",
+      "가격반응": "6월 말~7월 초 투자경고 지정과 급등락 발생",
+      "실적가시성": "2025년 적자 개선은 있으나 반도체 테마와 연결되지 않음",
+      "쏠림위험": "2026-07-02 -29.23% 급락으로 추격 수급 이탈 확인"
     }
-  ],
-  "S4": null,
-  "S5": null,
+  },
+  "S3": {
+    "unit_note": "raw_close=원·chg_pct=등락률(%)·volume=주·value_traded=백만원·foreign_net/inst_net=주 | 공개 시세 수동 스냅샷. 외인·기관 net은 종목귀속 원천 미확보로 null.",
+    "rows": [
+      {
+        "date": "20260629",
+        "row_status": "확인필요",
+        "capture": "RANK",
+        "raw_close": null,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": null,
+        "volume": null,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "뉴스핌 기준 장중 1,098원(+29.94%) 보도. 종가 OHLCV는 원천 충돌로 null 유지."
+      },
+      {
+        "date": "20260630",
+        "row_status": "부분수집",
+        "capture": "RANK",
+        "raw_close": 1174,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": 6.92,
+        "volume": null,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "연합뉴스 2026-06-30 마감 보도 기준. 거래량·거래대금은 원천 불일치로 미기재."
+      },
+      {
+        "date": "20260701",
+        "row_status": "부분수집",
+        "capture": "RANK",
+        "raw_close": 1389,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": 18.31,
+        "volume": null,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "알파스퀘어 공매도 표의 2026-07-01 종가 기준. 거래량·거래대금은 미수집."
+      },
+      {
+        "date": "20260702",
+        "row_status": "부분수집",
+        "capture": "RANK",
+        "raw_close": 983,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": -29.23,
+        "volume": 49303963,
+        "value_traded": 62771,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "한국경제 2026-07-02 장마감 기준. 거래대금 원문 백만원 단위."
+      }
+    ]
+  },
+  "S4": {
+    "as_of": "2026-07-03",
+    "coverage": "부분수집",
+    "turnover_comment": "2026-07-02 거래량 4,930만주로 상장주식수 6,188만주 대비 매우 높은 회전이 발생했다. 단기 테마 자금의 과밀 구간으로 본다.",
+    "liquidity_regime": "테마과열후냉각",
+    "foreign_inst_coverage": "데이터부재 — 일별 외인·기관 순매수 원장 미확보",
+    "rollup": {
+      "foreign_net_sum": null,
+      "inst_net_sum": null,
+      "sample_days": 4,
+      "reliable_days": 1
+    }
+  },
+  "S5": {
+    "as_of": "2026-07-03",
+    "fingerprint_label": "테마단기자금형",
+    "dominant_actor": "판정불가",
+    "evidence": [
+      "투자경고 지정",
+      "상한가권 장중 보도 후 7/02 가격제한폭 급락",
+      "외인·기관 일별 순매수 부재"
+    ],
+    "caution": "외인·기관 일별 순매수 원장이 없으므로 특정 주체·세력·매집 단정 금지."
+  },
   "S6": {
-    "as_of": "2026-06-30",
-    "high_52w": null,
-    "low_52w": null,
-    "position_52w_pct": null,
-    "ledger_high": null,
-    "ledger_low": null,
+    "as_of": "2026-07-03",
+    "current_price": 983,
+    "high_52w": 1518,
+    "low_52w": 465,
+    "position_52w_pct": 49.2,
+    "ledger_high": 1389,
+    "ledger_low": 983,
     "ma5": null,
     "ma20": null,
     "ma60": null,
-    "level_maturity": "warm-up",
-    "invalidation": "2000조 발표 소멸 or 호남 팹 계획 백지화",
-    "candle_prints": []
+    "level_maturity": "event-snapshot",
+    "invalidation": "호남 반도체 테마 소멸 또는 추가 직접수혜 근거 부재 상태에서 거래대금 급감",
+    "candle_prints": [
+      "2026-07-02 가격제한폭 급락",
+      "52주 고점권 진입 후 당일 저가 마감"
+    ]
   },
-  "S7": null,
-  "S8": null,
+  "S7": {
+    "as_of": "2026-07-03",
+    "market_cap": "약 608억원",
+    "per": null,
+    "pbr": "약 2.46배(983원/BPS 400원 단순계산)",
+    "eps": -57,
+    "bps": 400,
+    "valuation_comment": "순손실 기업이라 PER 의미가 낮다. 현재 평가는 본업 가치보다 테마 유동성 프리미엄의 변동성이 크다.",
+    "peer_view": "건설·인프라 직접 후보와 달리 금호전기는 조명주라 테마 직접성 할인 필요."
+  },
+  "S8": {
+    "as_of": "2026-07-03",
+    "annual": [
+      {
+        "year": "2025",
+        "revenue_krw_bn": 44.45,
+        "op_krw_bn": -0.58,
+        "net_krw_bn": -2.66,
+        "note": "디지털투데이 공시 요약 기준"
+      }
+    ],
+    "quarterly": [
+      {
+        "period": "2026Q1",
+        "revenue_krw_bn": null,
+        "op_krw_bn": null,
+        "net_krw_bn": null,
+        "note": "WiseReport 코멘트: 매출 -7.1%, 영업이익 -27.6%, 순이익 흑자전환"
+      }
+    ],
+    "quality_note": "재무 개선 여부와 호남 반도체 테마는 직접 연결되지 않는다."
+  },
   "S9": [
     {
-      "date": "2026-06-27",
-      "type": "주가이벤트",
-      "headline": "3거래일 연속 상한가 (6/27~29 추정) — 호남 반도체 클러스터 기대감 테마 편승",
-      "source": "언론 보도",
-      "relevance": "편승(간접)",
-      "intensity": "🔴",
-      "status": "완료",
-      "next_trigger": "조정 깊이 확인 / 실적 발표 시 주가 복귀 여부"
-    }
-  ],
-  "S10": null,
-  "S11": [
-    {
       "event_id": "E001",
-      "date": "2026-06-27",
-      "type": "테마편승급등",
-      "pattern": "지리·브랜드 연상 → 3연속 상한가",
-      "catalyst": "호남 반도체 클러스터 발표 전후",
-      "confidence": "🔴",
-      "edge_question": "LED 조명 사업 실적과 테마 주가의 괴리 — 테마 소멸 시 복귀 속도",
-      "follow_through": {
-        "t1": null,
-        "t3": null,
-        "t5": null,
-        "t10": null
-      },
-      "note": "전력 인프라로 오인 주의. 사업 본질 = LED 조명"
+      "date": "20260629",
+      "type": "정책테마",
+      "headline": "호남 반도체 클러스터 기대감에 금호전기 장중 상한가권 부각",
+      "source": "뉴스핌",
+      "relevance": "편승",
+      "intensity": "높음",
+      "status": "완료",
+      "next_trigger": "직접 납품·수주 공시 또는 시장경보 해제 후 거래대금 정상화"
+    },
+    {
+      "event_id": "E002",
+      "date": "20260630",
+      "type": "시장경보",
+      "headline": "한국거래소가 금호전기를 투자경고종목으로 지정",
+      "source": "연합뉴스",
+      "relevance": "수급위험",
+      "intensity": "높음",
+      "status": "완료",
+      "next_trigger": "추가 경보·매매거래정지 여부"
+    },
+    {
+      "event_id": "E003",
+      "date": "20260702",
+      "type": "가격반응",
+      "headline": "983원, -29.23% 급락 마감",
+      "source": "한국경제",
+      "relevance": "테마냉각",
+      "intensity": "높음",
+      "status": "완료",
+      "next_trigger": "하한가 이후 반등 지속성"
     }
   ],
-  "S12": null,
-  "S13": null,
-  "S14": null,
-  "S15": {
-    "birth_date": "2026-06-30",
-    "birth_trigger": "2000조 클러스터 N1 배치 — 테마 편승 패턴 관찰 목적",
-    "data_absent": [
+  "S10": {
+    "as_of": "2026-07-03",
+    "theme_reactions": [
       {
-        "field": "S3 가격 수치",
-        "reason": "AUTO-CRAWL 미연결",
-        "resolve": "O2 연결 시 자동"
+        "date": "20260629",
+        "theme": "호남반도체정책연상",
+        "reaction": "장중 상한가권",
+        "quality": "낮음",
+        "reason": "사업 직접성보다 지역·브랜드 연상"
+      },
+      {
+        "date": "20260702",
+        "theme": "호남반도체정책연상",
+        "reaction": "가격제한폭 급락",
+        "quality": "테마 피로",
+        "reason": "실체 확인 전 단기 수급 이탈"
+      }
+    ],
+    "role_in_theme": "후순위 편승주"
+  },
+  "S11": {
+    "rows": [
+      {
+        "event_id": "E001",
+        "date": "20260629",
+        "type": "테마편승급등",
+        "pattern": "지역·브랜드 연상 → 상한가권 진입",
+        "confidence": "medium",
+        "catalyst": "호남 반도체 클러스터 기대",
+        "edge_question": "직접 수혜 없는 연상 테마가 며칠이나 유지되는가",
+        "note": "반도체 본업 직접성은 낮다."
+      },
+      {
+        "event_id": "E003",
+        "date": "20260702",
+        "type": "급등후급락",
+        "pattern": "투자경고 후 고점권에서 가격제한폭 급락",
+        "confidence": "high",
+        "catalyst": "테마 과열 해소",
+        "edge_question": "거래대금 축소 후 기준가격이 어디서 안정되는가",
+        "note": "공식 매매콜이 아니라 반복 신호 후보."
+      }
+    ],
+    "pattern_synthesis": [
+      {
+        "pattern_label": "정책연상 테마 급등 후 급락",
+        "count": 1,
+        "success_rate": null,
+        "note": "N=1. 향후 유사 테마 편승주와 비교 필요."
+      }
+    ]
+  },
+  "S12": {
+    "rows": [
+      {
+        "date": "19350525",
+        "expectation_stage": "본업",
+        "transition_direction": "base",
+        "narrative": "장수 조명 브랜드와 LED 조명 사업이 기업의 기본 정체성.",
+        "stage_evidence": "공식 회사개요",
+        "hidden_momentum": {
+          "layer": "L1",
+          "signal": "스마트조명 전환",
+          "confidence": "medium"
+        },
+        "invalidation_trigger": "조명 본업 추가 악화"
+      },
+      {
+        "date": "20260629",
+        "expectation_stage": "테마점화",
+        "transition_direction": "forward",
+        "narrative": "호남 반도체 클러스터 발표 기대가 지역·금호 브랜드 연상으로 번지며 가격이 급등.",
+        "stage_evidence": "뉴스핌·연합뉴스 보도",
+        "hidden_momentum": {
+          "layer": "L2",
+          "signal": "실체보다 수급이 먼저 움직임",
+          "confidence": "high"
+        },
+        "invalidation_trigger": "직접 수주 근거 부재"
+      },
+      {
+        "date": "20260702",
+        "expectation_stage": "후퇴",
+        "transition_direction": "backward",
+        "narrative": "가격제한폭 하락으로 테마 추격 수급의 취약성이 드러남.",
+        "stage_evidence": "한국경제 장마감 시세",
+        "hidden_momentum": {
+          "layer": "L1",
+          "signal": "기준가격 재설정 구간",
+          "confidence": "medium"
+        },
+        "invalidation_trigger": "직접 계약 공시 또는 연속 거래대금 재확대"
+      }
+    ],
+    "default_stage_note": "현재 내러티브는 '직접수혜 낮은 정책 연상주가 급등 후 냉각되는 구간'이다."
+  },
+  "S13": {
+    "plan_updated": "20260703",
+    "stance": "관망",
+    "entry_level": null,
+    "entry_condition": "직접 수혜 공시 없이 단기 반등만으로 추격하지 않음. 거래대금 정상화와 하락 변동성 축소 확인 필요.",
+    "target_range": {
+      "min": null,
+      "max": null
+    },
+    "partial_exit_rule": [],
+    "decision_log": [
+      {
+        "date": "20260703",
+        "decision": "공식 매매결정 보류",
+        "reason": "테마 직접성 낮음, 투자경고, 급등 후 급락"
+      }
+    ]
+  },
+  "S14": [
+    {
+      "date": "20260703",
+      "type": "forecast_watch",
+      "headline": "직접수혜 없는 호남반도체 연상 테마의 잔존 기간 관찰",
+      "forecast": "다음 관찰 포인트는 983원 하락 이후 거래대금 감소와 반등 지속성이다.",
+      "confidence": "low",
+      "review_date": "20260731",
+      "kill_switch": "추가 하한가 또는 거래대금 급감",
+      "note": "공식 매매콜 아님."
+    }
+  ],
+  "S15": {
+    "as_of": "2026-07-03",
+    "birth_date": "2026-06-30",
+    "birth_trigger": "2000조 호남 반도체 클러스터 N1 배치 — 테마 편승 관찰 목적",
+    "data_absent": [
+      "일별 외인·기관 순매수",
+      "O3 산출 이동평균",
+      "반도체 클러스터 직접 수주·납품",
+      "최신 사업부문별 매출 믹스"
+    ],
+    "absence_log": [
+      {
+        "field": "foreign_net/inst_net",
+        "reason": "종목귀속 수급 원천 미확보"
+      },
+      {
+        "field": "MA5/MA20/MA60",
+        "reason": "장기 S3 원장 부족"
+      },
+      {
+        "field": "반도체 수혜",
+        "reason": "공개 수주·납품 근거 없음"
+      }
+    ],
+    "source_notes": [
+      {
+        "source": "금호전기 공식 회사개요",
+        "url": "https://www.khe.co.kr/sub/company/overview.asp",
+        "fact": "대표이사 이홍민, 설립일 1935-05-25, LED조명 기업 개요"
+      },
+      {
+        "source": "WiseReport 기업현황",
+        "url": "https://comp.wisereport.co.kr/company/c1010001.aspx?cmp_cd=001210",
+        "fact": "2026Q1 실적 코멘트와 스마트 메쉬 신규사업 언급"
+      },
+      {
+        "source": "한국경제 시장종합",
+        "url": "https://markets.hankyung.com/stock/001210",
+        "fact": "2026-07-02 종가 983원, -29.23%, 거래량·거래대금"
+      },
+      {
+        "source": "Investing.com",
+        "url": "https://kr.investing.com/equities/kumho-electric",
+        "fact": "2026-07-02 가격과 52주 범위 보조 확인"
+      },
+      {
+        "source": "디지털투데이",
+        "url": "https://www.digitaltoday.co.kr/news/articleView.html?idxno=630296",
+        "fact": "2025년 매출·영업손실·순손실 공시 요약"
+      },
+      {
+        "source": "연합뉴스",
+        "url": "https://www.yna.co.kr/view/AKR20260630053951008",
+        "fact": "호남 반도체 테마주 시장경보와 6/30 마감 보도"
+      },
+      {
+        "source": "뉴스핌",
+        "url": "https://www.newspim.com/news/view/20260629000299",
+        "fact": "2026-06-29 호남 반도체 기대감 장중 급등 보도"
       }
     ],
     "changelog": [
       {
-        "date": "2026-06-30",
-        "action": "BIRTH",
-        "note": "schema v2, 편승 관찰 목적, N1 배치 #2"
+        "date": "20260630",
+        "change_type": "birth",
+        "detail": "N1 배치 #2 최초 생성"
       },
       {
-        "date": "2026-06-30",
-        "action": "backport_v2",
-        "note": "schema v2 정합화 — meta 필드 추가: aliases, sector_wics, sector_gics, market_cap_value, shares_outstanding, isin, adjustment_events, archive_pointers"
+        "date": "20260703",
+        "change_type": "backport_schema_v2",
+        "detail": "S3 canonical rows 변환, S15 legacy action/note 제거, 미작성 섹션 materialize"
+      },
+      {
+        "date": "20260703",
+        "change_type": "theme_translate",
+        "detail": "이전 영문 테마코드를 호남반도체정책연상으로 한글화"
       }
     ]
   }

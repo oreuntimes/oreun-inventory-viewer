@@ -1,0 +1,546 @@
+{
+  "S0": {
+    "section": "에이전트 브리핑 레이어",
+    "protocol": "BIRTH-MANUAL 백포트. 공개 웹·시세·공시성 자료 기반. Kiwoom/O2 자동 수급 원장은 아직 미연결.",
+    "as_of": "2026-07-03",
+    "session_trigger": "남화토건 미완성 섹션 채우기, 영문 테마 한글화, 잘못된 종목코드 교정",
+    "agent_count": {
+      "llm": 12,
+      "deterministic": 4,
+      "total": 16
+    },
+    "briefs": [
+      {
+        "agent": "O1",
+        "role": "런 컨덕터",
+        "tier": "det",
+        "brief": "남화토건 레거시 N1 파일을 schema v2 canonical JSON으로 백포트."
+      },
+      {
+        "agent": "A6",
+        "role": "데이터 통합",
+        "tier": "core",
+        "brief": "실제 상장코드 091590 기준으로 지역 건설주·호남 반도체 클러스터 수혜 후보를 정리."
+      },
+      {
+        "agent": "B2",
+        "role": "S3 키퍼",
+        "tier": "det",
+        "brief": "S3는 {rows:[...]} canonical shape로 변환. 외인·기관 순매수는 종목귀속 원천 미확보로 null."
+      },
+      {
+        "agent": "C1",
+        "role": "테마 분류",
+        "tier": "Opus",
+        "brief": "영문 테마 코드를 한국어 테마명과 taxonomy로 대체."
+      },
+      {
+        "agent": "E1",
+        "role": "정직성",
+        "tier": "core",
+        "brief": "기존 파일명/인덱스의 005620은 남화토건 코드가 아니므로 091590으로 교정. 직접 수주 공시는 없음."
+      }
+    ]
+  },
+  "meta": {
+    "schema_version": "v2",
+    "code": "091590",
+    "name": "남화토건",
+    "aliases": [
+      "Nam Hwa Construction"
+    ],
+    "market": "KOSDAQ",
+    "security_type": "보통주",
+    "lifecycle_status": "상장",
+    "sector_wics": "건설",
+    "sector_krx": "건설",
+    "sector_gics": "산업재/건설",
+    "stock_type": "정책지역건설테마주",
+    "valuation_basis": "PBR+지역수주기대+테마수급",
+    "fiscal_year_end": "12",
+    "themes": [
+      "호남반도체클러스터·지역건설",
+      "토목건축",
+      "산업단지",
+      "지역정책",
+      "화순·광주전남"
+    ],
+    "market_cap_value": "약 1,216억원(MK 2026-07-02 시가총액 121,626백만원)",
+    "market_cap_band": "소형",
+    "shares_outstanding": "11,740,000주(MK 2026-07-02)",
+    "free_float_pct": null,
+    "listed_date": "2012-01-31",
+    "founded": "1959-08",
+    "isin": "KR7091590000",
+    "headquarters": "전라남도 화순군 화순읍",
+    "ceo": "최재훈",
+    "major_shareholders": [],
+    "foreign_ownership_pct": "1.51%(MK 2026-07-02)",
+    "ledger_created": "2026-06-30",
+    "created": "2026-06-30",
+    "last_updated": "2026-07-03",
+    "last_lens_run": "2026-07-03",
+    "level_maturity": "birth-manual-backport",
+    "tier_profile": "BIRTH",
+    "tags_lens": [
+      "BIRTH",
+      "호남반도체",
+      "지역건설",
+      "토목건축",
+      "코드정정",
+      "투자경고"
+    ],
+    "adjustment_events": [],
+    "data_absent_fields": [
+      "일별 외인·기관 순매수",
+      "반도체 팹 수주 계약",
+      "O3 이동평균",
+      "공종별 수주잔고 세부"
+    ],
+    "archive_pointers": [],
+    "code_correction_note": "기존 파일·README의 005620은 남화토건 상장코드가 아니므로 091590으로 교정."
+  },
+  "S1": {
+    "as_of": "2026-07-03",
+    "business_core": "남화토건은 광주·전남 기반의 토목·건축 종합건설회사다. 공식 홈페이지는 대표 최재훈을 표시하고, 공개 기업자료는 코스닥 상장 건설사로서 토목·건축·조경·전기공사 등을 수행해 온 이력을 제시한다.",
+    "negative_anchor": [
+      "반도체 제조·소부장 아님",
+      "전력·용수 인프라 전문기업으로 단정 금지",
+      "호남 팹 직접 수주 공시 없음",
+      "지역 대표성만으로 수혜 확정 불가"
+    ],
+    "value_chain_node": "지역 건설/EPC 후보",
+    "differentiator": "광주·전남 지역 기반과 화순 본사, 오랜 건설 업력. 호남 반도체 클러스터 테마에서는 지역성 때문에 먼저 반응한 소형 건설주.",
+    "differentiator_verified": true,
+    "biz_tags": [
+      "#종합건설",
+      "#토목",
+      "#건축",
+      "#전남화순",
+      "#호남반도체"
+    ],
+    "revenue_mix": null,
+    "revenue_mix_note": "공종별 매출 비중은 사업보고서 세부표 후속 파싱 필요.",
+    "key_customers": null,
+    "warning": "수혜 논리는 지리와 업종에서 출발하지만, 실제 발주·수주 확인 전에는 고위험 정책 테마주다."
+  },
+  "S2": {
+    "as_of": "2026-07-03",
+    "primary_theme": "호남반도체클러스터·지역건설",
+    "secondary_themes": [
+      "토목건축",
+      "산업단지",
+      "지역정책",
+      "화순·광주전남"
+    ],
+    "selection_cascade": "호남 반도체 투자 기대 → 광주·전남 지역 건설사 부각 → 남화토건 지역 대표성 → 소형주 수급 집중",
+    "theme_tier": "지역건설수혜후보",
+    "intensity": {
+      "테마직접": 2,
+      "가격반응": 4,
+      "실적가시성": 1,
+      "쏠림위험": 4
+    },
+    "variant_bucket": "지역건설정책테마",
+    "peer_set": [
+      "002990",
+      "228340",
+      "073240"
+    ],
+    "ai_direct_core": false,
+    "caution": "실제 반도체 팹·산단 공사 수주 공시가 없다. 투자경고 지정 이력 때문에 수급 리스크를 우선한다.",
+    "taxonomy": {
+      "L1": "정책테마",
+      "L2": "호남반도체클러스터",
+      "L3": "지역건설·토목"
+    },
+    "theme_change_log": [
+      {
+        "date": "20260703",
+        "prev": "이전 영문 테마코드",
+        "next": "호남반도체클러스터·지역건설",
+        "reason": "영문 테마코드 한글화 및 091590 실제 코드로 정정"
+      }
+    ],
+    "intensity_evidence": {
+      "테마직접": "지역 건설 수요 후보이나 직접 수주 공시 없음",
+      "가격반응": "6월 말~7월 초 상한가/급락/재상승 반복",
+      "실적가시성": "2025 재무는 흑자이나 호남 팹 수주와 별도",
+      "쏠림위험": "투자경고 지정 및 고회전"
+    }
+  },
+  "S3": {
+    "unit_note": "raw_close=원·chg_pct=등락률(%)·volume=주·value_traded=백만원·foreign_net/inst_net=주 | 공개 시세 수동 스냅샷. 외인·기관 net은 종목귀속 원천 미확보로 null.",
+    "rows": [
+      {
+        "date": "20260626",
+        "row_status": "부분수집",
+        "capture": "RANK",
+        "raw_close": 6680,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": 29.96,
+        "volume": null,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "MK 과거 화면 기준. 거래대금 원문 충돌로 미기재."
+      },
+      {
+        "date": "20260630",
+        "row_status": "확인필요",
+        "capture": "RANK",
+        "raw_close": null,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": null,
+        "volume": null,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "연합뉴스 기준 남화토건 -14.63% 급락 보도. 종가 원천 미확정으로 수치 미기재."
+      },
+      {
+        "date": "20260701",
+        "row_status": "부분수집",
+        "capture": "RANK",
+        "raw_close": 9630,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": null,
+        "volume": null,
+        "value_traded": null,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "Investing/MK 2026-07-02 전일종가 기준. 등락률·거래량은 미수집."
+      },
+      {
+        "date": "20260702",
+        "row_status": "부분수집",
+        "capture": "RANK",
+        "raw_close": 10360,
+        "adj_factor": 1.0,
+        "adj_close": null,
+        "chg_pct": 7.58,
+        "volume": 5002379,
+        "value_traded": 49429,
+        "vs_20d_pct": null,
+        "foreign_net": null,
+        "inst_net": null,
+        "note": "MK 2026-07-02 15:32 기준. 거래대금 원문 백만원."
+      }
+    ]
+  },
+  "S4": {
+    "as_of": "2026-07-03",
+    "coverage": "부분수집",
+    "turnover_comment": "2026-07-02 거래량 500만주로 상장주식수 1,174만주의 약 42.6% 수준. 소형 지역건설주에 테마 수급이 집중된 구간.",
+    "liquidity_regime": "상한가후고회전",
+    "foreign_inst_coverage": "Meerae 5일 금액 순매매만 보조 확인. 일별 주식수 net은 데이터부재.",
+    "rollup": {
+      "foreign_value_5d_krw_bn": -0.4,
+      "inst_value_5d_krw_bn": 0.0,
+      "foreign_net_sum": null,
+      "inst_net_sum": null,
+      "sample_days": 4
+    }
+  },
+  "S5": {
+    "as_of": "2026-07-03",
+    "fingerprint_label": "지역건설소형주고회전형",
+    "dominant_actor": "판정불가",
+    "evidence": [
+      "투자경고 지정",
+      "거래량/상장주식수 비율 급등",
+      "5일 외인 금액 순매도 보조 확인"
+    ],
+    "caution": "외인·기관 일별 순매수 원장이 없으므로 특정 주체·세력·매집 단정 금지."
+  },
+  "S6": {
+    "as_of": "2026-07-03",
+    "current_price": 10360,
+    "high_52w": 12190,
+    "low_52w": 3200,
+    "position_52w_pct": 79.6,
+    "ledger_high": 10360,
+    "ledger_low": 6680,
+    "ma5": null,
+    "ma20": null,
+    "ma60": null,
+    "level_maturity": "event-snapshot",
+    "invalidation": "호남 팹·산단 발주가 지연되거나 남화토건 직접 수주 근거가 나오지 않는 경우",
+    "candle_prints": [
+      "상한가 후 급락",
+      "2026-07-02 52주 고점권 장중 변동성"
+    ]
+  },
+  "S7": {
+    "as_of": "2026-07-03",
+    "market_cap": "1,216.26억원",
+    "per": 10.34,
+    "eps": 931,
+    "pbr": null,
+    "bps": null,
+    "dividend_per_share": 100,
+    "valuation_comment": "소형 건설주로 PER 자체보다 지역 수주 기대와 테마 수급의 지속성이 더 크게 가격을 흔든다.",
+    "peer_view": "금호건설 대비 규모는 작고 지역성은 강하다. 동양파일과 달리 직접 시공/EPC 후보로 분류."
+  },
+  "S8": {
+    "as_of": "2026-07-03",
+    "annual": [
+      {
+        "year": "2025",
+        "revenue_krw_bn": 72.7,
+        "op_krw_bn": 3.8,
+        "net_krw_bn": 11.0,
+        "roe_pct": 6.2,
+        "note": "Meerae 2025 연결 재무 요약 기준"
+      }
+    ],
+    "quarterly": [],
+    "quality_note": "흑자 건설사이나 정책 테마 수혜는 실제 수주 공시가 있어야 재평가 가능."
+  },
+  "S9": [
+    {
+      "event_id": "E001",
+      "date": "20260629",
+      "type": "정책테마",
+      "headline": "호남 반도체 클러스터 기대감에 남화토건 상한가권 부각",
+      "source": "뉴스핌",
+      "relevance": "간접",
+      "intensity": "높음",
+      "status": "완료",
+      "next_trigger": "호남 팹 부지·발주·남화토건 수주 공시"
+    },
+    {
+      "event_id": "E002",
+      "date": "20260630",
+      "type": "시장경보",
+      "headline": "한국거래소가 남화토건을 투자경고종목으로 지정",
+      "source": "연합뉴스",
+      "relevance": "수급위험",
+      "intensity": "높음",
+      "status": "완료",
+      "next_trigger": "추가 경보·매매정지 여부"
+    },
+    {
+      "event_id": "E003",
+      "date": "20260702",
+      "type": "가격반응",
+      "headline": "10,360원, +7.58% 마감. 장중 12,190원 52주 고점",
+      "source": "MK",
+      "relevance": "고회전",
+      "intensity": "높음",
+      "status": "완료",
+      "next_trigger": "고점 재돌파 여부"
+    }
+  ],
+  "S10": {
+    "as_of": "2026-07-03",
+    "theme_reactions": [
+      {
+        "date": "20260629",
+        "theme": "호남반도체클러스터·지역건설",
+        "reaction": "상한가권",
+        "quality": "중간",
+        "reason": "지역 건설 논리 존재, 직접 수주는 미확인"
+      },
+      {
+        "date": "20260702",
+        "theme": "호남반도체클러스터·지역건설",
+        "reaction": "고회전 재상승",
+        "quality": "변동성 높음",
+        "reason": "투자경고 후에도 테마 잔존"
+      }
+    ],
+    "role_in_theme": "소형 지역건설 대표주"
+  },
+  "S11": {
+    "rows": [
+      {
+        "event_id": "E001",
+        "date": "20260629",
+        "type": "지역건설급등",
+        "pattern": "정책 발표 전후 지역 건설주 상한가권",
+        "confidence": "medium",
+        "catalyst": "호남 반도체 클러스터 기대",
+        "edge_question": "지역성 프리미엄이 실제 수주로 이어지는가",
+        "note": "직접 수주 공시 전까지 수혜 확정 금지"
+      },
+      {
+        "event_id": "E003",
+        "date": "20260702",
+        "type": "고회전재상승",
+        "pattern": "투자경고 후에도 52주 고점권 재진입",
+        "confidence": "medium",
+        "catalyst": "테마 잔존",
+        "edge_question": "고점권 거래량이 후속 상승 연료인가 분배인가",
+        "note": "외인·기관 수급 미확보"
+      }
+    ],
+    "pattern_synthesis": [
+      {
+        "pattern_label": "지역 건설 소형주 테마 고회전",
+        "count": 1,
+        "success_rate": null,
+        "note": "후속 발주 공시 여부가 승률 판단의 핵심."
+      }
+    ]
+  },
+  "S12": {
+    "rows": [
+      {
+        "date": "19590801",
+        "expectation_stage": "본업",
+        "transition_direction": "base",
+        "narrative": "광주·전남 기반 종합건설사라는 장기 정체성.",
+        "stage_evidence": "회사개요·기업자료",
+        "hidden_momentum": {
+          "layer": "L1",
+          "signal": "지역 건설 네트워크",
+          "confidence": "medium"
+        },
+        "invalidation_trigger": "지역 건설 수주 부진"
+      },
+      {
+        "date": "20260629",
+        "expectation_stage": "점화",
+        "transition_direction": "forward",
+        "narrative": "호남 반도체 투자 기대가 지역 건설사 수주 기대와 결합하면서 주가가 급등.",
+        "stage_evidence": "뉴스핌·연합뉴스",
+        "hidden_momentum": {
+          "layer": "L2",
+          "signal": "소형주라 수급 민감도 큼",
+          "confidence": "high"
+        },
+        "invalidation_trigger": "직접 수주 공시 부재 장기화"
+      },
+      {
+        "date": "20260702",
+        "expectation_stage": "과열검증",
+        "transition_direction": "mixed",
+        "narrative": "장중 52주 고점과 고회전이 동시에 발생. 테마는 살아 있으나 변동성 리스크도 커졌다.",
+        "stage_evidence": "MK 시세",
+        "hidden_momentum": {
+          "layer": "L1",
+          "signal": "발주 뉴스 민감도 확대",
+          "confidence": "medium"
+        },
+        "invalidation_trigger": "거래대금 감소와 고점 실패"
+      }
+    ],
+    "default_stage_note": "현재 내러티브는 '지역건설주 기대가 강하지만 수주 검증 전 고위험 고회전 구간'이다."
+  },
+  "S13": {
+    "plan_updated": "20260703",
+    "stance": "관망-수주확인형",
+    "entry_level": null,
+    "entry_condition": "호남 팹·산업단지 관련 실제 발주/수주 공시 또는 거래대금 정상화 후 재평가",
+    "target_range": {
+      "min": null,
+      "max": null
+    },
+    "partial_exit_rule": [],
+    "decision_log": [
+      {
+        "date": "20260703",
+        "decision": "공식 매매결정 보류",
+        "reason": "소형주 고회전, 투자경고, 직접수주 부재"
+      }
+    ]
+  },
+  "S14": [
+    {
+      "date": "20260703",
+      "type": "forecast_watch",
+      "headline": "남화토건 지역건설 프리미엄의 지속 여부 관찰",
+      "forecast": "12,190원 장중 고점 재돌파보다 실제 수주·발주 뉴스가 우선 확인 포인트다.",
+      "confidence": "low",
+      "review_date": "20260731",
+      "kill_switch": "호남 팹 부지·착공 일정 지연 또는 거래대금 급감",
+      "note": "공식 매매콜 아님."
+    }
+  ],
+  "S15": {
+    "as_of": "2026-07-03",
+    "birth_date": "2026-06-30",
+    "birth_trigger": "2000조 호남 반도체 클러스터 발표 — N1 건설·인프라 노드 배치 #1",
+    "data_absent": [
+      "일별 외인·기관 순매수",
+      "반도체 팹 수주 계약",
+      "O3 이동평균",
+      "공종별 수주잔고 세부"
+    ],
+    "absence_log": [
+      {
+        "field": "code",
+        "reason": "기존 005620 표기를 실제 코드 091590으로 교정"
+      },
+      {
+        "field": "foreign_net/inst_net",
+        "reason": "종목귀속 수급 원천 미확보"
+      },
+      {
+        "field": "반도체 팹 수주",
+        "reason": "공시 없음"
+      }
+    ],
+    "source_notes": [
+      {
+        "source": "남화토건 공식 홈페이지",
+        "url": "https://www.namhwaconst.co.kr/sub01/sub01.html",
+        "fact": "대표 최재훈 등 회사 소개"
+      },
+      {
+        "source": "MK 마켓",
+        "url": "https://stock.mk.co.kr/price/home/KR7091590000",
+        "fact": "2026-07-02 종가·거래량·거래대금·시총·PER/EPS·상장주식수"
+      },
+      {
+        "source": "Meerae AI",
+        "url": "https://meerae.ai/atlas/091590/",
+        "fact": "2026-07-02 시총·52주·5일 수급 금액·2025 재무 요약"
+      },
+      {
+        "source": "Investing.com",
+        "url": "https://kr.investing.com/equities/nam-hwa-construction-co-ltd",
+        "fact": "091590 코드와 2026-07-02 가격·52주 범위 보조 확인"
+      },
+      {
+        "source": "연합뉴스",
+        "url": "https://www.yna.co.kr/view/AKR20260630053951008",
+        "fact": "호남 반도체 테마주 시장경보와 6/30 급락 보도"
+      },
+      {
+        "source": "뉴스핌",
+        "url": "https://www.newspim.com/news/view/20260629000299",
+        "fact": "2026-06-29 장중 상한가권 보도"
+      }
+    ],
+    "changelog": [
+      {
+        "date": "20260630",
+        "change_type": "birth",
+        "detail": "N1 배치 #1 최초 생성"
+      },
+      {
+        "date": "20260703",
+        "change_type": "code_correct",
+        "detail": "남화토건 종목코드를 005620에서 실제 상장코드 091590으로 교정하고 파일명 변경"
+      },
+      {
+        "date": "20260703",
+        "change_type": "backport_schema_v2",
+        "detail": "S3 canonical rows 변환, S15 legacy action/note 제거, 미작성 섹션 materialize"
+      },
+      {
+        "date": "20260703",
+        "change_type": "theme_translate",
+        "detail": "이전 영문 테마코드를 호남반도체클러스터·지역건설로 한글화"
+      }
+    ]
+  }
+}
